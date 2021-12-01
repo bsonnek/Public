@@ -7,6 +7,7 @@ Start-Service -Name BITS, wuauserv
 (New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
 Get-WUList
 exit
+
 ## Open CMD as admin and run 
 wuauclt /ReportNow
 wuauclt /resetauthorization /detectnow
