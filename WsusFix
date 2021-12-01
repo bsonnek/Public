@@ -1,3 +1,19 @@
+
+C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe
+Stop-Service -Name BITS, wuauserv -Force
+Remove-ItemProperty -Name AccountDomainSid, PingID, SusClientId, SusClientIDValidation -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\ -ErrorAction SilentlyContinue
+Remove-Item "$env:SystemRoot\SoftwareDistribution\" -Recurse -Force -ErrorAction SilentlyContinue
+Start-Service -Name BITS, wuauserv
+(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+Get-WUInstall -AcceptAll -Download -Install -Verbose
+
+
+
+
+
+
+
+
 shutdown /r /f /t 14400
 C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe
 Stop-Service -Name BITS, wuauserv -Force
