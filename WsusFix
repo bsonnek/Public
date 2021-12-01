@@ -27,4 +27,5 @@ exit
 wuauclt /ReportNow
 wuauclt /resetauthorization /detectnow
 
+C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe
 Get-WUInstall -AcceptAll -Download -Install -IgnoreReboot -Verbose
