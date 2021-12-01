@@ -1,17 +1,3 @@
-## Connect to Server not receiving updates and run the following
-## Open CMD and Run the following - 
-C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe
-
-Stop-Service -Name BITS, wuauserv -Force
-Remove-ItemProperty -Name AccountDomainSid, PingID, SusClientId, SusClientIDValidation -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\ -ErrorAction SilentlyContinue
-Remove-Item "$env:SystemRoot\SoftwareDistribution\" -Recurse -Force -ErrorAction SilentlyContinue
-Start-Service -Name BITS, wuauserv
-$updateSession = new-object -com "Microsoft.Update.Session"; $updates=$updateSession.CreateupdateSearcher().Search($criteria).Updates
-(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
-exit
-## Open CMD as admin and run 
-wuauclt /ReportNow
-wuauclt /resetauthorization /detectnow
 
 
 shutdown /r /f /t 14400
