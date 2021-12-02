@@ -5,7 +5,7 @@ Remove-ItemProperty -Name AccountDomainSid, PingID, SusClientId, SusClientIDVali
 Remove-Item "$env:SystemRoot\SoftwareDistribution\" -Recurse -Force -ErrorAction SilentlyContinue
 Start-Service -Name BITS, wuauserv
 (New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
-Get-WUInstall -AcceptAll -Download -Install -Verbose
+Get-WUInstall -AcceptAll -Download -Install -autoreboot -Verbose
 
 
 
