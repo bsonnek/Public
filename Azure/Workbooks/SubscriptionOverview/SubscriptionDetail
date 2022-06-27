@@ -1,0 +1,361 @@
+{
+  "type": 12,
+  "content": {
+    "version": "NotebookGroup/1.0",
+    "groupType": "editable",
+    "items": [
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "resourcecontainers\r\n| where type =~ \"microsoft.resources/subscriptions\"\r\n| project [\"Subscription Name\"]=id, subscriptionId, tenantId\r\n",
+          "size": 4,
+          "title": "Subscription Details",
+          "queryType": 1,
+          "resourceType": "microsoft.resourcegraph/resources",
+          "crossComponentResources": [
+            "{Subscriptions}"
+          ],
+          "gridSettings": {
+            "formatters": [
+              {
+                "columnMatch": "Subscription Name",
+                "formatter": 0,
+                "formatOptions": {
+                  "customColumnWidthSetting": "50ch"
+                }
+              }
+            ],
+            "sortBy": [
+              {
+                "itemKey": "tenantId",
+                "sortOrder": 1
+              }
+            ]
+          },
+          "sortBy": [
+            {
+              "itemKey": "tenantId",
+              "sortOrder": 1
+            }
+          ]
+        },
+        "customWidth": "50",
+        "name": "query - 0"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "Heartbeat\r\n| summarize count() by Computer, RemoteIPLatitude, RemoteIPLongitude, ComputerIP",
+          "size": 1,
+          "title": "Virtual Machine Locations",
+          "timeContext": {
+            "durationMs": 14400000
+          },
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "crossComponentResources": [
+            "{LogAnalytics}"
+          ],
+          "visualization": "map",
+          "mapSettings": {
+            "locInfo": "LatLong",
+            "latitude": "RemoteIPLatitude",
+            "longitude": "RemoteIPLongitude",
+            "sizeSettings": "count_",
+            "sizeAggregation": "Sum",
+            "maxSize": 50,
+            "minData": 100,
+            "maxData": 200,
+            "labelSettings": "Computer",
+            "legendMetric": "count_",
+            "legendAggregation": "Max",
+            "itemColorSettings": {
+              "nodeColorField": "count_",
+              "colorAggregation": "Sum",
+              "type": "thresholds",
+              "thresholdsGrid": [
+                {
+                  "operator": "Default",
+                  "thresholdValue": null,
+                  "representation": "green"
+                }
+              ]
+            }
+          }
+        },
+        "customWidth": "25",
+        "name": "query - 7"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "resources\r\n| where type == \"microsoft.network/virtualnetworks\"\r\n| extend [\"vNET IP Range\"] = properties['addressSpace']['addressPrefixes']\r\n| extend [\"DNS Server/s\"] = properties['dhcpOptions']['dnsServers']\r\n| extend Subnets0=properties['subnets'][0]['name'] \r\n| extend [\"Subnet1 IP Range\"]=properties['subnets'][0]['properties']['addressPrefix'] \r\n| extend Subnet0=strcat(Subnets0, \" / \", [\"Subnet1 IP Range\"]) \r\n| extend Subnets1=properties['subnets'][1]['name'] \r\n| extend [\"Subnet1 IP Range\"]=properties['subnets'][1]['properties']['addressPrefix'] \r\n| extend Subnet1=strcat(Subnets1, \" / \", [\"Subnet1 IP Range\"]) \r\n| extend Subnets2=properties['subnets'][2]['name'] \r\n| extend [\"Subnet1 IP Range\"]=properties['subnets'][2]['properties']['addressPrefix'] \r\n| extend Subnet2=strcat(Subnets2, \" / \", [\"Subnet1 IP Range\"])\r\n| extend Subnets3=properties['subnets'][3]['name'] \r\n| extend [\"Subnet1 IP Range\"]=properties['subnets'][3]['properties']['addressPrefix'] \r\n| extend Subnet3=strcat(Subnets3, \" / \", [\"Subnet1 IP Range\"])  \r\n| extend Subnets4=properties['subnets'][4]['name'] \r\n| extend [\"Subnet1 IP Range\"]=properties['subnets'][4]['properties']['addressPrefix'] \r\n| extend Subnet4=strcat(Subnets4, \" / \", [\"Subnet1 IP Range\"])  \r\n| extend Subnets5=properties['subnets'][5]['name'] \r\n| extend [\"Subnet1 IP Range\"]=properties['subnets'][5]['properties']['addressPrefix'] \r\n| extend Subnet5=strcat(Subnets5, \" / \", [\"Subnet1 IP Range\"])\r\n| extend SplitAll=split(properties.dhcpOptions.dnsServers, '\"')\r\n| extend DNS0=[\"DNS Server/s\"]\r\n| project [\"vNET Name\"]=id, Region=location, [\"vNET IP Range\"], [\"DNS Server/s\"], Subnet0, Subnet1, Subnet2, Subnet3, Subnet4, Subnet5, DNS0\r\n",
+          "size": 4,
+          "title": "Virtual Network Details",
+          "exportFieldName": "DNS0",
+          "exportParameterName": "DNS0",
+          "exportDefaultValue": "0",
+          "queryType": 1,
+          "resourceType": "microsoft.resourcegraph/resources",
+          "crossComponentResources": [
+            "{Subscriptions}"
+          ],
+          "gridSettings": {
+            "formatters": [
+              {
+                "columnMatch": "vNET Name",
+                "formatter": 0,
+                "formatOptions": {
+                  "customColumnWidthSetting": "15ch"
+                }
+              },
+              {
+                "columnMatch": "vNET IP Range",
+                "formatter": 1,
+                "formatOptions": {
+                  "customColumnWidthSetting": "20ch"
+                }
+              },
+              {
+                "columnMatch": "DNS Server/s",
+                "formatter": 1
+              },
+              {
+                "columnMatch": "Subnet0",
+                "formatter": 1,
+                "formatOptions": {
+                  "customColumnWidthSetting": "25ch"
+                }
+              },
+              {
+                "columnMatch": "Subnet1",
+                "formatter": 1,
+                "formatOptions": {
+                  "customColumnWidthSetting": "25ch"
+                }
+              },
+              {
+                "columnMatch": "Subnet2",
+                "formatter": 1,
+                "formatOptions": {
+                  "customColumnWidthSetting": "25ch"
+                }
+              },
+              {
+                "columnMatch": "Subnet3",
+                "formatter": 1,
+                "formatOptions": {
+                  "customColumnWidthSetting": "25ch"
+                }
+              },
+              {
+                "columnMatch": "Subnet4",
+                "formatter": 1,
+                "formatOptions": {
+                  "customColumnWidthSetting": "25ch"
+                }
+              },
+              {
+                "columnMatch": "Subnet5",
+                "formatter": 1,
+                "formatOptions": {
+                  "customColumnWidthSetting": "25ch"
+                }
+              },
+              {
+                "columnMatch": "DNS1",
+                "formatter": 5
+              },
+              {
+                "columnMatch": "DNS2",
+                "formatter": 5
+              },
+              {
+                "columnMatch": "DNS0",
+                "formatter": 5
+              },
+              {
+                "columnMatch": "DNSServer",
+                "formatter": 5
+              },
+              {
+                "columnMatch": "AddressSpace",
+                "formatter": 1
+              }
+            ]
+          },
+          "sortBy": [],
+          "tileSettings": {
+            "showBorder": false
+          }
+        },
+        "name": "query - 1"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "Resources\r\n| where type =~ 'microsoft.compute/virtualmachines'\r\n| extend nics=array_length(properties.networkProfile.networkInterfaces)\r\n| mv-expand nic=properties.networkProfile.networkInterfaces\r\n| where nics == 1 or nic.properties.primary =~ 'true' or isempty(nic)\r\n| project vmId = id, vmName = name, vmSize=tostring(properties.hardwareProfile.vmSize), nicId = tostring(nic.id)\r\n\t| join kind=leftouter (\r\n \t\tResources\r\n  \t\t| where type =~ 'microsoft.network/networkinterfaces'\r\n  \t\t| extend ipConfigsCount=array_length(properties.ipConfigurations)\r\n  \t\t| mv-expand ipconfig=properties.ipConfigurations\r\n  \t\t| where ipConfigsCount == 1 or ipconfig.properties.primary =~ 'true'\r\n  \t\t| project nicId = id, privateIP= tostring(ipconfig.properties.privateIPAddress), publicIpId = tostring(ipconfig.properties.publicIPAddress.id), subscriptionId) on nicId\r\n| project-away nicId1\r\n| where privateIP == \"{DNS0}\"\r\n| summarize by DomainController=vmId, privateIP\r\n\r\n\r\n",
+          "size": 4,
+          "title": "Possible Domain Controller",
+          "noDataMessage": "Select vNET Above to Show Possible Domain Controllers in this field",
+          "queryType": 1,
+          "resourceType": "microsoft.resourcegraph/resources",
+          "crossComponentResources": [
+            "{Subscriptions}"
+          ]
+        },
+        "customWidth": "25",
+        "name": "query - 4"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "ConfigurationData \r\n| where SvcDisplayName == \"Microsoft Azure AD Sync\"\r\n| limit 1\r\n| project ServerName=_ResourceId, SvcDisplayName, SvcState\r\n\r\n",
+          "size": 4,
+          "title": "Azure AD Sync Service Status",
+          "noDataMessage": "No Azure AD Sync Service Detected on Virtual Machine",
+          "noDataMessageStyle": 4,
+          "timeContext": {
+            "durationMs": 86400000
+          },
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "crossComponentResources": [
+            "{LogAnalytics}"
+          ],
+          "gridSettings": {
+            "formatters": [
+              {
+                "columnMatch": "ServerName",
+                "formatter": 0,
+                "formatOptions": {
+                  "customColumnWidthSetting": "20ch"
+                }
+              },
+              {
+                "columnMatch": "SvcState",
+                "formatter": 18,
+                "formatOptions": {
+                  "thresholdsOptions": "icons",
+                  "thresholdsGrid": [
+                    {
+                      "operator": "!=",
+                      "thresholdValue": "Running",
+                      "representation": "4",
+                      "text": "{0}{1}"
+                    },
+                    {
+                      "operator": "Default",
+                      "thresholdValue": null,
+                      "representation": "success",
+                      "text": "{0}{1}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "customWidth": "35",
+        "name": "query - 5"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "resources\r\n| where type =~ \"microsoft.aad/domainservices\"\r\n| extend DomainControllerIPs=properties['replicaSets'][0]['domainControllerIpAddress']\r\n| extend ServiceStatus=properties['replicaSets'][0]['serviceStatus']\r\n| project [\"Azure AD Domain Services Name\"]=id, DomainControllerIPs, ServiceStatus",
+          "size": 4,
+          "title": "Azure AD Domain Services",
+          "noDataMessage": "This Subscription is not using Azure AD Domain Services",
+          "noDataMessageStyle": 3,
+          "queryType": 1,
+          "resourceType": "microsoft.resourcegraph/resources",
+          "crossComponentResources": [
+            "{Subscriptions}"
+          ],
+          "gridSettings": {
+            "formatters": [
+              {
+                "columnMatch": "Azure AD Domain Services Name",
+                "formatter": 0,
+                "formatOptions": {
+                  "customColumnWidthSetting": "30ch"
+                }
+              },
+              {
+                "columnMatch": "DomainControllerIPs",
+                "formatter": 1
+              },
+              {
+                "columnMatch": "ServiceStatus",
+                "formatter": 18,
+                "formatOptions": {
+                  "thresholdsOptions": "icons",
+                  "thresholdsGrid": [
+                    {
+                      "operator": "!=",
+                      "thresholdValue": "Running",
+                      "representation": "4",
+                      "text": "{0}{1}"
+                    },
+                    {
+                      "operator": "Default",
+                      "thresholdValue": null,
+                      "representation": "success",
+                      "text": "{0}{1}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "customWidth": "40",
+        "name": "query - 2"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "resources\r\n| where type == \"microsoft.desktopvirtualization/hostpools\"\r\n| project [\"Host Pool Name\"]=id, location, resourceGroup, LBType=properties.loadBalancerType, SeesionLimit=properties.maxSessionLimit, HostPoolType=properties.hostPoolType, name",
+          "size": 4,
+          "title": "AVD Host Pool Overview",
+          "queryType": 1,
+          "resourceType": "microsoft.resourcegraph/resources",
+          "crossComponentResources": [
+            "{Subscriptions}"
+          ],
+          "gridSettings": {
+            "formatters": [
+              {
+                "columnMatch": "LBType",
+                "formatter": 1
+              },
+              {
+                "columnMatch": "SeesionLimit",
+                "formatter": 1
+              },
+              {
+                "columnMatch": "HostPoolType",
+                "formatter": 1
+              }
+            ]
+          }
+        },
+        "customWidth": "60",
+        "name": "query - 3"
+      }
+    ]
+  },
+  "conditionalVisibility": {
+    "parameterName": "selectedTab",
+    "comparison": "isEqualTo",
+    "value": "SubscriptionDetail"
+  },
+  "name": "SubscriptionDetails-Group"
+}
