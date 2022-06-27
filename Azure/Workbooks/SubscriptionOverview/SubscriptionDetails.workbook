@@ -1,6 +1,4 @@
 {
-  "type": 12,
-  "content": {
     "version": "NotebookGroup/1.0",
     "items": [
       {
@@ -357,4 +355,4 @@
     "value": "SubscriptionDetail"
   },
   "name": "SubscriptionDetails-Group"
-}
+
