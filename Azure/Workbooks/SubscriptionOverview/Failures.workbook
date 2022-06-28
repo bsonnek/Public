@@ -5,206 +5,697 @@
       "type": 9,
       "content": {
         "version": "KqlParameterItem/1.0",
+        "query": "",
+        "crossComponentResources": [],
         "parameters": [
           {
-            "id": "1f74ed9a-e3ed-498d-bd5b-f68f3836a117",
+            "id": "487a9f92-5350-4eec-8d68-15bdf2470550",
             "version": "KqlParameterItem/1.0",
-            "name": "Subscription",
-            "label": "Subscriptions",
-            "type": 6,
-            "description": "All subscriptions with Storage accounts",
-            "isRequired": true,
-            "multiSelect": true,
-            "quote": "'",
-            "delimiter": ",",
-            "query": "where type =~ 'microsoft.storage/storageaccounts'\r\n| summarize Count = count() by subscriptionId\r\n| order by Count desc\r\n| extend Rank = row_number()\r\n| project value = subscriptionId, label = subscriptionId, selected = Rank == 1",
-            "crossComponentResources": [
-              "value::selected"
-            ],
-            "typeSettings": {
-              "additionalResourceOptions": [],
-              "showDefault": false
-            },
-            "queryType": 1,
-            "resourceType": "microsoft.resourcegraph/resources"
-          },
-          {
-            "id": "e94aafa3-c5d9-4523-89f0-4e87aa754511",
-            "version": "KqlParameterItem/1.0",
-            "name": "Resources",
-            "label": "Storage accounts",
+            "name": "Resource",
+            "label": "Storage Account",
             "type": 5,
             "isRequired": true,
-            "multiSelect": true,
-            "quote": "'",
-            "delimiter": ",",
-            "query": "where type =~ 'microsoft.storage/storageaccounts'\n| order by name asc\n| extend Rank = row_number()\n| project value = id, label = id, selected = Rank <= 5",
-            "crossComponentResources": [
-              "{Subscription}"
-            ],
+            "value": "value::1",
             "typeSettings": {
               "resourceTypeFilter": {
                 "microsoft.storage/storageaccounts": true
               },
               "additionalResourceOptions": [
-                "value::all"
-              ],
-              "showDefault": false
-            },
-            "queryType": 1,
-            "resourceType": "microsoft.resourcegraph/resources"
-          },
+                "value::1"
+              ]
+            }
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.storage/storageaccounts"
+      },
+      "conditionalVisibility": {
+        "parameterName": "1",
+        "comparison": "isEqualTo",
+        "value": "2"
+      },
+      "name": "resource param"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
           {
-            "id": "c4b69c01-2263-4ada-8d9c-43433b739ff3",
+            "id": "26332d26-265f-4cef-8b21-8ee048ffd8a8",
             "version": "KqlParameterItem/1.0",
-            "name": "TimeRange",
-            "type": 4,
-            "isRequired": true,
-            "typeSettings": {
-              "selectableValues": [
-                {
-                  "durationMs": 300000,
-                  "createdTime": "2018-08-06T23:52:38.870Z",
-                  "isInitialTime": false,
-                  "grain": 1,
-                  "useDashboardTimeRange": false
-                },
-                {
-                  "durationMs": 900000,
-                  "createdTime": "2018-08-06T23:52:38.871Z",
-                  "isInitialTime": false,
-                  "grain": 1,
-                  "useDashboardTimeRange": false
-                },
-                {
-                  "durationMs": 1800000,
-                  "createdTime": "2018-08-06T23:52:38.871Z",
-                  "isInitialTime": false,
-                  "grain": 1,
-                  "useDashboardTimeRange": false
-                },
-                {
-                  "durationMs": 3600000,
-                  "createdTime": "2018-08-06T23:52:38.871Z",
-                  "isInitialTime": false,
-                  "grain": 1,
-                  "useDashboardTimeRange": false
-                },
-                {
-                  "durationMs": 14400000,
-                  "createdTime": "2018-08-06T23:52:38.871Z",
-                  "isInitialTime": false,
-                  "grain": 1,
-                  "useDashboardTimeRange": false
-                },
-                {
-                  "durationMs": 43200000,
-                  "createdTime": "2018-08-06T23:52:38.871Z",
-                  "isInitialTime": false,
-                  "grain": 1,
-                  "useDashboardTimeRange": false
-                },
-                {
-                  "durationMs": 86400000,
-                  "createdTime": "2018-08-06T23:52:38.871Z",
-                  "isInitialTime": false,
-                  "grain": 1,
-                  "useDashboardTimeRange": false
-                },
-                {
-                  "durationMs": 172800000,
-                  "createdTime": "2018-08-06T23:52:38.871Z",
-                  "isInitialTime": false,
-                  "grain": 1,
-                  "useDashboardTimeRange": false
-                },
-                {
-                  "durationMs": 259200000,
-                  "createdTime": "2018-08-06T23:52:38.871Z",
-                  "isInitialTime": false,
-                  "grain": 1,
-                  "useDashboardTimeRange": false
-                },
-                {
-                  "durationMs": 604800000,
-                  "createdTime": "2018-08-06T23:52:38.871Z",
-                  "isInitialTime": false,
-                  "grain": 1,
-                  "useDashboardTimeRange": false
-                }
-              ],
-              "allowCustom": true
-            },
-            "value": {
-              "durationMs": 14400000
-            },
-            "label": "Time Range"
-          },
-          {
-            "id": "9b48988f-dcd2-48cc-b233-5999ed32149f",
-            "version": "KqlParameterItem/1.0",
-            "name": "Message",
-            "type": 1,
-            "query": "where type == 'microsoft.storage/storageaccounts' \n| summarize Selected = countif(id in ({Resources:value})), Total = count()\n| extend Selected = iff(Selected > 200, 200, Selected)\n| project Message = strcat('# ', Selected, ' / ', Total)",
-            "crossComponentResources": [
-              "{Subscription}"
-            ],
-            "isHiddenWhenLocked": true,
-            "queryType": 1,
-            "resourceType": "microsoft.resourcegraph/resources"
-          },
-          {
-            "id": "070b2474-4e01-478d-a7fa-6c20ad8ea1ad",
-            "version": "KqlParameterItem/1.0",
-            "name": "ResourceName",
+            "name": "Logs",
             "type": 1,
             "isRequired": true,
-            "value": "Storage account",
-            "isHiddenWhenLocked": true,
-            "criteriaData": [
-              {
-                "condition": "else result = 'Storage account'",
-                "criteriaContext": {
-                  "operator": "Default",
-                  "rightValType": "param",
-                  "resultValType": "static",
-                  "resultVal": "Storage account"
-                }
-              }
-            ]
-          },
-          {
-            "id": "c6c32b32-6eb4-44d5-9cad-156d5d50ec3e",
-            "version": "KqlParameterItem/1.0",
-            "name": "ResourceImageUrl",
-            "type": 1,
-            "description": "used as a parameter for No Subcriptions workbook template",
-            "isHiddenWhenLocked": true
+            "query": "(StorageBlobLogs | take 1)\r\n| union (StorageFileLogs | take 1)\r\n| union (StorageQueueLogs | take 1)\r\n| union (StorageTableLogs | take 1)\r\n| summarize c = count()\r\n| project isMissing=iff(c > 0, 0, 1)\r\n| extend isMissing = tostring(isMissing)",
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "queryType": 0,
+            "resourceType": "microsoft.storage/storageaccounts"
           }
         ],
         "style": "above",
         "queryType": 0,
-        "resourceType": "microsoft.operationalinsights/workspaces"
+        "resourceType": "microsoft.storage/storageaccounts"
       },
-      "name": "parameters - 1",
+      "conditionalVisibility": {
+        "parameterName": "1",
+        "comparison": "isEqualTo",
+        "value": "2"
+      },
+      "name": "Hide Logs"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "If you are seeing a lot of errors, here are two possible next steps to take:"
+      },
+      "name": "Many errors text"
+    },
+    {
+      "type": 11,
+      "content": {
+        "version": "LinkItem/1.0",
+        "style": "paragraph",
+        "links": [
+          {
+            "id": "af759e9b-c65d-497d-b6e7-573704bd2f9e",
+            "cellValue": "Show/Hide Logs Buttons",
+            "linkTarget": "step",
+            "linkLabel": "log errors.",
+            "preText": "1) Deep dive into failing transaction details (like CallerIpAddress, AthuenticationType, etc.) by investigating",
+            "postText": "",
+            "style": "link"
+          }
+        ]
+      },
+      "name": "links - 16",
       "styleSettings": {
-        "margin": "15px 0 0 0"
+        "margin": "0 0 -20px 5px"
       }
     },
     {
-      "type": 12,
+      "type": 11,
       "content": {
-        "version": "NotebookGroup/1.0",
-        "groupType": "template",
-        "loadFromTemplateId": "community-Workbooks/Common/noSubscriptions",
-        "items": []
+        "version": "LinkItem/1.0",
+        "style": "paragraph",
+        "links": [
+          {
+            "id": "24881be4-5d22-4ea7-a353-f92d0872c080",
+            "cellValue": "{Resource}",
+            "linkTarget": "Resource",
+            "linkLabel": "Alerts",
+            "subTarget": "alerts",
+            "preText": "2) Set up",
+            "postText": "to get notified when one of your metrics crosses a threshold.",
+            "style": "link"
+          },
+          {
+            "id": "aea05753-fe46-4612-9f4a-af7040edd584",
+            "cellValue": "https://go.microsoft.com/fwlink/?linkid=2152636",
+            "linkTarget": "Url",
+            "linkLabel": "click here.",
+            "preText": "Learn more about how to create a metric alert rule",
+            "style": "link"
+          }
+        ]
       },
-      "conditionalVisibility": {
-        "parameterName": "Subscription",
-        "comparison": "isEqualTo",
-        "value": ""
+      "name": "Too many errors link",
+      "styleSettings": {
+        "margin": "0 0 0 5px"
+      }
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "query": "",
+        "crossComponentResources": [],
+        "parameters": [
+          {
+            "id": "d04c2e2c-b67c-4ae1-9b80-a36e27310200",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeRange",
+            "type": 4,
+            "isRequired": true,
+            "value": {
+              "durationMs": 14400000
+            },
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 300000
+                },
+                {
+                  "durationMs": 900000
+                },
+                {
+                  "durationMs": 1800000
+                },
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                },
+                {
+                  "durationMs": 1209600000
+                }
+              ],
+              "allowCustom": true
+            },
+            "label": "Time Range"
+          }
+        ],
+        "style": "above",
+        "queryType": 0,
+        "resourceType": "microsoft.storage/storageaccounts"
       },
-      "name": "No Subscriptions group"
+      "name": "Failures params",
+      "styleSettings": {
+        "margin": "0 0 20px 0"
+      }
+    },
+    {
+      "type": 10,
+      "content": {
+        "chartId": "workbook874420eb-4632-4961-9fb9-b29ef76d947b",
+        "version": "MetricsItem/2.0",
+        "size": 4,
+        "chartType": -1,
+        "resourceIds": [
+          "{Resource}"
+        ],
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "resourceType": "microsoft.storage/storageaccounts",
+        "resourceParameter": "Resource",
+        "metrics": [
+          {
+            "namespace": "microsoft.storage/storageaccounts",
+            "metric": "microsoft.storage/storageaccounts-Transaction-Transactions",
+            "aggregation": 1,
+            "splitBy": null,
+            "columnName": "Total Transactions"
+          }
+        ],
+        "gridFormatType": 1,
+        "tileSettings": {
+          "titleContent": {
+            "columnMatch": "Metric",
+            "formatter": 1,
+            "formatOptions": {
+              "showIcon": true
+            }
+          },
+          "leftContent": {
+            "columnMatch": "Value",
+            "formatter": 12,
+            "formatOptions": {
+              "min": 0,
+              "palette": "purpleBlueGreen",
+              "showIcon": true
+            },
+            "numberFormat": {
+              "unit": 17,
+              "options": {
+                "style": "decimal",
+                "maximumFractionDigits": 1
+              }
+            }
+          },
+          "showBorder": false
+        },
+        "filters": []
+      },
+      "customWidth": "20",
+      "name": "Total transactions"
+    },
+    {
+      "type": 10,
+      "content": {
+        "chartId": "workbook874420eb-4632-4961-9fb9-b29ef76d947b",
+        "version": "MetricsItem/2.0",
+        "size": 4,
+        "chartType": -1,
+        "resourceIds": [
+          "{Resource}"
+        ],
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "resourceType": "microsoft.storage/storageaccounts",
+        "resourceParameter": "Resource",
+        "metrics": [
+          {
+            "namespace": "microsoft.storage/storageaccounts",
+            "metric": "microsoft.storage/storageaccounts-Transaction-Transactions",
+            "aggregation": 1,
+            "splitBy": "ResponseType"
+          }
+        ],
+        "gridFormatType": 1,
+        "tileSettings": {
+          "titleContent": {
+            "columnMatch": "Segment",
+            "formatter": 1,
+            "formatOptions": {
+              "showIcon": true
+            }
+          },
+          "leftContent": {
+            "columnMatch": "Value",
+            "formatter": 12,
+            "formatOptions": {
+              "min": 0,
+              "palette": "purpleBlueGreen",
+              "showIcon": true
+            },
+            "numberFormat": {
+              "unit": 17,
+              "options": {
+                "style": "decimal",
+                "maximumFractionDigits": 1
+              }
+            }
+          },
+          "showBorder": false
+        },
+        "filters": []
+      },
+      "customWidth": "80",
+      "name": "Error Summary"
+    },
+    {
+      "type": 10,
+      "content": {
+        "chartId": "workbook175d3b32-6968-45c4-a01a-2958cbb0a7d7",
+        "version": "MetricsItem/2.0",
+        "size": 0,
+        "chartType": 2,
+        "resourceIds": [
+          "{Resource}"
+        ],
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "resourceType": "microsoft.storage/storageaccounts",
+        "resourceParameter": "Resource",
+        "metrics": [
+          {
+            "namespace": "microsoft.storage/storageaccounts",
+            "metric": "microsoft.storage/storageaccounts-Transaction-Transactions",
+            "aggregation": 1,
+            "splitBy": "ResponseType",
+            "columnName": "Failures"
+          }
+        ],
+        "title": "Failing transactions",
+        "showOpenInMe": true,
+        "filters": [
+          {
+            "key": "ResponseType",
+            "operator": 1,
+            "values": [
+              "Success"
+            ]
+          }
+        ]
+      },
+      "showPin": true,
+      "name": "Transaction trend",
+      "styleSettings": {
+        "margin": "0 0 20px 0"
+      }
+    },
+    {
+      "type": 10,
+      "content": {
+        "chartId": "workbook53678d70-22d8-403b-96b1-1c24f90516ed",
+        "version": "MetricsItem/2.0",
+        "size": 0,
+        "chartType": 0,
+        "resourceIds": [
+          "{Resource}"
+        ],
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "resourceType": "microsoft.storage/storageaccounts",
+        "resourceParameter": "Resource",
+        "metrics": [
+          {
+            "namespace": "microsoft.storage/storageaccounts/blobservices",
+            "metric": "microsoft.storage/storageaccounts/blobservices-Transaction-Transactions",
+            "aggregation": 1,
+            "splitBy": "ApiName",
+            "splitBySortOrder": -1,
+            "splitByLimit": 5
+          },
+          {
+            "namespace": "microsoft.storage/storageaccounts/tableservices",
+            "metric": "microsoft.storage/storageaccounts/tableservices-Transaction-Transactions",
+            "aggregation": 1,
+            "splitBy": "ApiName",
+            "splitBySortOrder": -1,
+            "splitByLimit": 5
+          },
+          {
+            "namespace": "microsoft.storage/storageaccounts/fileservices",
+            "metric": "microsoft.storage/storageaccounts/fileservices-Transaction-Transactions",
+            "aggregation": 1,
+            "splitBy": "ApiName",
+            "splitBySortOrder": -1,
+            "splitByLimit": 5
+          },
+          {
+            "namespace": "microsoft.storage/storageaccounts/queueservices",
+            "metric": "microsoft.storage/storageaccounts/queueservices-Transaction-Transactions",
+            "aggregation": 1,
+            "splitBy": "ApiName",
+            "splitBySortOrder": -1,
+            "splitByLimit": 5
+          }
+        ],
+        "title": "Failing transactions by API name",
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "Subscription",
+              "formatter": 5,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Name",
+              "formatter": 5,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Namespace",
+              "formatter": 5,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Metric",
+              "formatter": 5,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Aggregation",
+              "formatter": 5,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Segment Field",
+              "formatter": 5,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Segment",
+              "formatter": 5,
+              "formatOptions": {
+                "palette": "blue",
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Value",
+              "formatter": 8,
+              "formatOptions": {
+                "min": 0,
+                "palette": "red",
+                "showIcon": true,
+                "aggregation": "Sum"
+              }
+            },
+            {
+              "columnMatch": "Timeline",
+              "formatter": 9,
+              "formatOptions": {
+                "min": 0,
+                "palette": "red",
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "$gen_group",
+              "formatter": 0,
+              "formatOptions": {
+                "showIcon": true
+              }
+            }
+          ],
+          "filter": true,
+          "hierarchySettings": {
+            "treeType": 1,
+            "groupBy": [
+              "Namespace"
+            ],
+            "expandTopLevel": true,
+            "finalBy": "Segment"
+          },
+          "labelSettings": []
+        },
+        "gridFormatType": 1,
+        "filters": [
+          {
+            "key": "ResponseType",
+            "operator": 1,
+            "values": [
+              "Success"
+            ]
+          }
+        ]
+      },
+      "customWidth": "50",
+      "showPin": true,
+      "name": "Failing transactions by API name "
+    },
+    {
+      "type": 10,
+      "content": {
+        "chartId": "workbook53678d70-22d8-403b-96b1-1c24f90516ed",
+        "version": "MetricsItem/2.0",
+        "size": 0,
+        "chartType": 0,
+        "resourceIds": [
+          "{Resource}"
+        ],
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeRange",
+        "resourceType": "microsoft.storage/storageaccounts",
+        "resourceParameter": "Resource",
+        "metrics": [
+          {
+            "namespace": "microsoft.storage/storageaccounts/blobservices",
+            "metric": "microsoft.storage/storageaccounts/blobservices-Transaction-Transactions",
+            "aggregation": 1,
+            "splitBy": "ResponseType",
+            "splitBySortOrder": -1,
+            "splitByLimit": 5
+          },
+          {
+            "namespace": "microsoft.storage/storageaccounts/tableservices",
+            "metric": "microsoft.storage/storageaccounts/tableservices-Transaction-Transactions",
+            "aggregation": 1,
+            "splitBy": "ResponseType",
+            "splitBySortOrder": -1,
+            "splitByLimit": 5
+          },
+          {
+            "namespace": "microsoft.storage/storageaccounts/fileservices",
+            "metric": "microsoft.storage/storageaccounts/fileservices-Transaction-Transactions",
+            "aggregation": 1,
+            "splitBy": "ResponseType",
+            "splitBySortOrder": -1,
+            "splitByLimit": 5
+          },
+          {
+            "namespace": "microsoft.storage/storageaccounts/queueservices",
+            "metric": "microsoft.storage/storageaccounts/queueservices-Transaction-Transactions",
+            "aggregation": 1,
+            "splitBy": "ResponseType",
+            "splitBySortOrder": -1,
+            "splitByLimit": 5
+          }
+        ],
+        "title": "Failing transactions by Response type",
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "Subscription",
+              "formatter": 5,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Name",
+              "formatter": 5,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Namespace",
+              "formatter": 5,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Metric",
+              "formatter": 5,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Aggregation",
+              "formatter": 5,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Segment Field",
+              "formatter": 5,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Segment",
+              "formatter": 5,
+              "formatOptions": {
+                "palette": "blue",
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Value",
+              "formatter": 8,
+              "formatOptions": {
+                "min": 0,
+                "palette": "red",
+                "showIcon": true,
+                "aggregation": "Sum"
+              },
+              "numberFormat": {
+                "unit": 17,
+                "options": {
+                  "style": "decimal",
+                  "maximumFractionDigits": 1
+                }
+              }
+            },
+            {
+              "columnMatch": "Timeline",
+              "formatter": 9,
+              "formatOptions": {
+                "min": 0,
+                "palette": "red",
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "$gen_group",
+              "formatter": 0,
+              "formatOptions": {
+                "showIcon": true
+              }
+            }
+          ],
+          "filter": true,
+          "hierarchySettings": {
+            "treeType": 1,
+            "groupBy": [
+              "Namespace"
+            ],
+            "expandTopLevel": true,
+            "finalBy": "Segment"
+          },
+          "labelSettings": []
+        },
+        "gridFormatType": 1,
+        "filters": [
+          {
+            "key": "ResponseType",
+            "operator": 1,
+            "values": [
+              "Success"
+            ]
+          }
+        ]
+      },
+      "customWidth": "50",
+      "showPin": true,
+      "name": "Failing transactions by Response Type"
+    },
+    {
+      "type": 11,
+      "content": {
+        "version": "LinkItem/1.0",
+        "style": "paragraph",
+        "links": [
+          {
+            "id": "59cb773b-c780-4f5a-b1e1-ab3408ba5143",
+            "cellValue": "showlogs",
+            "linkTarget": "parameter",
+            "linkLabel": "Show Logs",
+            "subTarget": "Yes",
+            "style": "primary"
+          },
+          {
+            "id": "4220f0c9-6a84-4245-a5b1-e9fa2d7a8a59",
+            "cellValue": "showlogs",
+            "linkTarget": "parameter",
+            "linkLabel": "Hide Logs",
+            "subTarget": "No",
+            "style": "secondary"
+          }
+        ]
+      },
+      "name": "Show/Hide Logs Buttons",
+      "styleSettings": {
+        "padding": "10px"
+      }
     },
     {
       "type": 12,
@@ -215,562 +706,285 @@
           {
             "type": 1,
             "content": {
-              "json": "{Message}\r\n_Storage accounts_"
+              "json": "There is no Storage account log data for this resource. Tracking log data lets you gain better insights about the overall health of your Storage account. For example, some errors like BlobNotFound may be produced based off the logic behind your app. [ Learn more about Storage account logging](https://go.microsoft.com/fwlink/?linkid=2152598).",
+              "style": "info"
             },
-            "name": "text - 3",
-            "styleSettings": {
-              "margin": "15px 0 10px 10px"
-            }
+            "name": "text - 0"
+          },
+          {
+            "type": 1,
+            "content": {
+              "json": "To enable logging for your Storage account, you must perform the following tasks. Note that only data created after logging has been enabled will be available."
+            },
+            "name": "text - 1"
           },
           {
             "type": 11,
             "content": {
               "version": "LinkItem/1.0",
-              "style": "tabs",
+              "style": "bullets",
               "links": [
                 {
-                  "cellValue": "selectedTab",
-                  "linkTarget": "parameter",
-                  "linkLabel": "Overview",
-                  "subTarget": "Overview"
+                  "id": "e8ab0b53-397a-415b-8ac2-6e37b10a0e5c",
+                  "cellValue": "https://go.microsoft.com/fwlink/?linkid=2152825",
+                  "linkTarget": "Url",
+                  "linkLabel": "Log Analytics workspace",
+                  "preText": "Create a",
+                  "postText": "(if you do not already have one).",
+                  "style": "link"
                 },
                 {
-                  "cellValue": "selectedTab",
-                  "linkTarget": "parameter",
-                  "linkLabel": "Capacity",
-                  "subTarget": "Capacity"
+                  "id": "ad57baee-8289-459e-8609-081768fb05fb",
+                  "cellValue": "https://go.microsoft.com/fwlink/?linkid=2152826",
+                  "linkTarget": "Url",
+                  "linkLabel": "Learn more",
+                  "preText": "Enable diagnostic settings for your Storage account and send the logs to your Log Analytics workspace.",
+                  "style": "link"
                 }
               ]
             },
-            "name": "Navigation links",
-            "styleSettings": {
-              "margin": "10px 0 0 0"
-            }
-          },
-          {
-            "type": 1,
-            "content": {
-              "json": "### Overview section"
-            },
-            "conditionalVisibility": {
-              "parameterName": "1",
-              "comparison": "isEqualTo",
-              "value": "2"
-            },
-            "name": "text - 4"
-          },
-          {
-            "type": 10,
-            "content": {
-              "chartId": "workbookdb19a8d8-91af-44ea-951d-5ffa133b2ebe",
-              "version": "MetricsItem/2.0",
-              "size": 2,
-              "chartType": 0,
-              "resourceIds": [
-                "{Resources}"
-              ],
-              "timeContext": {
-                "durationMs": 0
-              },
-              "timeContextFromParameter": "TimeRange",
-              "resourceType": "microsoft.storage/storageaccounts",
-              "resourceParameter": "Resources",
-              "metrics": [
-                {
-                  "namespace": "microsoft.storage/storageaccounts",
-                  "metric": "microsoft.storage/storageaccounts-Transaction-Transactions",
-                  "aggregation": 1,
-                  "splitBy": null
-                },
-                {
-                  "namespace": "microsoft.storage/storageaccounts",
-                  "metric": "microsoft.storage/storageaccounts-Transaction-SuccessE2ELatency",
-                  "aggregation": 4
-                },
-                {
-                  "namespace": "microsoft.storage/storageaccounts",
-                  "metric": "microsoft.storage/storageaccounts-Transaction-SuccessServerLatency",
-                  "aggregation": 4
-                },
-                {
-                  "namespace": "microsoft.storage/storageaccounts",
-                  "metric": "microsoft.storage/storageaccounts-Transaction-Transactions",
-                  "aggregation": 1,
-                  "splitBy": "ResponseType",
-                  "splitBySortOrder": -1,
-                  "splitByLimit": 4,
-                  "columnName": "Errors"
-                }
-              ],
-              "resourceLimit": 200,
-              "gridSettings": {
-                "formatters": [
-                  {
-                    "columnMatch": "$gen_group",
-                    "formatter": 13,
-                    "formatOptions": {
-                      "linkTarget": "Resource",
-                      "subTarget": "insights",
-                      "showIcon": true
-                    }
-                  },
-                  {
-                    "columnMatch": "Subscription",
-                    "formatter": 5,
-                    "formatOptions": {
-                      "showIcon": true
-                    }
-                  },
-                  {
-                    "columnMatch": "Name",
-                    "formatter": 5,
-                    "formatOptions": {
-                      "showIcon": true
-                    }
-                  },
-                  {
-                    "columnMatch": "microsoft.storage/storageaccounts-Transaction-Transactions$|Transactions$",
-                    "formatter": 8,
-                    "formatOptions": {
-                      "min": 0,
-                      "palette": "blue",
-                      "showIcon": true,
-                      "aggregation": "Sum"
-                    },
-                    "numberFormat": {
-                      "unit": 17,
-                      "options": {
-                        "style": "decimal",
-                        "maximumFractionDigits": 1
-                      }
-                    }
-                  },
-                  {
-                    "columnMatch": "microsoft.storage/storageaccounts-Transaction-Transactions Timeline$|Transactions Timeline$",
-                    "formatter": 21,
-                    "formatOptions": {
-                      "min": 0,
-                      "palette": "blue",
-                      "showIcon": true
-                    }
-                  },
-                  {
-                    "columnMatch": "microsoft.storage/storageaccounts-Transaction-SuccessE2ELatency$|microsoft.storage/storageaccounts-Transaction-SuccessServerLatency$|E2E Latency$|Server Latency$",
-                    "formatter": 8,
-                    "formatOptions": {
-                      "min": 0,
-                      "palette": "blue",
-                      "linkTarget": "WorkbookTemplate",
-                      "showIcon": true,
-                      "workbookContext": {
-                        "componentIdSource": "column",
-                        "componentId": "Name",
-                        "resourceIdsSource": "column",
-                        "resourceIds": "Name",
-                        "templateIdSource": "static",
-                        "templateId": "Community-Workbooks/Individual Storage/Performance",
-                        "typeSource": "static",
-                        "type": "workbook",
-                        "gallerySource": "static",
-                        "gallery": "microsoft.storage/storageaccounts"
-                      }
-                    },
-                    "numberFormat": {
-                      "unit": 23,
-                      "options": {
-                        "style": "decimal",
-                        "maximumFractionDigits": 2
-                      }
-                    }
-                  },
-                  {
-                    "columnMatch": "microsoft.storage/storageaccounts-Transaction-SuccessE2ELatency Timeline$|E2E Latency Timeline$",
-                    "formatter": 5,
-                    "formatOptions": {
-                      "showIcon": true
-                    }
-                  },
-                  {
-                    "columnMatch": "microsoft.storage/storageaccounts-Transaction-SuccessServerLatency Timeline",
-                    "formatter": 5,
-                    "formatOptions": {
-                      "showIcon": true
-                    }
-                  },
-                  {
-                    "columnMatch": "Success/Errors",
-                    "formatter": 5,
-                    "formatOptions": {
-                      "showIcon": true
-                    }
-                  },
-                  {
-                    "columnMatch": "success/Errors",
-                    "formatter": 5,
-                    "formatOptions": {
-                      "showIcon": true
-                    }
-                  },
-                  {
-                    "columnMatch": ".*\\/Errors",
-                    "formatter": 8,
-                    "formatOptions": {
-                      "min": 0,
-                      "palette": "gray",
-                      "linkTarget": "WorkbookTemplate",
-                      "showIcon": true,
-                      "workbookContext": {
-                        "componentIdSource": "column",
-                        "componentId": "Name",
-                        "resourceIdsSource": "column",
-                        "resourceIds": "Name",
-                        "templateIdSource": "static",
-                        "templateId": "Community-Workbooks/Individual Storage/Failures",
-                        "typeSource": "static",
-                        "type": "workbook",
-                        "gallerySource": "static",
-                        "gallery": "microsoft.storage/storageaccounts"
-                      }
-                    },
-                    "numberFormat": {
-                      "unit": 17,
-                      "options": {
-                        "style": "decimal",
-                        "maximumFractionDigits": 1
-                      }
-                    }
-                  },
-                  {
-                    "columnMatch": "Server Latency Timeline",
-                    "formatter": 5,
-                    "formatOptions": {
-                      "showIcon": true
-                    }
-                  }
-                ],
-                "rowLimit": 10000,
-                "filter": true,
-                "hierarchySettings": {
-                  "treeType": 1,
-                  "groupBy": [
-                    "Subscription"
-                  ],
-                  "expandTopLevel": true,
-                  "finalBy": "Name"
-                },
-                "sortBy": [
-                  {
-                    "itemKey": "$gen_heatmap_microsoft.storage/storageaccounts-Transaction-Transactions$|Transactions$_3",
-                    "sortOrder": 2
-                  }
-                ],
-                "labelSettings": [
-                  {
-                    "columnId": "Subscription",
-                    "label": "Subscription"
-                  },
-                  {
-                    "columnId": "Name",
-                    "label": ""
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts-Transaction-Transactions",
-                    "label": "Transactions"
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts-Transaction-Transactions Timeline",
-                    "label": "Transactions Timeline"
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts-Transaction-SuccessE2ELatency",
-                    "label": "E2E Latency"
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts-Transaction-SuccessE2ELatency Timeline",
-                    "label": "E2E Latency Timeline"
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts-Transaction-SuccessServerLatency",
-                    "label": "Server Latency"
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts-Transaction-SuccessServerLatency Timeline",
-                    "label": "Server Latency Timeline"
-                  },
-                  {
-                    "columnId": "Success/Errors"
-                  }
-                ]
-              },
-              "sortBy": [
-                {
-                  "itemKey": "$gen_heatmap_microsoft.storage/storageaccounts-Transaction-Transactions$|Transactions$_3",
-                  "sortOrder": 2
-                }
-              ],
-              "showExportToExcel": true
-            },
-            "conditionalVisibility": {
-              "parameterName": "selectedTab",
-              "comparison": "isEqualTo",
-              "value": "Overview"
-            },
-            "showPin": true,
-            "name": "storage account metrics",
-            "styleSettings": {
-              "margin": "0 10px 0 10px"
-            }
-          },
-          {
-            "type": 1,
-            "content": {
-              "json": "## Capacity section"
-            },
-            "conditionalVisibility": {
-              "parameterName": "1",
-              "comparison": "isEqualTo",
-              "value": "2"
-            },
-            "name": "text - 6"
-          },
-          {
-            "type": 10,
-            "content": {
-              "chartId": "workbookdb19a8d8-91af-44ea-951d-5ffa133b2ebe",
-              "version": "MetricsItem/2.0",
-              "size": 3,
-              "chartType": 0,
-              "resourceIds": [
-                "{Resources}"
-              ],
-              "timeContext": {
-                "durationMs": 0
-              },
-              "timeContextFromParameter": "TimeRange",
-              "resourceType": "microsoft.storage/storageaccounts",
-              "resourceParameter": "Resources",
-              "metrics": [
-                {
-                  "namespace": "microsoft.storage/storageaccounts",
-                  "metric": "microsoft.storage/storageaccounts-Capacity-UsedCapacity",
-                  "aggregation": 4,
-                  "splitBy": null
-                },
-                {
-                  "namespace": "microsoft.storage/storageaccounts/blobservices",
-                  "metric": "microsoft.storage/storageaccounts/blobservices-Capacity-BlobCapacity",
-                  "aggregation": 4,
-                  "splitBy": null
-                },
-                {
-                  "namespace": "microsoft.storage/storageaccounts/fileservices",
-                  "metric": "microsoft.storage/storageaccounts/fileservices-Capacity-FileCapacity",
-                  "aggregation": 4,
-                  "splitBy": null
-                },
-                {
-                  "namespace": "microsoft.storage/storageaccounts/queueservices",
-                  "metric": "microsoft.storage/storageaccounts/queueservices-Capacity-QueueCapacity",
-                  "aggregation": 4,
-                  "splitBy": null
-                },
-                {
-                  "namespace": "microsoft.storage/storageaccounts/tableservices",
-                  "metric": "microsoft.storage/storageaccounts/tableservices-Capacity-TableCapacity",
-                  "aggregation": 4,
-                  "splitBy": null
-                }
-              ],
-              "gridSettings": {
-                "formatters": [
-                  {
-                    "columnMatch": "$gen_group",
-                    "formatter": 13,
-                    "formatOptions": {
-                      "linkTarget": "Resource",
-                      "subTarget": "insights",
-                      "showIcon": true
-                    }
-                  },
-                  {
-                    "columnMatch": "Subscription",
-                    "formatter": 5,
-                    "formatOptions": {
-                      "showIcon": true
-                    }
-                  },
-                  {
-                    "columnMatch": "Name",
-                    "formatter": 5,
-                    "formatOptions": {
-                      "showIcon": true
-                    }
-                  },
-                  {
-                    "columnMatch": "microsoft.storage/storageaccounts-Capacity-UsedCapacity$|microsoft.storage/storageaccounts/blobservices-Capacity-BlobCapacity$|microsoft.storage/storageaccounts/fileservices-Capacity-FileCapacity$|microsoft.storage/storageaccounts/queueservices-Capacity-QueueCapacity$|microsoft.storage/storageaccounts/tableservices-Capacity-TableCapacity$",
-                    "formatter": 8,
-                    "formatOptions": {
-                      "min": 0,
-                      "palette": "blue",
-                      "linkTarget": "WorkbookTemplate",
-                      "showIcon": true,
-                      "workbookContext": {
-                        "componentIdSource": "column",
-                        "componentId": "Name",
-                        "resourceIdsSource": "column",
-                        "resourceIds": "Name",
-                        "templateIdSource": "static",
-                        "templateId": "Community-Workbooks/Individual Storage/Capacity",
-                        "typeSource": "static",
-                        "type": "workbook",
-                        "gallerySource": "static",
-                        "gallery": "microsoft.storage/storageaccounts"
-                      }
-                    },
-                    "numberFormat": {
-                      "unit": 2,
-                      "options": {
-                        "style": "decimal",
-                        "maximumFractionDigits": 1
-                      }
-                    }
-                  },
-                  {
-                    "columnMatch": "microsoft.storage/storageaccounts-Capacity-UsedCapacity Timeline$|Account used capacity Timeline$",
-                    "formatter": 21,
-                    "formatOptions": {
-                      "min": 0,
-                      "palette": "blue",
-                      "showIcon": true
-                    }
-                  },
-                  {
-                    "columnMatch": "microsoft.storage/storageaccounts/blobservices-Capacity-BlobCapacity Timeline$|Blob capacity Timeline$",
-                    "formatter": 5,
-                    "formatOptions": {
-                      "showIcon": true
-                    }
-                  },
-                  {
-                    "columnMatch": "microsoft.storage/storageaccounts/fileservices-Capacity-FileCapacity Timeline$|File capacity Timeline$",
-                    "formatter": 5,
-                    "formatOptions": {
-                      "showIcon": true
-                    }
-                  },
-                  {
-                    "columnMatch": "microsoft.storage/storageaccounts/queueservices-Capacity-QueueCapacity Timeline$|Queue capacity Timeline$",
-                    "formatter": 5,
-                    "formatOptions": {
-                      "showIcon": true
-                    }
-                  },
-                  {
-                    "columnMatch": "microsoft.storage/storageaccounts/tableservices-Capacity-TableCapacity Timeline$|Table capacity Timeline$",
-                    "formatter": 5,
-                    "formatOptions": {
-                      "showIcon": true
-                    }
-                  }
-                ],
-                "rowLimit": 10000,
-                "filter": true,
-                "hierarchySettings": {
-                  "treeType": 1,
-                  "groupBy": [
-                    "Subscription"
-                  ],
-                  "expandTopLevel": true,
-                  "finalBy": "Name"
-                },
-                "sortBy": [
-                  {
-                    "itemKey": "$gen_heatmap_microsoft.storage/storageaccounts-Capacity-UsedCapacity$|microsoft.storage/storageaccounts/blobservices-Capacity-BlobCapacity$|microsoft.storage/storageaccounts/fileservices-Capacity-FileCapacity$|microsoft.storage/storageaccounts/queueservices-Capacity-QueueCapacity$|microsoft.storage/storageaccounts/tableservices-Capacity-TableCapacity$_3",
-                    "sortOrder": 2
-                  }
-                ],
-                "labelSettings": [
-                  {
-                    "columnId": "Subscription",
-                    "label": "Subscription"
-                  },
-                  {
-                    "columnId": "Name"
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts-Capacity-UsedCapacity",
-                    "label": "Account used capacity"
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts-Capacity-UsedCapacity Timeline",
-                    "label": "Account used capacity timeline"
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts/blobservices-Capacity-BlobCapacity",
-                    "label": "Blob capacity"
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts/blobservices-Capacity-BlobCapacity Timeline",
-                    "label": "Blob capacity Timeline"
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts/fileservices-Capacity-FileCapacity",
-                    "label": "File capacity"
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts/fileservices-Capacity-FileCapacity Timeline",
-                    "label": "File capacity Timeline"
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts/queueservices-Capacity-QueueCapacity",
-                    "label": "Queue capacity"
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts/queueservices-Capacity-QueueCapacity Timeline",
-                    "label": "Queue capacity Timeline"
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts/tableservices-Capacity-TableCapacity",
-                    "label": "Table capacity"
-                  },
-                  {
-                    "columnId": "microsoft.storage/storageaccounts/tableservices-Capacity-TableCapacity Timeline",
-                    "label": "Table capacity Timeline"
-                  }
-                ]
-              },
-              "sortBy": [
-                {
-                  "itemKey": "$gen_heatmap_microsoft.storage/storageaccounts-Capacity-UsedCapacity$|microsoft.storage/storageaccounts/blobservices-Capacity-BlobCapacity$|microsoft.storage/storageaccounts/fileservices-Capacity-FileCapacity$|microsoft.storage/storageaccounts/queueservices-Capacity-QueueCapacity$|microsoft.storage/storageaccounts/tableservices-Capacity-TableCapacity$_3",
-                  "sortOrder": 2
-                }
-              ],
-              "showExportToExcel": true
-            },
-            "conditionalVisibility": {
-              "parameterName": "selectedTab",
-              "comparison": "isEqualTo",
-              "value": "Capacity"
-            },
-            "showPin": true,
-            "name": "storage account capacity metrics",
-            "styleSettings": {
-              "margin": "0 10px 0 10px"
-            }
+            "name": "links - 2"
           }
         ]
       },
-      "conditionalVisibility": {
-        "parameterName": "Subscription",
-        "comparison": "isNotEqualTo",
-        "value": ""
+      "conditionalVisibilities": [
+        {
+          "parameterName": "Logs",
+          "comparison": "isEqualTo",
+          "value": "1"
+        },
+        {
+          "parameterName": "showlogs",
+          "comparison": "isEqualTo",
+          "value": "Yes"
+        }
+      ],
+      "name": "Logs not set group"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "This data comes from Storage logs, which is a feature that collects requests details on Storage accounts. This data can be analyzed via log queries in Log Analytics, exported to Storage accounts, and more. Note that there is not a 1:1 mapping between errors in logs and transaction failures in metrics. Errors in logs are categorized by transaction failures. [Learn more](https://go.microsoft.com/fwlink/?linkid=2152365)\r\n\r\nTo investigate more elements associated with each error such as request duration, operation version, or requester audience, go to your Log Analytics workspace or to Logs on Storage account menu. [ Learn more about log schema](https://go.microsoft.com/fwlink/?linkid=2152444)"
       },
-      "name": "Storage accounts"
+      "conditionalVisibilities": [
+        {
+          "parameterName": "showlogs",
+          "comparison": "isEqualTo",
+          "value": "Yes"
+        },
+        {
+          "parameterName": "Logs",
+          "comparison": "isEqualTo",
+          "value": "0"
+        }
+      ],
+      "name": "text - 14"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "fa6b4959-0332-4e36-aa20-ba763b313c4b",
+            "version": "KqlParameterItem/1.0",
+            "name": "ResourceType",
+            "label": "Service Type",
+            "type": 2,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "StorageBlobLogs\r\n| union StorageQueueLogs\r\n| union StorageTableLogs\r\n| union StorageFileLogs\r\n| distinct ServiceType\r\n| sort by ServiceType asc",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "selectAllValue": "*",
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 1800000
+            },
+            "timeContextFromParameter": "TimeRange",
+            "defaultValue": "value::all",
+            "queryType": 0,
+            "resourceType": "microsoft.storage/storageaccounts"
+          },
+          {
+            "id": "5f5f6a41-4bcc-4a4f-bb02-fbd800e2e0e4",
+            "version": "KqlParameterItem/1.0",
+            "name": "Operation",
+            "type": 2,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "StorageBlobLogs\r\n| union StorageQueueLogs\r\n| union StorageTableLogs\r\n| union StorageFileLogs\r\n| where StatusText != \"Success\"\r\n| distinct OperationName\r\n| sort by OperationName asc",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "selectAllValue": "*",
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 1800000
+            },
+            "timeContextFromParameter": "TimeRange",
+            "defaultValue": "value::all",
+            "queryType": 0,
+            "resourceType": "microsoft.storage/storageaccounts"
+          },
+          {
+            "id": "4cd3e0e5-8296-4bc7-9cfa-c423c19a624a",
+            "version": "KqlParameterItem/1.0",
+            "name": "Status",
+            "label": "Status Text",
+            "type": 2,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "StorageBlobLogs\r\n| union StorageQueueLogs\r\n| union StorageTableLogs\r\n| union StorageFileLogs\r\n| where StatusText != \"Success\"\r\n| distinct StatusText\r\n| sort by StatusText asc",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "selectAllValue": "*",
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 1800000
+            },
+            "timeContextFromParameter": "TimeRange",
+            "defaultValue": "value::all",
+            "queryType": 0,
+            "resourceType": "microsoft.storage/storageaccounts"
+          }
+        ],
+        "style": "above",
+        "queryType": 0,
+        "resourceType": "microsoft.storage/storageaccounts"
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "showlogs",
+          "comparison": "isEqualTo",
+          "value": "Yes"
+        },
+        {
+          "parameterName": "Logs",
+          "comparison": "isEqualTo",
+          "value": "0"
+        }
+      ],
+      "name": "Log Params"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let serviceValues = dynamic([{ResourceType}]);\r\nlet operationValues = dynamic([{Operation}]);\r\nlet statusValues = dynamic([{Status}]);\r\nStorageBlobLogs\r\n| union StorageQueueLogs\r\n| union StorageTableLogs\r\n| union StorageFileLogs\r\n| where StatusText != \"Success\"\r\n| where \"*\" in ({ResourceType}) or ServiceType in ({ResourceType})\r\n| where \"*\" in ({Operation}) or OperationName in ({Operation})\r\n| where \"*\" in ({Status}) or StatusText in ({Status})\r\n| extend Service = ServiceType\r\n| extend AuthType = AuthenticationType\r\n| extend CallerIpAddress = split(CallerIpAddress, \":\")[0]\r\n| summarize ErrorCount = count() by Service, OperationName, StatusText, StatusCode, AuthType, tostring(CallerIpAddress), Uri\r\n| sort by ErrorCount desc",
+        "size": 0,
+        "showAnalytics": true,
+        "title": "Log Error Details",
+        "noDataMessage": "There are no log errors in the time range selected",
+        "timeContext": {
+          "durationMs": 1800000
+        },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.storage/storageaccounts",
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "Service",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "12ch"
+              }
+            },
+            {
+              "columnMatch": "OperationName",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "19ch"
+              }
+            },
+            {
+              "columnMatch": "StatusText",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "31ch"
+              }
+            },
+            {
+              "columnMatch": "StatusCode",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "12ch"
+              }
+            },
+            {
+              "columnMatch": "AuthType",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "13ch"
+              }
+            },
+            {
+              "columnMatch": "CallerIpAddress",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "21ch"
+              }
+            },
+            {
+              "columnMatch": "Uri",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "45ch"
+              }
+            },
+            {
+              "columnMatch": "ErrorCount",
+              "formatter": 8,
+              "formatOptions": {
+                "min": 0,
+                "palette": "red",
+                "customColumnWidthSetting": "11ch"
+              }
+            }
+          ],
+          "sortBy": [
+            {
+              "itemKey": "$gen_heatmap_ErrorCount_7",
+              "sortOrder": 2
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "$gen_heatmap_ErrorCount_7",
+            "sortOrder": 2
+          }
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "showlogs",
+          "comparison": "isEqualTo",
+          "value": "Yes"
+        },
+        {
+          "parameterName": "Logs",
+          "comparison": "isEqualTo",
+          "value": "0"
+        }
+      ],
+      "name": "Log Error Query"
     }
   ],
-  "workbookPin": "storage account metrics",
-  "styleSettings": {
-    "paddingStyle": "narrow"
-  },
   "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
 }
