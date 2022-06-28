@@ -1,0 +1,367 @@
+{
+  "type": 12,
+  "content": {
+    "version": "NotebookGroup/1.0",
+    "groupType": "editable",
+    "items": [
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "where type =~ \"microsoft.storage/storageaccounts\"\r\n| extend AuthenticationSource = properties.azureFilesIdentityBasedAuthentication.directoryServiceOptions\r\n| extend DomainName= properties.azureFilesIdentityBasedAuthentication.activeDirectoryProperties.domainName\r\n//| extend Pack=pack_all()\r\n//| project properties\r\n| project StorageAccount=id, Path = properties['primaryEndpoints'][0]['file'], kind, location, resourceGroup, sku.tier, PrivateEndpoint=properties.privateEndpointConnections[0]['properties']['privateEndpoint']['id'], AuthenticationSource, DomainName\r\n",
+          "size": 4,
+          "queryType": 1,
+          "resourceType": "microsoft.resourcegraph/resources",
+          "crossComponentResources": [
+            "{Subscription}"
+          ],
+          "gridSettings": {
+            "formatters": [
+              {
+                "columnMatch": "sku_tier",
+                "formatter": 18,
+                "formatOptions": {
+                  "thresholdsOptions": "colors",
+                  "thresholdsGrid": [
+                    {
+                      "operator": "==",
+                      "thresholdValue": "Standard",
+                      "representation": "blue",
+                      "text": "{0}{1}"
+                    },
+                    {
+                      "operator": "Default",
+                      "thresholdValue": null,
+                      "representation": "green",
+                      "text": "{0}{1}"
+                    }
+                  ]
+                }
+              },
+              {
+                "columnMatch": "PrivateEndpoint",
+                "formatter": 13,
+                "formatOptions": {
+                  "linkTarget": "Resource",
+                  "showIcon": true
+                }
+              },
+              {
+                "columnMatch": "AuthenticationSource",
+                "formatter": 1
+              },
+              {
+                "columnMatch": "DomainName",
+                "formatter": 1
+              }
+            ]
+          }
+        },
+        "name": "query - 5"
+      },
+      {
+        "type": 10,
+        "content": {
+          "chartId": "workbook81bb40c1-afac-488f-b145-e8d3ed210be5",
+          "version": "MetricsItem/2.0",
+          "size": 4,
+          "chartType": -1,
+          "resourceType": "microsoft.storage/storageaccounts",
+          "metricScope": 0,
+          "resourceParameter": "Resource",
+          "resourceIds": [
+            "{Resource}"
+          ],
+          "timeContext": {
+            "durationMs": 14400000
+          },
+          "metrics": [
+            {
+              "namespace": "microsoft.storage/storageaccounts/fileservices",
+              "metric": "microsoft.storage/storageaccounts/fileservices-Capacity-FileCapacity",
+              "aggregation": 4
+            },
+            {
+              "namespace": "microsoft.storage/storageaccounts/fileservices",
+              "metric": "microsoft.storage/storageaccounts/fileservices-Capacity-FileShareCapacityQuota",
+              "aggregation": 4
+            }
+          ],
+          "gridFormatType": 1,
+          "tileSettings": {
+            "titleContent": {
+              "columnMatch": "Metric",
+              "formatter": 1
+            },
+            "leftContent": {
+              "columnMatch": "Value",
+              "formatter": 12,
+              "formatOptions": {
+                "palette": "auto"
+              },
+              "numberFormat": {
+                "unit": 2,
+                "options": {
+                  "style": "decimal",
+                  "maximumFractionDigits": 2,
+                  "maximumSignificantDigits": 3
+                }
+              }
+            },
+            "showBorder": false
+          },
+          "showOpenInMe": true,
+          "gridSettings": {
+            "rowLimit": 10000
+          }
+        },
+        "customWidth": "25",
+        "name": "Storage Capacity Info"
+      },
+      {
+        "type": 10,
+        "content": {
+          "chartId": "workbook81bb40c1-afac-488f-b145-e8d3ed210be5",
+          "version": "MetricsItem/2.0",
+          "size": 1,
+          "chartType": -1,
+          "resourceType": "microsoft.storage/storageaccounts",
+          "metricScope": 0,
+          "resourceParameter": "Resource",
+          "resourceIds": [
+            "{Resource}"
+          ],
+          "timeContextFromParameter": "TimeRange",
+          "timeContext": {
+            "durationMs": 86400000
+          },
+          "metrics": [
+            {
+              "namespace": "microsoft.storage/storageaccounts/fileservices",
+              "metric": "microsoft.storage/storageaccounts/fileservices-Capacity-FileShareProvisionedIOPS",
+              "aggregation": 4,
+              "splitBy": "FileShare",
+              "splitBySortOrder": false,
+              "splitByLimit": 50
+            }
+          ],
+          "gridFormatType": 1,
+          "tileSettings": {
+            "titleContent": {
+              "columnMatch": "Metric",
+              "formatter": 1
+            },
+            "subtitleContent": {
+              "columnMatch": "Segment",
+              "formatter": 1,
+              "tooltipFormat": {
+                "tooltip": "'{0}'"
+              }
+            },
+            "leftContent": {
+              "columnMatch": "Value",
+              "formatter": 12,
+              "formatOptions": {
+                "palette": "auto"
+              },
+              "numberFormat": {
+                "unit": 2,
+                "options": {
+                  "style": "decimal",
+                  "maximumFractionDigits": 2,
+                  "maximumSignificantDigits": 3
+                }
+              }
+            },
+            "showBorder": false,
+            "size": "auto"
+          },
+          "graphSettings": {
+            "type": 0,
+            "topContent": {
+              "columnMatch": "Subscription",
+              "formatter": 1
+            },
+            "centerContent": {
+              "columnMatch": "Value",
+              "formatter": 1,
+              "numberFormat": {
+                "unit": 17,
+                "options": {
+                  "maximumSignificantDigits": 3,
+                  "maximumFractionDigits": 2
+                }
+              }
+            }
+          },
+          "showOpenInMe": true,
+          "gridSettings": {
+            "rowLimit": 10000
+          }
+        },
+        "customWidth": "30",
+        "name": "Storage Capacity Info - Copy"
+      },
+      {
+        "type": 1,
+        "content": {
+          "json": "\r\n\r\n**File Capacity** = Total Amount of Storage Used\r\n\r\n**File Share Capacity Quota** = Total Amount of Storage Allocated per File Share.  For Azure Premium Files this will determine the IOPS and Throughput. [See Confluence for Details on File Share Performance Expectations](https://confluence.ngage.netapp.com/pages/viewpage.action?pageId=367073823)\r\n\r\n| Capacity Quota (GiB) | Baseline IOPS | Throughput(ingress + egress) MiB/Sec |\r\n|---------------|---------------|--------------------------------------|\r\n| Standard Files| 1,000         | 60 MiB/sec                          |\r\n| 100           | 3,100         | 110 MiB/sec                          |\r\n| 500           | 3,500         | 150 MiB/sec                          |\r\n| 1,024         | 4,024         | 203 MiB/sec                          |\r\n| 5,120         | 8,120         | 613 MiB/sec                          |"
+        },
+        "customWidth": "40",
+        "name": "text - 2"
+      },
+      {
+        "type": 10,
+        "content": {
+          "chartId": "workbook11c80c26-69bc-447b-9255-2a1fce6e41aa",
+          "version": "MetricsItem/2.0",
+          "size": 1,
+          "chartType": 2,
+          "resourceType": "microsoft.storage/storageaccounts",
+          "metricScope": 0,
+          "resourceParameter": "Resource",
+          "resourceIds": [
+            "{Resource}"
+          ],
+          "timeContextFromParameter": "TimeRange",
+          "timeContext": {
+            "durationMs": 86400000
+          },
+          "metrics": [
+            {
+              "namespace": "microsoft.storage/storageaccounts/fileservices",
+              "metric": "microsoft.storage/storageaccounts/fileservices-Transaction-Egress",
+              "aggregation": 1,
+              "splitBy": null
+            },
+            {
+              "namespace": "microsoft.storage/storageaccounts/fileservices",
+              "metric": "microsoft.storage/storageaccounts/fileservices-Transaction-Ingress",
+              "aggregation": 1
+            }
+          ],
+          "title": "Throughput (Ingress + Egress) MiB/sec",
+          "showOpenInMe": true,
+          "gridSettings": {
+            "rowLimit": 10000
+          }
+        },
+        "customWidth": "50",
+        "name": "metric - 3"
+      },
+      {
+        "type": 10,
+        "content": {
+          "chartId": "workbook174c7dd0-88e8-470c-bdc6-92d4e9be1e7f",
+          "version": "MetricsItem/2.0",
+          "size": 1,
+          "chartType": 2,
+          "resourceType": "microsoft.storage/storageaccounts",
+          "metricScope": 0,
+          "resourceParameter": "Resource",
+          "resourceIds": [
+            "{Resource}"
+          ],
+          "timeContextFromParameter": "TimeRange",
+          "timeContext": {
+            "durationMs": 86400000
+          },
+          "metrics": [
+            {
+              "namespace": "microsoft.storage/storageaccounts/fileservices",
+              "metric": "microsoft.storage/storageaccounts/fileservices-Transaction-Transactions",
+              "aggregation": 1,
+              "splitBy": null
+            }
+          ],
+          "title": "Share was throttled",
+          "graphSettings": {
+            "type": 0,
+            "topContent": {
+              "columnMatch": "Subscription",
+              "formatter": 1
+            },
+            "centerContent": {
+              "columnMatch": "microsoft.storage/storageaccounts/fileservices-Transaction-Transactions",
+              "formatter": 1,
+              "numberFormat": {
+                "unit": 17,
+                "options": {
+                  "maximumSignificantDigits": 3,
+                  "maximumFractionDigits": 2
+                }
+              }
+            }
+          },
+          "showOpenInMe": true,
+          "filters": [
+            {
+              "id": "1",
+              "key": "ResponseType",
+              "operator": 0,
+              "values": [
+                "SuccessWithShareEgressThrottling",
+                "SuccessWithShareIngressThrottling",
+                "SuccessWithShareIopsThrottling",
+                "ClientShareEgressThrottlingError",
+                "SuccessWithThrottling",
+                "ClientShareIopsThrottlingError",
+                "ClientShareEgressThrottlingClientShareIngressThrottlingErrorError"
+              ]
+            }
+          ],
+          "gridSettings": {
+            "formatters": [
+              {
+                "columnMatch": "Subscription",
+                "formatter": 5
+              },
+              {
+                "columnMatch": "Name",
+                "formatter": 13,
+                "formatOptions": {
+                  "linkTarget": "Resource"
+                }
+              },
+              {
+                "columnMatch": "microsoft.storage/storageaccounts/fileservices-Transaction-Transactions Timeline",
+                "formatter": 5
+              },
+              {
+                "columnMatch": "microsoft.storage/storageaccounts/fileservices-Transaction-Transactions",
+                "formatter": 1,
+                "numberFormat": {
+                  "unit": 0,
+                  "options": null
+                }
+              },
+              {
+                "columnMatch": ".*\\/Transactions$",
+                "formatter": 1
+              }
+            ],
+            "rowLimit": 10000,
+            "labelSettings": [
+              {
+                "columnId": "microsoft.storage/storageaccounts/fileservices-Transaction-Transactions",
+                "label": "Transactions (Sum)"
+              },
+              {
+                "columnId": "microsoft.storage/storageaccounts/fileservices-Transaction-Transactions Timeline",
+                "label": "Transactions Timeline"
+              }
+            ]
+          }
+        },
+        "customWidth": "50",
+        "name": "metric - 5"
+      }
+    ]
+  },
+  "conditionalVisibility": {
+    "parameterName": "tab",
+    "comparison": "isEqualTo",
+    "value": "performance"
+  },
+  "name": "group - 9"
+}
