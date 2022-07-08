@@ -353,13 +353,7 @@
         "customWidth": "60",
         "name": "query - 3"
       }
-    ]
-  },
-  "conditionalVisibility": {
-    "parameterName": "selectedTab",
-    "comparison": "isEqualTo",
-    "value": "SubscriptionDetail"
-  },
+    ],
   "name": "SubscriptionDetails-Group"
  ],
 "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
