@@ -1,77 +1,67 @@
 {
-  "type": 12,
-  "content": {
-    "version": "NotebookGroup/1.0",
-    "groupType": "editable",
-    "title": "Health Overview Group",
-    "items": [
-      {
-        "type": 1,
-        "content": {
-          "json": "# Health Overview"
+    "version": "Notebook/1.0",
+      "items": [
+        {
+          "type": 1,
+          "content": {
+            "json": "# Health Overview"
+          },
+          "name": "text - Title"
         },
-        "name": "text - Title"
-      },
-      {
-        "type": 3,
-        "content": {
-          "version": "KqlItem/1.0",
-          "query": "{\"version\":\"AzureHealthQuery/1.0\",\"queryType\":\"Summary\"}",
-          "size": 4,
-          "queryType": 4,
-          "resourceType": "microsoft.resources/subscriptions",
-          "crossComponentResources": [
-            "{Subscriptions}"
-          ]
-        },
-        "conditionalVisibility": {
-          "parameterName": "selectedTab",
-          "comparison": "isEqualTo",
-          "value": "HealthOverview"
-        },
-        "name": "query - 2"
-      },
-      {
-        "type": 3,
-        "content": {
-          "version": "KqlItem/1.0",
-          "query": "{\"version\":\"AzureHealthQuery/1.0\",\"queryType\":\"Detailed\"}",
-          "size": 3,
-          "queryType": 4,
-          "resourceType": "microsoft.resources/subscriptions",
-          "crossComponentResources": [
-            "{Subscriptions}"
-          ],
-          "gridSettings": {
-            "formatters": [
-              {
-                "columnMatch": "Availability state",
-                "formatter": 11
-              },
-              {
-                "columnMatch": "Detailed status",
-                "formatter": 5
-              },
-              {
-                "columnMatch": "Title",
-                "formatter": 5
-              }
+        {
+          "type": 3,
+          "content": {
+            "version": "KqlItem/1.0",
+            "query": "{\"version\":\"AzureHealthQuery/1.0\",\"queryType\":\"Summary\"}",
+            "size": 4,
+            "queryType": 4,
+            "resourceType": "microsoft.resources/subscriptions",
+            "crossComponentResources": [
+              "{Subscriptions}"
             ]
-          }
+          },
+          "conditionalVisibility": {
+            "parameterName": "selectedTab",
+            "comparison": "isEqualTo",
+            "value": "HealthOverview"
+          },
+          "name": "query - 2"
         },
-        "conditionalVisibility": {
-          "parameterName": "selectedTab",
-          "comparison": "isEqualTo",
-          "value": "HealthOverview"
-        },
-        "name": "query - 5"
-      }
-    ]
-  },
-  "conditionalVisibility": {
-    "parameterName": "selectedTab",
-    "comparison": "isEqualTo",
-    "value": "HealthOverview"
-  },
-  "name": "group - Overview"
-}
+        {
+          "type": 3,
+          "content": {
+            "version": "KqlItem/1.0",
+            "query": "{\"version\":\"AzureHealthQuery/1.0\",\"queryType\":\"Detailed\"}",
+            "size": 3,
+            "queryType": 4,
+            "resourceType": "microsoft.resources/subscriptions",
+            "crossComponentResources": [
+              "{Subscriptions}"
+            ],
+            "gridSettings": {
+              "formatters": [
+                {
+                  "columnMatch": "Availability state",
+                  "formatter": 11
+                },
+                {
+                  "columnMatch": "Detailed status",
+                  "formatter": 5
+                },
+                {
+                  "columnMatch": "Title",
+                  "formatter": 5
+                }
+              ]
+            }
+          },
+          "conditionalVisibility": {
+            "parameterName": "selectedTab",
+            "comparison": "isEqualTo",
+            "value": "HealthOverview"
+          },
+          "name": "query - 5"
+        }
+      ],
+"$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}  
