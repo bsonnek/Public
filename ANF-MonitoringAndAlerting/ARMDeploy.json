@@ -395,7 +395,7 @@
         {
             "type": "Microsoft.Automation/automationAccounts/jobSchedules",
             "apiVersion": "2022-08-08",
-            "name": "[concat(parameters('AutomationAccountName'), '/RB-ANF-CustomMonitoring-3hr-Schedule')]",
+            "name": "[concat(parameters('AutomationAccountName'), '/RB-ANF-CustomMonitoring-Schedule')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts/runbooks', parameters('AutomationAccountName'), 'RB-ANF-CustomMonitoring')]"
             ],
