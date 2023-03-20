@@ -402,7 +402,7 @@
         {
             "type": "Microsoft.Automation/automationAccounts/jobSchedules",
             "apiVersion": "2022-08-08",
-            "name": "[concat(parameters('AutomationAccountName'), parameters('SchedulerGuid'))]",
+            "name": "[concat(parameters('AutomationAccountName'), '/', parameters('SchedulerGuid'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts/runbooks', parameters('AutomationAccountName'), 'RB-ANF-CustomMonitoring')]"
             ],
