@@ -397,7 +397,6 @@
             "apiVersion": "2022-08-08",
             "name": "[concat(parameters('AutomationAccountName'), '/RB-ANF-CustomMonitoring-3hr-Schedule')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
                 "[resourceId('Microsoft.Automation/automationAccounts/runbooks', parameters('AutomationAccountName'), 'RB-ANF-CustomMonitoring')]"
             ],
             "properties": {
