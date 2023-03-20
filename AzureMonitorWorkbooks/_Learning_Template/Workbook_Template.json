@@ -1,0 +1,284 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "parameters": [
+          {
+            "id": "0a902029-8139-431e-b145-8fb4a2288e5b",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "value": [
+              "/subscriptions/9ccccf76-796b-4afb-bae3-e6594cfd0778"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "c6e9cc98-ae42-49de-ba87-c3f706a71d90",
+            "version": "KqlParameterItem/1.0",
+            "name": "LogAnayltics",
+            "label": "Log Anayltics",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "where type =~ 'Microsoft.OperationalInsights/workspaces'\n| project id, name\n| order by name desc",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "resourceTypeFilter": {
+                "microsoft.operationalinsights/workspaces": true
+              },
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          },
+          {
+            "id": "cf3c3811-0deb-4711-8c7f-657deb77d803",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeRange",
+            "type": 4,
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                },
+                {
+                  "durationMs": 1209600000
+                },
+                {
+                  "durationMs": 2419200000
+                },
+                {
+                  "durationMs": 2592000000
+                }
+              ]
+            },
+            "value": {
+              "durationMs": 14400000
+            }
+          },
+          {
+            "id": "911f06f5-f5d8-4a36-be6d-df9482734a77",
+            "version": "KqlParameterItem/1.0",
+            "name": "AVDAppGroups",
+            "type": 2,
+            "query": "resources\r\n| where type == \"microsoft.desktopvirtualization/applicationgroups\"\r\n| project id, name",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [],
+              "showDefault": false
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": "/subscriptions/9ccccf76-796b-4afb-bae3-e6594cfd0778/resourceGroups/phm/providers/Microsoft.DesktopVirtualization/applicationgroups/RemoteApp"
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "name": "parameters - 0"
+    },
+    {
+      "type": 11,
+      "content": {
+        "version": "LinkItem/1.0",
+        "style": "tabs",
+        "tabStyle": "bigger",
+        "links": [
+          {
+            "id": "ba941fda-a589-4cb7-80f2-172981878856",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Tab1",
+            "subTarget": "Tab1",
+            "style": "link"
+          },
+          {
+            "id": "528c960e-2f4d-425b-8504-41a7ed24e51a",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Tab2",
+            "subTarget": "Tab2",
+            "style": "link"
+          }
+        ]
+      },
+      "name": "links - 4"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Group - Tab 1",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "## This is the Tab1 Group and Text\r\n##### A Group is a great way to join similar queries for visualization. Most importantly a group will only load the queries when the group is visable  which will help your workbook load faster and run smoother."
+            },
+            "name": "text - 0"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "Tab1"
+      },
+      "name": "group - Tab"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Group - Tab 2",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "## This is the Tab2 Group and Text"
+            },
+            "name": "text - 0"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "Tab2"
+      },
+      "name": "group - Tab2"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "Event\r\n//| distinct EventLog\r\n//| summarize count() by Computer\r\n| where EventLog == 'Security'\r\n| extend ResourceSplit = split(_ResourceId, '/')[2]\r\n| project TimeGenerated, Computer, EventLog, Source, ResourceSplit",
+        "size": 1,
+        "title": "Query Source - Log Analytics Workspace - KQL ",
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnayltics}"
+        ]
+      },
+      "name": "Query Source - Log Analytics Workspace - KQL "
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where type == 'microsoft.compute/virtualmachines'\r\n| extend vmSKU = properties.hardwareProfile.vmSize\r\n| extend VMArray = properties.extended.instanceView.powerState\r\n| extend VMStatus = VMArray.displayStatus\r\n| project id, subscriptionId, vmSKU, VMStatus, VMArray, name, type, location, resourceGroup",
+        "size": 1,
+        "title": "Query Source - Azure Resource Graph - ARG Query",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "subscriptionId",
+              "formatter": 13,
+              "formatOptions": {
+                "linkTarget": null,
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "VMStatus",
+              "formatter": 18,
+              "formatOptions": {
+                "thresholdsOptions": "colors",
+                "thresholdsGrid": [
+                  {
+                    "operator": "!=",
+                    "thresholdValue": "VM running",
+                    "representation": "redBright",
+                    "text": "{0}{1}"
+                  },
+                  {
+                    "operator": "Default",
+                    "thresholdValue": null,
+                    "representation": "green",
+                    "text": "{0}{1}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "name": "Query Source - Azure Resource Graph - ARG Query"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GETARRAY\",\"path\":\"{AVDAppGroups}/providers/microsoft.insights/diagnosticSettings/?api-version=2021-05-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":[{\"type\":\"jsonpath\",\"settings\":{\"tablePath\":\"\",\"columns\":[{\"path\":\"$..id\",\"columnid\":\"ResourceId\",\"columnType\":\"string\"},{\"path\":\"$..name\",\"columnid\":\"DiagnosticLogName\",\"columnType\":\"string\"},{\"path\":\"$..properties..workspaceId\",\"columnid\":\"WorkspaceID\",\"columnType\":\"string\"}]}}]}",
+        "size": 1,
+        "title": "Query Source - Azure Resource Manager - API",
+        "queryType": 12
+      },
+      "name": "Query Source - Azure Resource Manager - API"
+    }
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}

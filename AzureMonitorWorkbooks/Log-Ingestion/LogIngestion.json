@@ -1,0 +1,1181 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "parameters": [
+          {
+            "id": "0a902029-8139-431e-b145-8fb4a2288e5b",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "value": [
+              "/subscriptions/c694b35d-0b59-41aa-89ff-8fb250f0e498"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "c6e9cc98-ae42-49de-ba87-c3f706a71d90",
+            "version": "KqlParameterItem/1.0",
+            "name": "LogAnayltics",
+            "label": "Log Anayltics",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "where type =~ 'Microsoft.OperationalInsights/workspaces'\n| project id, name\n| order by name desc",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "isHiddenWhenLocked": true,
+            "typeSettings": {
+              "resourceTypeFilter": {
+                "microsoft.operationalinsights/workspaces": true
+              },
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          },
+          {
+            "id": "cf3c3811-0deb-4711-8c7f-657deb77d803",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeRange",
+            "type": 4,
+            "value": {
+              "durationMs": 604800000
+            },
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 1800000
+                },
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                },
+                {
+                  "durationMs": 1209600000
+                },
+                {
+                  "durationMs": 2592000000
+                }
+              ],
+              "allowCustom": true
+            }
+          },
+          {
+            "id": "f888e186-6673-48eb-a4dc-395139e1ad4a",
+            "version": "KqlParameterItem/1.0",
+            "name": "EventHubNameSpace",
+            "label": "EventHub Namespace",
+            "type": 5,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "where type =~ 'Microsoft.EventHub/Namespaces'\n| project id, name\n| order by name desc",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "name": "parameters - 0"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "#### Caution - These Costs are 16% Higher than what we are typically billed.",
+        "style": "warning"
+      },
+      "name": "text - 11"
+    },
+    {
+      "type": 11,
+      "content": {
+        "version": "LinkItem/1.0",
+        "style": "tabs",
+        "links": [
+          {
+            "id": "646ccead-dec8-469f-aaeb-cef556978246",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Overview",
+            "subTarget": "Overview",
+            "preText": "Overview",
+            "style": "link"
+          },
+          {
+            "id": "5fdbb6d3-755e-43c8-bcc0-77cc2624b5ff",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Subscription Sizes",
+            "subTarget": "SubscriptionSizes",
+            "style": "link"
+          },
+          {
+            "id": "1f77af3a-3f06-4261-9d1e-dc426e439ca6",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Log Type Size by Table",
+            "subTarget": "LogType",
+            "style": "link"
+          },
+          {
+            "id": "73f8a67e-98a2-4cb3-a96f-ee3932bd5cb0",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Log Type Size by Subscription",
+            "subTarget": "SubscriptionSizesByLogType",
+            "style": "link"
+          },
+          {
+            "id": "90d7a746-438c-4f88-a441-4340f6124a5a",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Storage Events",
+            "subTarget": "StorageEvents",
+            "style": "link"
+          },
+          {
+            "id": "00a291c4-362a-4b1f-86be-484312cbfa28",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Security Events",
+            "subTarget": "SecurityEvents",
+            "style": "link"
+          },
+          {
+            "id": "d8bdda5b-3fdc-42bb-a9aa-c1d500691990",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Alerting Costs",
+            "subTarget": "AlertingCosts",
+            "style": "link"
+          },
+          {
+            "id": "1c6fc7de-2b70-48a9-b36c-39e24151989f",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "EventHub ",
+            "subTarget": "EventHub",
+            "style": "link"
+          }
+        ]
+      },
+      "name": "Tab-Groups",
+      "styleSettings": {
+        "showBorder": true
+      }
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Overview",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Usage\r\n| summarize GB = sum(Quantity)/1024.0 by DataType",
+              "size": 0,
+              "title": "Ingestion by Log Type in GB",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "visualization": "piechart",
+              "chartSettings": {
+                "showLegend": true
+              }
+            },
+            "customWidth": "50",
+            "showPin": true,
+            "name": "query - 2"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Usage\r\n| summarize TotalIngestionVolGB = sum(Quantity)/1024.0\r\n| project DollarCost=(TotalIngestionVolGB)*2.5,TotalIngestionVolGB\r\n",
+              "size": 1,
+              "title": "Total Ingested Logs in GB",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "DollarCost",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": {
+                        "currency": "USD",
+                        "style": "currency"
+                      }
+                    }
+                  },
+                  {
+                    "columnMatch": "TotalIngestionVolGB",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 5,
+                      "options": {
+                        "style": "decimal"
+                      }
+                    }
+                  }
+                ]
+              },
+              "tileSettings": {
+                "showBorder": false
+              },
+              "graphSettings": {
+                "type": 0
+              }
+            },
+            "customWidth": "50",
+            "showPin": true,
+            "name": "query - 3"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Usage\r\n| project TimeGenerated, DataType, Quantity\r\n| where DataType in ('Event', 'SecurityEvent', 'Perf', 'StorageFileLogs', 'AzureDiagnostics', 'WVDAgentHealthStatus')\r\n| summarize IngestionVolumeMB=sum(Quantity) by bin(TimeGenerated, 60m), DataType  ",
+              "size": 0,
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "visualization": "barchart",
+              "tileSettings": {
+                "showBorder": false,
+                "titleContent": {
+                  "columnMatch": "DataType",
+                  "formatter": 1
+                },
+                "leftContent": {
+                  "columnMatch": "IngestionVolumeMB",
+                  "formatter": 12,
+                  "formatOptions": {
+                    "palette": "auto"
+                  },
+                  "numberFormat": {
+                    "unit": 17,
+                    "options": {
+                      "maximumSignificantDigits": 3,
+                      "maximumFractionDigits": 2
+                    }
+                  }
+                }
+              },
+              "graphSettings": {
+                "type": 0,
+                "topContent": {
+                  "columnMatch": "DataType",
+                  "formatter": 1
+                },
+                "centerContent": {
+                  "columnMatch": "IngestionVolumeMB",
+                  "formatter": 1,
+                  "numberFormat": {
+                    "unit": 17,
+                    "options": {
+                      "maximumSignificantDigits": 3,
+                      "maximumFractionDigits": 2
+                    }
+                  }
+                }
+              }
+            },
+            "name": "query - 4"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Usage\r\n| summarize TotalIngestionVolGB = sum(Quantity)/1024.0 by bin(TimeGenerated, 24h)",
+              "size": 0,
+              "title": "Daily Total - Log Analytic Ingestion in GB",
+              "noDataMessage": "Choose Subscriptions to View Data or Adjust Time Range",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "visualization": "barchart",
+              "gridSettings": {
+                "sortBy": [
+                  {
+                    "itemKey": "TotalIngestionVolGB",
+                    "sortOrder": 1
+                  }
+                ]
+              },
+              "sortBy": [
+                {
+                  "itemKey": "TotalIngestionVolGB",
+                  "sortOrder": 1
+                }
+              ],
+              "graphSettings": {
+                "type": 0
+              },
+              "chartSettings": {
+                "xAxis": "TimeGenerated",
+                "group": "TimeGenerated",
+                "createOtherGroup": 5
+              }
+            },
+            "showPin": true,
+            "name": "query - 1 - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Usage\r\n| summarize TotalIngestionVolGB = sum(Quantity)/1024.0 by bin(TimeGenerated, 1h)",
+              "size": 0,
+              "title": "1 Hour - Log Analytic Ingestion in GB",
+              "noDataMessage": "Choose Subscriptions to View Data or Adjust Time RAnge",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "visualization": "barchart",
+              "gridSettings": {
+                "sortBy": [
+                  {
+                    "itemKey": "TotalIngestionVolGB",
+                    "sortOrder": 1
+                  }
+                ]
+              },
+              "sortBy": [
+                {
+                  "itemKey": "TotalIngestionVolGB",
+                  "sortOrder": 1
+                }
+              ],
+              "graphSettings": {
+                "type": 0
+              },
+              "chartSettings": {
+                "xAxis": "TimeGenerated",
+                "group": "TimeGenerated",
+                "createOtherGroup": 5
+              }
+            },
+            "showPin": true,
+            "name": "query - 1"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "Overview"
+      },
+      "name": "Overview"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Subscription Sizes",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Usage\r\n|summarize TotalIngestionVol = sum(Quantity)/1024.0 by ResourceUri\r\n|project ResourceUri,TotalIngestionVol,DollarCost=(TotalIngestionVol)*2.5\r\n|sort by TotalIngestionVol\r\n",
+              "size": 0,
+              "title": "Total Ingestion of All Logs by Log Analytics Workspace",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "TotalIngestionVol",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 39,
+                      "options": {
+                        "style": "decimal"
+                      }
+                    }
+                  },
+                  {
+                    "columnMatch": "DollarCost",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": {
+                        "currency": "USD",
+                        "style": "currency"
+                      }
+                    }
+                  },
+                  {
+                    "columnMatch": "TotalIngestionVolGB",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 5,
+                      "options": {
+                        "style": "decimal"
+                      }
+                    }
+                  }
+                ]
+              },
+              "sortBy": []
+            },
+            "customWidth": "50",
+            "name": "query - 4"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Usage\r\n| where DataType == \"SecurityEvent\"\r\n|summarize TotalIngestionVol = sum(Quantity)/1024.0 by ResourceUri\r\n|project ResourceUri,TotalIngestionVol,DollarCost=(TotalIngestionVol)*2.5\r\n|sort by TotalIngestionVol",
+              "size": 0,
+              "title": "Total Ingestion for SecurityEvents by Log Analytics Workspace",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "TotalIngestionVol",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 39,
+                      "options": {
+                        "style": "decimal"
+                      }
+                    }
+                  },
+                  {
+                    "columnMatch": "DollarCost",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": {
+                        "currency": "USD",
+                        "style": "currency"
+                      }
+                    }
+                  }
+                ]
+              },
+              "sortBy": []
+            },
+            "customWidth": "50",
+            "name": "query - 2"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Usage\r\n| where DataType == \"Event\"\r\n|summarize TotalIngestionVol = sum(Quantity)/1024.0 by ResourceUri\r\n|project ResourceUri,TotalIngestionVol,DollarCost=(TotalIngestionVol)*2.5\r\n|sort by TotalIngestionVol",
+              "size": 0,
+              "title": "Tatal Ingestion for Events by Log Analytics Workspace",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "TotalIngestionVol",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 39,
+                      "options": {
+                        "style": "decimal"
+                      }
+                    }
+                  },
+                  {
+                    "columnMatch": "DollarCost",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": {
+                        "currency": "USD",
+                        "style": "currency"
+                      }
+                    }
+                  }
+                ]
+              },
+              "sortBy": []
+            },
+            "customWidth": "50",
+            "name": "query - 2 - Copy"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "SubscriptionSizes"
+      },
+      "name": "SubscriptionSizes-Group"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "LogType",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "Total Ingestion by Log Data Type  - Across Selected Subscriptions\r\nSelect Data Type to Display Log Analytic Accounts with highest Ingestion",
+              "style": "success"
+            },
+            "name": "text - 1"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Usage\r\n|summarize TotalIngestionVol = sum(Quantity)/1024.0 by DataType\r\n|project DataType,TotalIngestionVol,DollarCost=(TotalIngestionVol)*2.5\r\n|sort by TotalIngestionVol",
+              "size": 3,
+              "title": "Total Ingestion by Log Type",
+              "timeContextFromParameter": "TimeRange",
+              "exportedParameters": [
+                {
+                  "fieldName": "DataType",
+                  "parameterName": "setDataType",
+                  "parameterType": 5,
+                  "defaultValue": "Event"
+                }
+              ],
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "TotalIngestionVol",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 39,
+                      "options": {
+                        "style": "decimal"
+                      }
+                    }
+                  },
+                  {
+                    "columnMatch": "DollarCost",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": {
+                        "currency": "USD",
+                        "style": "currency"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "customWidth": "50",
+            "name": "query - 4"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Usage\r\n|where DataType == \"{setDataType}\"\r\n|summarize TotalIngestionVol = sum(Quantity)/1024.0 by ResourceUri\r\n|project ResourceUri,TotalIngestionVol,DollarCost=(TotalIngestionVol)*2.5\r\n|sort by TotalIngestionVol",
+              "size": 3,
+              "title": "Log Data Type by LA Workspace",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "TotalIngestionVol",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 39,
+                      "options": {
+                        "style": "decimal"
+                      }
+                    }
+                  },
+                  {
+                    "columnMatch": "DollarCost",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": {
+                        "currency": "USD",
+                        "style": "currency"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "customWidth": "50",
+            "name": "query - 2"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "LogType"
+      },
+      "name": "LogType"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Security Events",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Event\r\n| where EventLog == \"Security\"\r\n| summarize count() by EventID\r\n| sort by \"count_\"\r\n",
+              "size": 2,
+              "title": "SecurityEvents Table - Top Event IDs",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "sortBy": [
+                  {
+                    "itemKey": "count_",
+                    "sortOrder": 2
+                  }
+                ]
+              },
+              "sortBy": [
+                {
+                  "itemKey": "count_",
+                  "sortOrder": 2
+                }
+              ]
+            },
+            "customWidth": "40",
+            "name": "query - 0"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Event \r\n|where EventLog == \"Security\"\r\n|summarize TotalIngestionVolMB = round(sum(_BilledSize)/pow(1024,2),2) by EventID\r\n|project EventID,TotalIngestionVolMB,DollarCost=(TotalIngestionVolMB)*0.00244\r\n|sort by TotalIngestionVolMB\r\n\r\n\r\n\r\n\r\n\r\n",
+              "size": 2,
+              "title": "Event Table - Cost per EventLog",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "DollarCost",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": {
+                        "currency": "USD",
+                        "style": "currency"
+                      }
+                    }
+                  }
+                ]
+              },
+              "sortBy": []
+            },
+            "customWidth": "50",
+            "name": "query - 9 - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Event\r\n| where EventLog == \"Security\"\r\n| where EventID == \"4634\" or EventID == \"4624\"\r\n| where RenderedDescription contains \"CloudWorkspaceSVC\"\r\n| summarize count() by EventID, Computer\r\n| sort by \"count_\"",
+              "size": 2,
+              "title": "Events Table - Top Event IDs",
+              "timeContextFromParameter": "TimeRange",
+              "showExportToExcel": true,
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "sortBy": [
+                  {
+                    "itemKey": "count_",
+                    "sortOrder": 2
+                  }
+                ]
+              },
+              "sortBy": [
+                {
+                  "itemKey": "count_",
+                  "sortOrder": 2
+                }
+              ]
+            },
+            "customWidth": "50",
+            "showPin": true,
+            "name": "query - 1"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Event\r\n| where EventLog == \"Security\"\r\n//| summarize count() by EventID\r\n| where EventLevelName != \"Success\"",
+              "size": 0,
+              "title": "Failed - Security Event ",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ]
+            },
+            "name": "query - 2"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "SecurityEvents"
+      },
+      "name": "Security Events"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "SubscriptionSizesByLogType",
+        "items": [
+          {
+            "type": 9,
+            "content": {
+              "version": "KqlParameterItem/1.0",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "parameters": [
+                {
+                  "id": "c2ec48af-72f0-46f2-b5db-2c862efd903d",
+                  "version": "KqlParameterItem/1.0",
+                  "name": "LogType",
+                  "label": "Log Type",
+                  "type": 2,
+                  "isRequired": true,
+                  "query": "Usage\r\n| distinct DataType",
+                  "crossComponentResources": [
+                    "{LogAnayltics}"
+                  ],
+                  "value": null,
+                  "typeSettings": {
+                    "additionalResourceOptions": [],
+                    "showDefault": false
+                  },
+                  "timeContext": {
+                    "durationMs": 0
+                  },
+                  "timeContextFromParameter": "TimeRange",
+                  "queryType": 0,
+                  "resourceType": "microsoft.operationalinsights/workspaces"
+                }
+              ],
+              "style": "pills",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces"
+            },
+            "name": "parameters - 7"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Usage\r\n|where DataType == \"{LogType}\"\r\n|summarize TotalIngestionVolGB = sum(Quantity)/1024.0 by ResourceUri\r\n|project ResourceUri,TotalIngestionVolGB,DollarCost=(TotalIngestionVolGB)*2.5\r\n|sort by TotalIngestionVolGB",
+              "size": 3,
+              "title": "Log Type Usage by Subscription",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "DollarCost",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": {
+                        "currency": "USD",
+                        "style": "currency",
+                        "useGrouping": false
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "customWidth": "50",
+            "name": "query - 8"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Event \r\n|summarize TotalIngestionVolMB = round(sum(_BilledSize)/pow(1024,2),2) by EventLog\r\n|project EventLog,TotalIngestionVolMB,DollarCost=(TotalIngestionVolMB)*0.00244\r\n|sort by TotalIngestionVolMB\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+              "size": 0,
+              "title": "Event Table - Cost per EventLog",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "DollarCost",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": {
+                        "currency": "USD",
+                        "style": "currency"
+                      }
+                    }
+                  }
+                ]
+              },
+              "sortBy": []
+            },
+            "customWidth": "50",
+            "name": "query - 9"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "AzureDiagnostics\r\n|summarize TotalIngestionVolMB = round(sum(_BilledSize)/pow(1024,2),2) by Category\r\n|project Category,TotalIngestionVolMB,DollarCost=(TotalIngestionVolMB)*0.00244\r\n|sort by TotalIngestionVolMB\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+              "size": 0,
+              "title": "DiagnosticSettings- Cost per Category",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "DollarCost",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": {
+                        "currency": "USD",
+                        "style": "currency"
+                      }
+                    }
+                  }
+                ]
+              },
+              "sortBy": []
+            },
+            "customWidth": "50",
+            "name": "query - 9 - Copy"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "SubscriptionSizesByLogType"
+      },
+      "name": "SubscriptionSizesByLogType"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Storage Events",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "StorageFileLogs\r\n| summarize count() by StatusCode\r\n\r\n//Event\r\n//| where Source == \"Microsoft-Windows-SMBClient\"\r\n//| where EventLog == \"Microsoft-Windows-SMBClient/Operational\"\r\n//| where RenderedDescription contains \"Failed to open a persistent handle\"\r\n//| project TimeGenerated, Computer, UserName, RenderedDescription",
+              "showQuery": true,
+              "size": 3,
+              "showExportToExcel": true,
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "sortBy": [
+                  {
+                    "itemKey": "count_",
+                    "sortOrder": 2
+                  }
+                ]
+              },
+              "sortBy": [
+                {
+                  "itemKey": "count_",
+                  "sortOrder": 2
+                }
+              ]
+            },
+            "showPin": true,
+            "name": "query - 0"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "StorageEvents"
+      },
+      "name": "Storage Events"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Alerting Costs",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Alert\r\n| summarize AlertCost = round(sum(_BilledSize)/pow(1024,2),2) by TenantId\r\n| sort by AlertCost",
+              "size": 0,
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "sortBy": []
+            },
+            "name": "query - 0"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "AlertingCosts"
+      },
+      "name": "AlertingCosts"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "EventHubs",
+        "items": [
+          {
+            "type": 10,
+            "content": {
+              "chartId": "workbook4bc0ca4d-5321-4d45-9b24-b6e77e0560de",
+              "version": "MetricsItem/2.0",
+              "size": 0,
+              "chartType": 2,
+              "resourceType": "microsoft.eventhub/namespaces",
+              "metricScope": 0,
+              "resourceParameter": "EventHubNameSpace",
+              "resourceIds": [
+                "{EventHubNameSpace}"
+              ],
+              "timeContextFromParameter": "TimeRange",
+              "timeContext": {
+                "durationMs": 259200000
+              },
+              "metrics": [
+                {
+                  "namespace": "microsoft.eventhub/namespaces",
+                  "metric": "microsoft.eventhub/namespaces--OutgoingBytes",
+                  "aggregation": 1,
+                  "splitBy": null
+                },
+                {
+                  "namespace": "microsoft.eventhub/namespaces",
+                  "metric": "microsoft.eventhub/namespaces--IncomingBytes",
+                  "aggregation": 1
+                }
+              ],
+              "title": "Inbound and Outbound Traffic",
+              "gridSettings": {
+                "rowLimit": 10000
+              }
+            },
+            "name": "metric - 11"
+          },
+          {
+            "type": 10,
+            "content": {
+              "chartId": "workbook4bc0ca4d-5321-4d45-9b24-b6e77e0560de",
+              "version": "MetricsItem/2.0",
+              "size": 0,
+              "chartType": 2,
+              "resourceType": "microsoft.eventhub/namespaces",
+              "metricScope": 0,
+              "resourceParameter": "EventHubNameSpace",
+              "resourceIds": [
+                "{EventHubNameSpace}"
+              ],
+              "timeContextFromParameter": "TimeRange",
+              "timeContext": {
+                "durationMs": 259200000
+              },
+              "metrics": [
+                {
+                  "namespace": "microsoft.eventhub/namespaces",
+                  "metric": "microsoft.eventhub/namespaces--ThrottledRequests",
+                  "aggregation": 1,
+                  "splitBy": null
+                },
+                {
+                  "namespace": "microsoft.eventhub/namespaces",
+                  "metric": "microsoft.eventhub/namespaces--QuotaExceededErrors",
+                  "aggregation": 1
+                }
+              ],
+              "title": "Throttle Requests and Quota Exceeded",
+              "gridSettings": {
+                "rowLimit": 10000
+              }
+            },
+            "name": "metric - 11 - Copy"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "EventHub"
+      },
+      "name": "EventHubs"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "Original Source - Blair Sonnek\r\n<br/>\r\nWorkbook Manager - Blair Sonnnek - blair.sonnek@netapp.com"
+      },
+      "name": "text - 10"
+    }
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}

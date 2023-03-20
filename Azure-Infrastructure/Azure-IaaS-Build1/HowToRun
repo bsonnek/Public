@@ -1,0 +1,2 @@
+$ScriptFromGitHub = Invoke-WebRequest https://raw.githubusercontent.com/bsonnek/Azure-IaaS-Build1/main/DevLab-Deployment.ps1
+Invoke-Expression $($ScriptFromGitHub.Content)

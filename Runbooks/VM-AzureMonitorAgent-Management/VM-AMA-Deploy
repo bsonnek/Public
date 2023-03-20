@@ -1,0 +1,57 @@
+<#
+.NOTES
+  Author:         Blair Sonnek
+  Creation Date:  12/2023
+  Purpose/Change: Alerting and Monitoring
+ 
+ DESCRIPTION
+    Deploy the Azure Monitor Agent to all VMs in all subscriptions
+ 
+ INPUTS
+    Inputs if any, otherwise state None
+ 
+ OUTPUTS
+    Outputs if any, otherwise state None - example: Log file stored in C:\Windows\Temp\<name>.log
+ 
+ LINK
+    Useful Link to resources or others.
+ 
+ MODULES
+    List Az Modules Required for Script to Run
+
+ RBAC ROLES
+  
+.CHANGELOG
+    3/7/2023 - Added to GitHub Repository
+    
+#>
+
+try
+{
+    "Logging in to Azure..."
+    Connect-AzAccount -Identity
+}
+catch {
+    Write-Error -Message $_.Exception
+    throw $_.Exception
+}
+
+$subscriptionName = Get-AzSubscription
+
+foreach($sub in $subscriptionName)
+{
+	$setcontext = set-AzContext -Subscription $sub.Id
+    Write-Output "---- Processing subscription $($setcontext.subscription.name)-------"	
+    $vms = Get-AzVM -status | Where-Object{$_.Powerstate -eq 'VM running'}
+    foreach($vm in $vms) 
+    {
+        Write-Output "----Checking VM $($vm.name)-------"
+        $allExtensions = (get-azvm -name $vm.name -ResourceGroupName $vm.resourcegroupname | Select-Object -ExpandProperty Extensions | Select-Object VirtualMachineExtensionType).VirtualMachineExtensionType
+        if($allExtensions -notcontains "AzureMonitorWindowsAgent")  
+        {
+            Write-Output "----Didn't find AzureMonitorAgent in machine $($vm.name)-------"
+            Set-AzVMExtension -Name AzureMonitorWindowsAgent -Publisher Microsoft.Azure.Monitor -ResourceGroupName $vm.ResourceGroupName -ExtensionType AzureMonitorWindowsAgent -VMName $vm.Name -Location $vm.location -TypeHandlerVersion '1.10' -EnableAutomaticUpgrade $true -NoWait
+        }
+    }
+ }   
+

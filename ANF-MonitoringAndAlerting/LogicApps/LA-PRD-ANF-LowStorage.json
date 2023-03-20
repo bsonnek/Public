@@ -1,0 +1,102 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "ComposeAlertMessage": {
+                "inputs": "Hi Team, \nAzure Netapp Files storage is low for @{triggerBody()?['netappAccount']}. Alerts for low storage will trigger when the consumed storage percentage of the ANF volume goes above 90% usage.\n\nFor more details please check below. \nAzureNetappAccount: @{triggerBody()?['netappAccount']}\nVolumeName: @{triggerBody()?['Volume']}\nResourceGroup: @{triggerBody()?['ResourceGroup']}\nConsumedPercent: @{triggerBody()?['ConsumedPercent']}\nSubscriptionName:@{body('Parse-GetTenantID')?['displayName']} \nSubscriptionId: @{triggerBody()?['SubscriptionId']}\n",
+                "runAfter": {
+                    "Parse-GetTenantID": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Compose"
+            },
+            "GetTenantID": {
+                "inputs": {
+                    "authentication": {
+                        "type": "ManagedServiceIdentity"
+                    },
+                    "method": "GET",
+                    "uri": "https://management.azure.com/subscriptions/@{triggerBody()?['subscriptionId']}?api-version=2020-01-01"
+                },
+                "runAfter": {},
+                "type": "Http"
+            },
+            "Parse-GetTenantID": {
+                "inputs": {
+                    "content": "@body('GetTenantID')",
+                    "schema": {
+                        "properties": {
+                            "authorizationSource": {
+                                "type": "string"
+                            },
+                            "displayName": {
+                                "type": "string"
+                            },
+                            "id": {
+                                "type": "string"
+                            },
+                            "managedByTenants": {
+                                "items": {
+                                    "properties": {
+                                        "tenantId": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "tenantId"
+                                    ],
+                                    "type": "object"
+                                },
+                                "type": "array"
+                            },
+                            "state": {
+                                "type": "string"
+                            },
+                            "subscriptionId": {
+                                "type": "string"
+                            },
+                            "subscriptionPolicies": {
+                                "properties": {
+                                    "locationPlacementId": {
+                                        "type": "string"
+                                    },
+                                    "quotaId": {
+                                        "type": "string"
+                                    },
+                                    "spendingLimit": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "tenantId": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "runAfter": {
+                    "GetTenantID": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ParseJson"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {},
+        "triggers": {
+            "manual": {
+                "inputs": {
+                    "schema": {}
+                },
+                "kind": "Http",
+                "type": "Request"
+            }
+        }
+    },
+    "parameters": {}
+}
