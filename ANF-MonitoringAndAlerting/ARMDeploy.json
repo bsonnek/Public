@@ -15,6 +15,13 @@
             "metadata": {
                 "description": "Location for automation account"
             }
+        },
+        "SchedulerGuid": {
+            "defaultValue": "[newGuid()]",
+            "type": "String",
+            "metadata": {
+                "description": "GUID for the schedule creation - automatically created at deploy"
+            }
         }
     },
     "resources": [
@@ -395,7 +402,7 @@
         {
             "type": "Microsoft.Automation/automationAccounts/jobSchedules",
             "apiVersion": "2022-08-08",
-            "name": "[concat(parameters('AutomationAccountName'), '/RB-ANF-CustomMonitoring-Schedule')]",
+            "name": "[concat(parameters('AutomationAccountName'), parameters('SchedulerGuid'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts/runbooks', parameters('AutomationAccountName'), 'RB-ANF-CustomMonitoring')]"
             ],
