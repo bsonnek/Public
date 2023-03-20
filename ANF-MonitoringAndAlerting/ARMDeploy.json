@@ -378,11 +378,26 @@
             }
         },
         {
+            "type": "Microsoft.Automation/automationAccounts/schedules",
+            "apiVersion": "2022-08-08",
+            "name": "[concat(parameters('AutomationAccountName'), '/RB-ANF-CustomMonitoring-3hr-Schedule')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
+            ],
+            "properties": {
+                "startTime": "",
+                "expiryTime": "9999-12-31T17:59:00-06:00",
+                "interval": 3,
+                "frequency": "Hour",
+                "timeZone": "America/Chicago"
+            }
+        },
+        {
             "type": "Microsoft.Automation/automationAccounts/jobSchedules",
             "apiVersion": "2022-08-08",
             "name": "[concat(parameters('AutomationAccountName'), '/RB-ANF-CustomMonitoring-3hr-Schedule')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
+                "[resourceId('Microsoft.Automation/automationAccounts/schedules', parameters('AutomationAccountName'), '/RB-ANF-CustomMonitoring-3hr-Schedule')]",
                 "[resourceId('Microsoft.Automation/automationAccounts/runbooks', parameters('AutomationAccountName'), 'RB-ANF-CustomMonitoring')]"
             ],
             "properties": {
@@ -392,21 +407,6 @@
                 "schedule": {
                     "name": "RB-ANF-CustomMonitoring-3hr-Schedule"
                 }
-            }
-        },
-        {
-            "type": "Microsoft.Automation/automationAccounts/schedules",
-            "apiVersion": "2022-08-08",
-            "name": "[concat(parameters('AutomationAccountName'), '/RB-ANF-CustomMonitoring-3hr-Schedule')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
-            ],
-            "properties": {
-                "startTime": "2023-03-25T11:22:00-05:00",
-                "expiryTime": "9999-12-31T17:59:00-06:00",
-                "interval": 3,
-                "frequency": "Hour",
-                "timeZone": "America/Chicago"
             }
         }
 
