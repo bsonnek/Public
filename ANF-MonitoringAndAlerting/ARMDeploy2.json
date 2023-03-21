@@ -63,7 +63,6 @@
             ],
             "properties": {
                 "type": "String",
-                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', parameters('LawWorkspaceName')), '2015-11-01-preview').customerId]",
                 "isEncrypted": false
             }
         }
