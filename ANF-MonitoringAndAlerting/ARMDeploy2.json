@@ -100,11 +100,11 @@
             "apiVersion": "2022-08-08",
             "name": "[concat(parameters('AutomationAccountName'), '/LAW-ANFCustomLogs-ID')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
+                "[resourceId('Microsoft.OperationalInsights/workspace/', 'LAW-PRD-ANF-CustomLogs')]"
             ],
             "properties": {
-                "isEncrypted": false,
-                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', 'LAW-PRD-ANF-CustomLogs'), '2022-10-01').customerId]"
+                "isEncrypted": false
             }
         },
         {
