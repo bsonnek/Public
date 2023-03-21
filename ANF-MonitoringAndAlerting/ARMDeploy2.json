@@ -79,7 +79,7 @@
             "name": "[concat(parameters('AutomationAccountName'), '/LAW-ANFCustomLogs-ID')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
-                "[resourceId('Microsoft.OperationalInsights/workspace', '/LAW-PRD-ANF-CustomLogs')]"
+                "[resourceId('Microsoft.OperationalInsights/workspace', '/', 'LAW-PRD-ANF-CustomLogs')]"
             ],
             "properties": {
                 "isEncrypted": false
