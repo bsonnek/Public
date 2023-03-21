@@ -76,6 +76,18 @@
         {
             "type": "Microsoft.Automation/automationAccounts/variables",
             "apiVersion": "2022-08-08",
+            "name": "[concat(parameters('AutomationAccountName'), '/LAW-ANFCustomLogs-ID')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
+                "[resourceId('Microsoft.OperationalInsights/workspace', '/LAW-PRD-ANF-CustomLogs')]"
+            ],
+            "properties": {
+                "isEncrypted": false
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/variables",
+            "apiVersion": "2022-08-08",
             "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-LowStorage')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
@@ -93,18 +105,6 @@
             ],
             "properties": {
                 "isEncrypted": true
-            }
-        },
-        {
-            "type": "Microsoft.Automation/automationAccounts/variables",
-            "apiVersion": "2022-08-08",
-            "name": "[concat(parameters('AutomationAccountName'), '/LAW-ANFCustomLogs-ID')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
-                "[resourceId('Microsoft.OperationalInsights/workspace', 'LAW-PRD-ANF-CustomLogs')]"
-            ],
-            "properties": {
-                "isEncrypted": false
             }
         },
         {
