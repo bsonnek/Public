@@ -18,7 +18,7 @@
         }
     },
     "variables": {
-        "logAnalyticsName": "/LAW-PRD-ANF-CustomLogs"
+        "logAnalyticsName": "LAW-PRD-ANF-CustomLogs"
     },
     "resources": [
         {
@@ -58,7 +58,7 @@
                 "[resourceId('Microsoft.OperationalInsights/workspaces', 'LAW-PRD-ANF-CustomLogs')]"
             ],
             "properties": {
-                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName')), '2022-10-01').customerId]",
+                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', variables('logAnalyticsName')), '2022-10-01').customerId]",
                 "type": "String",
                 "isEncrypted": false
             }
