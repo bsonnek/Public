@@ -1,0 +1,38 @@
+"variables": {
+    "logicAppUrl": "[reference(resourceId('Microsoft.Logic/workflows', variables('logicAppName')), '2016-06-01').outputs.'HTTP URL'.value]",
+    "logicAppUrl2": "[reference(resourceId('Microsoft.Logic/workflows', variables('logicAppName')), '2016-06-01').outputs.'HTTP URL'.value]",
+    "logAnalyticsWorkspaceId": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName')), '2015-11-01-preview').customerId]",
+    "logAnalyticsWorkspacePrimaryKey": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName')), '2015-11-01-preview').primarySharedKey]"
+
+},
+"resources": [
+    {
+        "type": "Microsoft.Automation/automationAccounts/variables",
+        "apiVersion": "2022-02-01",
+        "name": "[concat('my-automation-account/', 'my-variable')]",
+        "properties": {
+            "name": "my-variable",
+            "value": "[variables('logicAppUrl')]",
+            "isEncrypted": false
+        }
+    }
+]
+
+"variables": {
+    "logAnalyticsWorkspaceId": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName')), '2015-11-01-preview').customerId]",
+    "logAnalyticsWorkspacePrimaryKey": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName')), '2015-11-01-preview').primarySharedKey]"
+}
+{
+    "type": "Microsoft.Automation/automationAccounts",
+    "apiVersion": "2020-01-13-preview",
+    "name": "[variables('automationAccountName')]",
+    "location": "[parameters('location')]",
+    "dependsOn": [
+        "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
+    ],
+    "properties": {
+        "logAnalyticsWorkspaceId": "[variables('logAnalyticsWorkspaceId')]",
+        "logAnalyticsPrimaryKey": "[variables('logAnalyticsWorkspacePrimaryKey')]"
+    }
+}
+
