@@ -63,8 +63,7 @@
                 "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('LawWorkspaceName'))]"
             ],
             "properties": {
-                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', parameters('LawWorkspaceName')), '2022-10-01').customerId]",
-                "isEncrypted": false
+                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', parameters('LawWorkspaceName')), '2022-10-01').customerId]"
             }
         }
     ],
