@@ -59,12 +59,10 @@
             "apiVersion": "2022-08-08",
             "name": "[concat(parameters('AutomationAccountName'), '/LAW-ANFCustomLogs-ID')]",
             "dependsOn": [
-                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('LawWorkspaceName'))]",
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
-                
             ],
             "properties": {
-                "isEncrypted": false
+                "isEncrypted": true
             }
         }
     ],
