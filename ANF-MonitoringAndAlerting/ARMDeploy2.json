@@ -1,0 +1,422 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "2.0.0.0",
+    "parameters": {
+        "AutomationAccountName": {
+            "defaultValue": "AA-PRD-ANF-CustomLogCollection",
+            "type": "String",
+            "metadata": {
+                "description": "Name of the Automation Account"
+            }
+        },
+        "location": {
+            "defaultValue": "[resourceGroup().location]",
+            "type": "String",
+            "metadata": {
+                "description": "Location for automation account"
+            }
+        },
+        "SchedulerGuid": {
+            "defaultValue": "[newGuid()]",
+            "type": "String",
+            "metadata": {
+                "description": "GUID for the schedule creation - automatically created at deploy"
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Automation/automationAccounts",
+            "apiVersion": "2021-06-22",
+            "name": "[parameters('AutomationAccountName')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [],
+            "tags": {},
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "sku": {
+                    "name": "Basic"
+                },
+                "publicNetworkAccess": true
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/runbooks",
+            "apiVersion": "2018-06-30",
+            "name": "[concat(parameters('AutomationAccountName'), '/', 'RB-ANF-CustomMonitoring')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
+            ],
+            "properties": {
+                "runbookType": "PowerShell",
+                "logVerbose": false,
+                "logProgress": false,
+                "logActivityTrace": 0,
+                "publishContentLink": {
+              "uri": "https://raw.githubusercontent.com/bsonnek/Public/main/ANF-MonitoringAndAlerting/RB-PRD-CU-NetAppFiles-CustomLog.ps1",
+              "version": "1.0.0.0"
+            }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/variables",
+            "apiVersion": "2022-08-08",
+            "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-LowStorage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
+            ],
+            "properties": {
+                "isEncrypted": true
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/variables",
+            "apiVersion": "2022-08-08",
+            "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-NoSnapshot')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
+            ],
+            "properties": {
+                "isEncrypted": true
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/variables",
+            "apiVersion": "2022-08-08",
+            "name": "[concat(parameters('AutomationAccountName'), '/LAW-ANFCustomLogs-ID')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
+                "[resourceId('Microsoft.OperationalInsights/workspace', 'LAW-PRD-ANF-CustomLogs')]"
+            ],
+            "properties": {
+                "isEncrypted": false,
+                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', 'LAW-PRD-ANF-CustomLogs'), '2022-10-01').customerId]"
+
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/variables",
+            "apiVersion": "2022-08-08",
+            "name": "[concat(parameters('AutomationAccountName'), '/LAW-ANFCustomLogs-Key')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
+            ],
+            "properties": {
+                "isEncrypted": true
+            }
+        },
+        {
+            "name": "dbfe15f8-1d39-4f29-97fc-19e34226c4ca",
+            "type": "microsoft.insights/workbooks",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2022-04-01",
+            "dependsOn": [],
+            "kind": "shared",
+            "properties": {
+                "displayName": "Azure NetApp Files Custom Insights",
+                                        "serializedData": "{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":9,\"content\":{\"version\":\"KqlParameterItem/1.0\",\"parameters\":[{\"id\":\"0a902029-8139-431e-b145-8fb4a2288e5b\",\"version\":\"KqlParameterItem/1.0\",\"name\":\"Subscription\",\"type\":6,\"isRequired\":true,\"value\":null,\"typeSettings\":{\"additionalResourceOptions\":[],\"includeAll\":true,\"showDefault\":false},\"timeContext\":{\"durationMs\":86400000}},{\"id\":\"c6e9cc98-ae42-49de-ba87-c3f706a71d90\",\"version\":\"KqlParameterItem/1.0\",\"name\":\"AzureNetappFiles\",\"label\":\"ANF Volume\",\"type\":5,\"isRequired\":true,\"multiSelect\":true,\"quote\":\"'\",\"delimiter\":\",\",\"query\":\"where type =~ 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes'\\n| project id, name\\n| order by name desc\",\"crossComponentResources\":[\"{Subscription}\"],\"typeSettings\":{\"additionalResourceOptions\":[\"value::all\"],\"showDefault\":false},\"defaultValue\":\"value::all\",\"queryType\":1,\"resourceType\":\"microsoft.resourcegraph/resources\"},{\"id\":\"cf3c3811-0deb-4711-8c7f-657deb77d803\",\"version\":\"KqlParameterItem/1.0\",\"name\":\"TimeRange\",\"type\":4,\"typeSettings\":{\"selectableValues\":[{\"durationMs\":1800000},{\"durationMs\":3600000},{\"durationMs\":14400000},{\"durationMs\":43200000},{\"durationMs\":86400000},{\"durationMs\":172800000},{\"durationMs\":259200000},{\"durationMs\":604800000},{\"durationMs\":1209600000},{\"durationMs\":2592000000}],\"allowCustom\":true},\"value\":{\"durationMs\":86400000}},{\"id\":\"93a8a7b6-233a-47cd-a1bd-5f0a9f5c2b9e\",\"version\":\"KqlParameterItem/1.0\",\"name\":\"ShowHelp\",\"type\":10,\"isRequired\":true,\"typeSettings\":{\"additionalResourceOptions\":[]},\"jsonData\":\"[\\r\\n {\\\"value\\\": \\\"Yes\\\", \\\"label\\\": \\\"Yes\\\"},\\r\\n {\\\"value\\\": \\\"No\\\", \\\"label\\\": \\\"No\\\", \\\"selected\\\":true }\\r\\n]\"}],\"style\":\"pills\",\"queryType\":0,\"resourceType\":\"microsoft.resourcegraph/resources\"},\"name\":\"parameters - 0\"},{\"type\":11,\"content\":{\"version\":\"LinkItem/1.0\",\"style\":\"tabs\",\"tabStyle\":\"bigger\",\"links\":[{\"id\":\"bfcd76ca-efe8-4dea-857b-a8f8b501abfb\",\"cellValue\":\"selectedTab\",\"linkTarget\":\"parameter\",\"linkLabel\":\"Overview\",\"subTarget\":\"Overview\",\"style\":\"link\"},{\"id\":\"0ba06b3e-633b-4c6f-b0a3-4a5564c645a5\",\"cellValue\":\"selectedTab\",\"linkTarget\":\"parameter\",\"linkLabel\":\"Custom Logs\",\"subTarget\":\"NetAppFiles\",\"style\":\"link\"},{\"id\":\"ab686c5f-ab8f-4a2e-88c1-d40ef0a4c891\",\"cellValue\":\"selectedTab\",\"linkTarget\":\"parameter\",\"linkLabel\":\"Storage Latency\",\"subTarget\":\"StorageLatency\",\"style\":\"link\"},{\"id\":\"6b4840bc-82bf-4315-89a3-9888d3ca6ae8\",\"cellValue\":\"selectedTab\",\"linkTarget\":\"parameter\",\"linkLabel\":\"Throughput\",\"subTarget\":\"Throughput\",\"style\":\"link\"},{\"id\":\"b9d0baca-61f3-4d0f-b3a7-1ebeefc66fbd\",\"cellValue\":\"selectedTab\",\"linkTarget\":\"parameter\",\"linkLabel\":\"Storage Consumed\",\"subTarget\":\"StorageConsumed\",\"style\":\"link\"}]},\"name\":\"links - 1\",\"styleSettings\":{\"showBorder\":true}},{\"type\":12,\"content\":{\"version\":\"NotebookGroup/1.0\",\"groupType\":\"editable\",\"items\":[{\"type\":12,\"content\":{\"version\":\"NotebookGroup/1.0\",\"groupType\":\"editable\",\"items\":[{\"type\":1,\"content\":{\"json\":\"#### Help - Overview\\r\\n[Azure Netapp Files Documentation](https://learn.microsoft.com/en-us/azure/azure-netapp-files)\"},\"name\":\"text - 0\"}]},\"conditionalVisibility\":{\"parameterName\":\"selectedTab\",\"comparison\":\"isEqualTo\",\"value\":\"Overview\"},\"name\":\"group - Help-Overview\"},{\"type\":1,\"content\":{\"json\":\"#### Help - Storage Latency\\r\\n[Azure Netapp Files Documentation](https://learn.microsoft.com/en-us/azure/azure-netapp-files)\"},\"conditionalVisibility\":{\"parameterName\":\"selectedTab\",\"comparison\":\"isEqualTo\",\"value\":\"StorageLatency\"},\"name\":\"text - StorageLatency\"},{\"type\":1,\"content\":{\"json\":\"#### Help - Throughput\\r\\n[Azure Netapp Files Documentation](https://learn.microsoft.com/en-us/azure/azure-netapp-files)\"},\"conditionalVisibility\":{\"parameterName\":\"selectedTab\",\"comparison\":\"isEqualTo\",\"value\":\"Throughput\"},\"name\":\"text - Throughput\"},{\"type\":1,\"content\":{\"json\":\"#### Help - Storage Consumed\\r\\n[Azure Netapp Files Documentation](https://learn.microsoft.com/en-us/azure/azure-netapp-files)\"},\"conditionalVisibility\":{\"parameterName\":\"selectedTab\",\"comparison\":\"isEqualTo\",\"value\":\"StorageConsumed\"},\"name\":\"text - Throughput - Copy\"}]},\"conditionalVisibility\":{\"parameterName\":\"ShowHelp\",\"comparison\":\"isEqualTo\",\"value\":\"Yes\"},\"name\":\"group - ToggleHelp\"},{\"type\":12,\"content\":{\"version\":\"NotebookGroup/1.0\",\"groupType\":\"editable\",\"items\":[{\"type\":12,\"content\":{\"version\":\"NotebookGroup/1.0\",\"groupType\":\"editable\",\"items\":[{\"type\":10,\"content\":{\"chartId\":\"workbook315ca5aa-e56c-47ed-b5c7-b82158b439bd\",\"version\":\"MetricsItem/2.0\",\"size\":3,\"chartType\":-1,\"resourceType\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metricScope\":0,\"resourceParameter\":\"AzureNetappFiles\",\"resourceIds\":[\"{AzureNetappFiles}\"],\"timeContext\":{\"durationMs\":172800000},\"metrics\":[{\"namespace\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metric\":\"microsoft.netapp/netappaccounts/capacitypools/volumes--CbsVolumeProtected\",\"aggregation\":4}],\"title\":\"ANF Backups Enabled\",\"gridFormatType\":1,\"tileSettings\":{\"titleContent\":{\"columnMatch\":\"Name\",\"formatter\":13,\"formatOptions\":{\"showIcon\":true}},\"leftContent\":{\"columnMatch\":\"Value\",\"formatter\":12,\"formatOptions\":{\"palette\":\"auto\"},\"numberFormat\":{\"unit\":17,\"options\":{\"style\":\"decimal\",\"maximumFractionDigits\":2,\"maximumSignificantDigits\":3}}},\"showBorder\":false},\"gridSettings\":{\"rowLimit\":10000}},\"customWidth\":\"15\",\"name\":\"metric - 1\"},{\"type\":10,\"content\":{\"chartId\":\"workbook315ca5aa-e56c-47ed-b5c7-b82158b439bd\",\"version\":\"MetricsItem/2.0\",\"size\":3,\"chartType\":-1,\"resourceType\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metricScope\":0,\"resourceParameter\":\"AzureNetappFiles\",\"resourceIds\":[\"{AzureNetappFiles}\"],\"timeContext\":{\"durationMs\":604800000},\"metrics\":[{\"namespace\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metric\":\"microsoft.netapp/netappaccounts/capacitypools/volumes--CbsVolumeOperationComplete\",\"aggregation\":4}],\"title\":\"ANF Backups Completed\",\"gridFormatType\":1,\"tileSettings\":{\"titleContent\":{\"columnMatch\":\"Name\",\"formatter\":13,\"formatOptions\":{\"showIcon\":true}},\"leftContent\":{\"columnMatch\":\"Value\",\"formatter\":12,\"formatOptions\":{\"palette\":\"auto\"},\"numberFormat\":{\"unit\":17,\"options\":{\"style\":\"decimal\",\"maximumFractionDigits\":2,\"maximumSignificantDigits\":3}}},\"showBorder\":false},\"gridSettings\":{\"rowLimit\":10000}},\"customWidth\":\"15\",\"name\":\"metric - 1 - Copy\"},{\"type\":10,\"content\":{\"chartId\":\"workbook315ca5aa-e56c-47ed-b5c7-b82158b439bd\",\"version\":\"MetricsItem/2.0\",\"size\":3,\"chartType\":-1,\"resourceType\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metricScope\":0,\"resourceParameter\":\"AzureNetappFiles\",\"resourceIds\":[\"{AzureNetappFiles}\"],\"timeContext\":{\"durationMs\":604800000},\"metrics\":[{\"namespace\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metric\":\"microsoft.netapp/netappaccounts/capacitypools/volumes--VolumeSnapshotSize\",\"aggregation\":4}],\"title\":\"ANF Snapshot Size GB\",\"gridFormatType\":1,\"tileSettings\":{\"titleContent\":{\"columnMatch\":\"Name\",\"formatter\":13,\"formatOptions\":{\"showIcon\":true}},\"leftContent\":{\"columnMatch\":\"Value\",\"formatter\":12,\"formatOptions\":{\"palette\":\"auto\"},\"numberFormat\":{\"unit\":2,\"options\":{\"style\":\"decimal\",\"maximumFractionDigits\":2,\"maximumSignificantDigits\":3}}},\"showBorder\":false},\"gridSettings\":{\"rowLimit\":10000}},\"customWidth\":\"15\",\"name\":\"metric - 1 - Copy - Copy\"},{\"type\":10,\"content\":{\"chartId\":\"workbook315ca5aa-e56c-47ed-b5c7-b82158b439bd\",\"version\":\"MetricsItem/2.0\",\"size\":3,\"chartType\":-1,\"resourceType\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metricScope\":0,\"resourceParameter\":\"AzureNetappFiles\",\"resourceIds\":[\"{AzureNetappFiles}\"],\"timeContext\":{\"durationMs\":604800000},\"metrics\":[{\"namespace\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metric\":\"microsoft.netapp/netappaccounts/capacitypools/volumes--VolumeConsumedSizePercentage\",\"aggregation\":4}],\"title\":\"Consumed Data Storage\",\"gridFormatType\":1,\"tileSettings\":{\"titleContent\":{\"columnMatch\":\"Name\",\"formatter\":13,\"formatOptions\":{\"linkTarget\":\"Resource\",\"showIcon\":true}},\"leftContent\":{\"columnMatch\":\"Value\",\"formatter\":12,\"formatOptions\":{\"palette\":\"auto\"},\"numberFormat\":{\"unit\":1,\"options\":{\"style\":\"decimal\",\"maximumFractionDigits\":2,\"maximumSignificantDigits\":3}}},\"showBorder\":false},\"gridSettings\":{\"rowLimit\":10000}},\"customWidth\":\"15\",\"name\":\"metric - 1 - Copy - Copy - Copy\"}]},\"name\":\"Backup-NetAppFiles\"},{\"type\":3,\"content\":{\"version\":\"KqlItem/1.0\",\"query\":\"where type =~ 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes'\\r\\n| mvexpand Mountpoint = properties.['mountTargets']\\r\\n| extend MountP = Mountpoint.smbServerFqdn\\r\\n| extend VolumeP=properties.creationToken\\r\\n| extend SnapshotPolicy=properties.dataProtection.snapshot.snapshotPolicyId\\r\\n| project SubscriptionId=subscriptionId, Volume=id, MountPath=strcat(@\\\"\\\\\\\\\\\", MountP, @\\\"\\\\\\\", VolumeP), Tier = properties.serviceLevel, PrivateIP = properties['mountTargets'][0]['ipAddress'], SnapshotPolicy\\r\\n\",\"size\":2,\"queryType\":1,\"resourceType\":\"microsoft.resourcegraph/resources\",\"crossComponentResources\":[\"{Subscription}\"],\"gridSettings\":{\"formatters\":[{\"columnMatch\":\"SubscriptionId\",\"formatter\":13,\"formatOptions\":{\"linkTarget\":null,\"showIcon\":true}},{\"columnMatch\":\"Volume\",\"formatter\":0,\"formatOptions\":{\"customColumnWidthSetting\":\"50ch\"}},{\"columnMatch\":\"Tier\",\"formatter\":1},{\"columnMatch\":\"PrivateIP\",\"formatter\":1},{\"columnMatch\":\"SnapshotPolicy\",\"formatter\":13,\"formatOptions\":{\"linkTarget\":\"Resource\",\"showIcon\":true,\"customColumnWidthSetting\":\"40ch\"}},{\"columnMatch\":\"id\",\"formatter\":0,\"formatOptions\":{\"customColumnWidthSetting\":\"60ch\"}},{\"columnMatch\":\"Mountpoint\",\"formatter\":0,\"formatOptions\":{\"customColumnWidthSetting\":\"30ch\"}}]},\"sortBy\":[]},\"name\":\"query - 0\"}]},\"conditionalVisibility\":{\"parameterName\":\"selectedTab\",\"comparison\":\"isEqualTo\",\"value\":\"Overview\"},\"name\":\"group - Overview\"},{\"type\":12,\"content\":{\"version\":\"NotebookGroup/1.0\",\"groupType\":\"editable\",\"title\":\"NetApp Files\",\"items\":[{\"type\":9,\"content\":{\"version\":\"KqlParameterItem/1.0\",\"crossComponentResources\":[\"value::all\"],\"parameters\":[{\"id\":\"2c0172b3-6f5f-4cab-994b-264a7e8b0513\",\"version\":\"KqlParameterItem/1.0\",\"name\":\"LogAnalytics_Admin\",\"type\":5,\"isRequired\":true,\"multiSelect\":true,\"quote\":\"'\",\"delimiter\":\",\",\"query\":\"where type =~ 'Microsoft.OperationalInsights/workspaces'\\r\\n| where name contains \\\"PlatformLogs\\\" or name contains 'VDMS-ADMIN'\\r\\n| project id\",\"crossComponentResources\":[\"value::all\"],\"isHiddenWhenLocked\":true,\"typeSettings\":{\"additionalResourceOptions\":[\"value::all\"]},\"timeContext\":{\"durationMs\":86400000},\"defaultValue\":\"value::all\",\"queryType\":1,\"resourceType\":\"microsoft.resourcegraph/resources\"}],\"style\":\"pills\",\"queryType\":1,\"resourceType\":\"microsoft.resourcegraph/resources\"},\"name\":\"parameters - 1\"},{\"type\":1,\"content\":{\"json\":\"[Confluence Link](https://confluence.ngage.netapp.com/display/SPCSUPPORT/Monitoring+Metrics+and+Alerting+Thresholds)\\r\\n\\r\\n#### Threshold - 90+%  for 2 consecutive hours\\r\\n\"},\"name\":\"text - 2\"},{\"type\":3,\"content\":{\"version\":\"KqlItem/1.0\",\"query\":\"NetAppFilesStats_CL\\r\\n| extend SubscriptionId=split(ResourceId, \\\"/\\\")[2]\\r\\n| where SubscriptionId == '{Subscription:id}'\\r\\n| summarize TimeGenerated=max(TimeGenerated) by Volume_s, netappAccount_s\\r\\n    | join kind=leftouter (\\r\\n        NetAppFilesStats_CL\\r\\n        | extend SubscriptionId=split(ResourceId, \\\"/\\\")[2]\\r\\n        | where SubscriptionId == '{Subscription:id}'\\r\\n        | distinct TimeGenerated, Volume_s, capacityPool_s, netappAccount_s, Provisioned_d, Consumed_d, Available_d, ConsumedPercent_d, ResourceId, SnapshotPolicyId_s, MostRecentSnapshot_s, OldestSnapshot_s) on TimeGenerated\\r\\n| extend SubscriptionId=split(ResourceId, \\\"/\\\")[2]\\r\\n| extend Volume=Volume_s, CapacityPool=capacityPool_s, ['ANF Account']=netappAccount_s, ['Size Provisioned']=Provisioned_d, Consumed=Consumed_d, Available=Available_d, ['Percentage Consumed']=ConsumedPercent_d, ResourceId, SnapshotPolicy=SnapshotPolicyId_s, MostRecentSnapshot=MostRecentSnapshot_s, OldestSnapshot=OldestSnapshot_s\\r\\n| project TimeGenerated, SubscriptionId, ['Size Provisioned'], Consumed, Available, ['Percentage Consumed'],MostRecentSnapshot, ResourceId, SnapshotPolicy, OldestSnapshot\\r\\n\",\"size\":2,\"timeContext\":{\"durationMs\":43200000},\"showExportToExcel\":true,\"queryType\":0,\"resourceType\":\"microsoft.operationalinsights/workspaces\",\"crossComponentResources\":[\"{LogAnalytics_Admin}\"],\"gridSettings\":{\"formatters\":[{\"columnMatch\":\"SubscriptionId\",\"formatter\":13,\"formatOptions\":{\"linkTarget\":null,\"showIcon\":true}},{\"columnMatch\":\"Size Provisioned\",\"formatter\":0,\"numberFormat\":{\"unit\":5,\"options\":{\"style\":\"decimal\"}}},{\"columnMatch\":\"Consumed\",\"formatter\":0,\"formatOptions\":{\"customColumnWidthSetting\":\"15ch\"},\"numberFormat\":{\"unit\":5,\"options\":{\"style\":\"decimal\"}}},{\"columnMatch\":\"Available\",\"formatter\":0,\"numberFormat\":{\"unit\":5,\"options\":{\"style\":\"decimal\"}}},{\"columnMatch\":\"Percentage Consumed\",\"formatter\":8,\"formatOptions\":{\"min\":0,\"max\":100,\"palette\":\"greenRed\"},\"numberFormat\":{\"unit\":1,\"options\":{\"style\":\"decimal\"}}},{\"columnMatch\":\"MostRecentSnapshot\",\"formatter\":6},{\"columnMatch\":\"PercentUtilization\",\"formatter\":8,\"formatOptions\":{\"min\":0,\"max\":100,\"palette\":\"greenRed\"},\"numberFormat\":{\"unit\":1,\"options\":{\"style\":\"decimal\"}}},{\"columnMatch\":\"StorageName\",\"formatter\":0,\"formatOptions\":{\"customColumnWidthSetting\":\"25ch\"}},{\"columnMatch\":\"FileShareName\",\"formatter\":0,\"formatOptions\":{\"customColumnWidthSetting\":\"25ch\"}},{\"columnMatch\":\"FileShareQuota\",\"formatter\":0,\"numberFormat\":{\"unit\":5,\"options\":{\"style\":\"decimal\"}}},{\"columnMatch\":\"UsageInGB\",\"formatter\":0,\"numberFormat\":{\"unit\":5,\"options\":{\"style\":\"decimal\"}}},{\"columnMatch\":\"AccessTier\",\"formatter\":18,\"formatOptions\":{\"thresholdsOptions\":\"colors\",\"thresholdsGrid\":[{\"operator\":\"==\",\"thresholdValue\":\"Premium\",\"representation\":\"green\",\"text\":\"{0}{1}\"},{\"operator\":\"Default\",\"thresholdValue\":null,\"representation\":\"blue\",\"text\":\"{0}{1}\"}]}}],\"filter\":true},\"sortBy\":[]},\"name\":\"query - 0\"}]},\"conditionalVisibility\":{\"parameterName\":\"selectedTab\",\"comparison\":\"isEqualTo\",\"value\":\"NetAppFiles\"},\"name\":\"group - NetAppFiles\"},{\"type\":12,\"content\":{\"version\":\"NotebookGroup/1.0\",\"groupType\":\"editable\",\"title\":\"StorageLatency\",\"items\":[{\"type\":10,\"content\":{\"chartId\":\"workbook12b46400-8037-4ef7-aa6e-8a59ad6b5452\",\"version\":\"MetricsItem/2.0\",\"size\":0,\"chartType\":2,\"resourceType\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metricScope\":0,\"resourceParameter\":\"AzureNetappFiles\",\"resourceIds\":[\"{AzureNetappFiles}\"],\"timeContextFromParameter\":\"TimeRange\",\"timeContext\":{\"durationMs\":86400000},\"metrics\":[{\"namespace\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metric\":\"microsoft.netapp/netappaccounts/capacitypools/volumes--AverageReadLatency\",\"aggregation\":4,\"splitBy\":null},{\"namespace\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metric\":\"microsoft.netapp/netappaccounts/capacitypools/volumes--AverageWriteLatency\",\"aggregation\":4}],\"showOpenInMe\":true,\"gridSettings\":{\"rowLimit\":10000}},\"showPin\":true,\"name\":\"metric - 3\"}]},\"conditionalVisibility\":{\"parameterName\":\"selectedTab\",\"comparison\":\"isEqualTo\",\"value\":\"StorageLatency\"},\"name\":\"StorageLatency\"},{\"type\":12,\"content\":{\"version\":\"NotebookGroup/1.0\",\"groupType\":\"editable\",\"title\":\"Throughput\",\"items\":[{\"type\":10,\"content\":{\"chartId\":\"workbook657c8479-e380-4568-b995-18a560252ac4\",\"version\":\"MetricsItem/2.0\",\"size\":0,\"chartType\":2,\"resourceType\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metricScope\":0,\"resourceParameter\":\"AzureNetappFiles\",\"resourceIds\":[\"{AzureNetappFiles}\"],\"timeContextFromParameter\":\"TimeRange\",\"timeContext\":{\"durationMs\":86400000},\"metrics\":[{\"namespace\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metric\":\"microsoft.netapp/netappaccounts/capacitypools/volumes--ReadThroughput\",\"aggregation\":4,\"splitBy\":null},{\"namespace\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metric\":\"microsoft.netapp/netappaccounts/capacitypools/volumes--WriteThroughput\",\"aggregation\":4},{\"namespace\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metric\":\"microsoft.netapp/netappaccounts/capacitypools/volumes--TotalThroughput\",\"aggregation\":4}],\"showOpenInMe\":true,\"gridSettings\":{\"rowLimit\":10000}},\"name\":\"metric - 0\"}]},\"conditionalVisibility\":{\"parameterName\":\"selectedTab\",\"comparison\":\"isEqualTo\",\"value\":\"Throughput\"},\"name\":\"Throughput\"},{\"type\":12,\"content\":{\"version\":\"NotebookGroup/1.0\",\"groupType\":\"editable\",\"title\":\"Storage Consumed\",\"items\":[{\"type\":10,\"content\":{\"chartId\":\"workbookdb704d57-54cf-49fd-bd33-f5cacd9a4483\",\"version\":\"MetricsItem/2.0\",\"size\":0,\"chartType\":2,\"resourceType\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metricScope\":0,\"resourceParameter\":\"AzureNetappFiles\",\"resourceIds\":[\"{AzureNetappFiles}\"],\"timeContextFromParameter\":\"TimeRange\",\"timeContext\":{\"durationMs\":86400000},\"metrics\":[{\"namespace\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metric\":\"microsoft.netapp/netappaccounts/capacitypools/volumes--VolumeLogicalSize\",\"aggregation\":4,\"splitBy\":null},{\"namespace\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metric\":\"microsoft.netapp/netappaccounts/capacitypools/volumes--VolumeAllocatedSize\",\"aggregation\":4},{\"namespace\":\"microsoft.netapp/netappaccounts/capacitypools/volumes\",\"metric\":\"microsoft.netapp/netappaccounts/capacitypools/volumes--VolumeSnapshotSize\",\"aggregation\":4}],\"gridFormatType\":1,\"tileSettings\":{\"showBorder\":false,\"titleContent\":{\"columnMatch\":\"Name\",\"formatter\":13},\"leftContent\":{\"columnMatch\":\"Value\",\"formatter\":12,\"formatOptions\":{\"palette\":\"auto\"},\"numberFormat\":{\"unit\":17,\"options\":{\"maximumSignificantDigits\":3,\"maximumFractionDigits\":2}}}},\"mapSettings\":{\"locInfo\":\"AzureResource\",\"sizeSettings\":\"Value\",\"sizeAggregation\":\"Sum\",\"legendMetric\":\"Value\",\"legendAggregation\":\"Sum\",\"itemColorSettings\":{\"type\":\"heatmap\",\"colorAggregation\":\"Sum\",\"nodeColorField\":\"Value\",\"heatmapPalette\":\"greenRed\"},\"locInfoColumn\":\"Name\"},\"graphSettings\":{\"type\":0,\"topContent\":{\"columnMatch\":\"Subscription\",\"formatter\":1},\"centerContent\":{\"columnMatch\":\"Value\",\"formatter\":1,\"numberFormat\":{\"unit\":17,\"options\":{\"maximumSignificantDigits\":3,\"maximumFractionDigits\":2}}}},\"showOpenInMe\":true,\"gridSettings\":{\"rowLimit\":10000}},\"showPin\":true,\"name\":\"metric - 0\"}]},\"conditionalVisibility\":{\"parameterName\":\"selectedTab\",\"comparison\":\"isEqualTo\",\"value\":\"StorageConsumed\"},\"name\":\"Storage Consumed\"},{\"type\":1,\"content\":{\"json\":\"Original Source - Blair Sonnek\\r\\n<br/>\\r\\nWorkbook Manager - Blair Sonnnek - blair.sonnek@netapp.com\"},\"conditionalVisibility\":{\"parameterName\":\"Hidden\",\"comparison\":\"isEqualTo\",\"value\":\"YES\"},\"name\":\"text - 5\"}],\"isLocked\":false,\"fallbackResourceIds\":[\"Azure Monitor\"]}",
+                "version": "1.0",
+                "sourceId": "Azure Monitor",
+                "category": "workbook"
+            }
+        },
+        {
+            "name": "LA-PRD-ANF-LowStorage",
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "location": "[resourceGroup().location]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/schemas/2016-06-01/Microsoft.Logic.json",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "triggers": {
+                        "manual": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "actions": {
+                        "ComposeAlertMessage": {
+                            "runAfter": {
+                                "Parse-GetTenantID": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Compose",
+                            "inputs": "Hi Team, \nAzure Netapp Files storage is low for @{triggerBody()?['netappAccount']}. Alerts for low storage will trigger when the consumed storage percentage of the ANF volume goes above 90% usage.\n\nFor more details please check below. \nAzureNetappAccount: @{triggerBody()?['netappAccount']}\nVolumeName: @{triggerBody()?['Volume']}\nResourceGroup: @{triggerBody()?['ResourceGroup']}\nConsumedPercent: @{triggerBody()?['ConsumedPercent']}\nSubscriptionName:@{body('Parse-GetTenantID')?['displayName']} \nSubscriptionId: @{triggerBody()?['SubscriptionId']}\n"
+                        },
+                        "GetTenantID": {
+                            "runAfter": {},
+                            "type": "Http",
+                            "inputs": {
+                                "authentication": {
+                                    "type": "ManagedServiceIdentity"
+                                },
+                                "method": "GET",
+                                "uri": "https://management.azure.com/subscriptions/@{triggerBody()?['subscriptionId']}?api-version=2020-01-01"
+                            }
+                        },
+                        "Parse-GetTenantID": {
+                            "runAfter": {
+                                "GetTenantID": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ParseJson",
+                            "inputs": {
+                                "content": "@body('GetTenantID')",
+                                "schema": {
+                                    "properties": {
+                                        "authorizationSource": {
+                                            "type": "string"
+                                        },
+                                        "displayName": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "managedByTenants": {
+                                            "items": {
+                                                "properties": {
+                                                    "tenantId": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "tenantId"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "state": {
+                                            "type": "string"
+                                        },
+                                        "subscriptionId": {
+                                            "type": "string"
+                                        },
+                                        "subscriptionPolicies": {
+                                            "properties": {
+                                                "locationPlacementId": {
+                                                    "type": "string"
+                                                },
+                                                "quotaId": {
+                                                    "type": "string"
+                                                },
+                                                "spendingLimit": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "tenantId": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {}
+            }
+        },
+        {
+            "name": "LA-PRD-ANF-NoSnapshot",
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "location": "[resourceGroup().location]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/schemas/2016-06-01/Microsoft.Logic.json",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "triggers": {
+                        "manual": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "actions": {
+                        "ComposeAlertMessage": {
+                            "runAfter": {
+                                "Parse-GetTenantID": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Compose",
+                            "inputs": "Hi Team,\n\nAn Azure Netapp Files volume was detected without a Snapshot Policy for  @{triggerBody()?['netappAccount']}. All ANF Volumes should have a snapshot policy enabled.\n\nFor more details please check below. \nAzureNetappAccount: @{triggerBody()?['netappAccount']}\nVolumeName: @{triggerBody()?['Volume']}\nResourceGroup: @{triggerBody()?['ResourceGroup']}\nSubscriptionName:@{body('Parse-GetTenantID')?['displayName']} \nSubscriptionId: @{triggerBody()?['SubscriptionId']}\n"
+                        },
+                        "GetTenantID": {
+                            "runAfter": {},
+                            "type": "Http",
+                            "inputs": {
+                                "authentication": {
+                                    "type": "ManagedServiceIdentity"
+                                },
+                                "method": "GET",
+                                "uri": "https://management.azure.com/subscriptions/@{triggerBody()?['subscriptionId']}?api-version=2020-01-01"
+                            }
+                        },
+                        "Parse-GetTenantID": {
+                            "runAfter": {
+                                "GetTenantID": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ParseJson",
+                            "inputs": {
+                                "content": "@body('GetTenantID')",
+                                "schema": {
+                                    "properties": {
+                                        "authorizationSource": {
+                                            "type": "string"
+                                        },
+                                        "displayName": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "managedByTenants": {
+                                            "items": {
+                                                "properties": {
+                                                    "tenantId": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "tenantId"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "state": {
+                                            "type": "string"
+                                        },
+                                        "subscriptionId": {
+                                            "type": "string"
+                                        },
+                                        "subscriptionPolicies": {
+                                            "properties": {
+                                                "locationPlacementId": {
+                                                    "type": "string"
+                                                },
+                                                "quotaId": {
+                                                    "type": "string"
+                                                },
+                                                "spendingLimit": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "tenantId": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {}
+            }
+        },
+        {
+            "name": "LAW-PRD-ANF-CustomLogs",
+            "type": "Microsoft.OperationalInsights/workspaces",
+            "apiVersion": "2020-03-01-preview",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "retentionInDays" : "90",
+                "sku": {
+                    "name": "pergb2018"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/modules",
+            "apiVersion": "2022-08-08",
+            "name": "[concat(parameters('AutomationAccountName'), '/Az.Accounts')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
+            ],
+            "properties": {
+                "contentLink": {
+                    "uri": "https://www.powershellgallery.com/api/v2/package/Az.Accounts/2.12.1",
+                    "version": "2.12.1"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/modules",
+            "apiVersion": "2022-08-08",
+            "name": "[concat(parameters('AutomationAccountName'), '/Az.NetAppFiles')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
+                "[resourceId('Microsoft.Automation/automationAccounts/modules', parameters('AutomationAccountName'), 'Az.Accounts')]"
+            ],
+            "properties": {
+                "contentLink": {
+                    "uri": "https://www.powershellgallery.com/api/v2/package/Az.NetAppFiles/1.10.0",
+                    "version": "1.10.0"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/schedules",
+            "apiVersion": "2022-08-08",
+            "name": "[concat(parameters('AutomationAccountName'), '/RB-ANF-CustomMonitoring-3hr-Schedule')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
+            ],
+            "properties": {
+                "startTime": "",
+                "expiryTime": "9999-12-31T17:59:00-06:00",
+                "interval": 3,
+                "frequency": "Hour",
+                "timeZone": "America/Chicago"
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/jobSchedules",
+            "apiVersion": "2022-08-08",
+            "name": "[concat(parameters('AutomationAccountName'), '/', parameters('SchedulerGuid'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts/runbooks', parameters('AutomationAccountName'), 'RB-ANF-CustomMonitoring')]"
+            ],
+            "properties": {
+                "runbook": {
+                    "name": "RB-ANF-CustomMonitoring"
+                },
+                "schedule": {
+                    "name": "RB-ANF-CustomMonitoring-3hr-Schedule"
+                }
+            }
+        }
+
+    ]
+}
