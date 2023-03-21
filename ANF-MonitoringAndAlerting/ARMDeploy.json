@@ -43,18 +43,6 @@
             }
         },
         {
-            "type": "Microsoft.Authorization/roleAssignments",
-            "apiVersion": "2021-04-01-preview",
-            "name": "[guid(concat('Microsoft.Automation/automationAccounts/', parameters('AutomationAccountName')), 'Reader')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
-            ],
-            "properties": {
-                "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
-                "principalId": "[reference(resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName')), '2021-10-01', 'Full').identity.principalId]",
-                "scope": "[subscription().id]"
-        },
-        {
             "type": "Microsoft.Automation/automationAccounts/runbooks",
             "apiVersion": "2018-06-30",
             "name": "[concat(parameters('AutomationAccountName'), '/', 'RB-ANF-CustomMonitoring')]",
