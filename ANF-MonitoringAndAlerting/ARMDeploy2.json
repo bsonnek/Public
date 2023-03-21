@@ -15,6 +15,13 @@
             "metadata": {
                 "description": "Location for automation account"
             }
+        },
+        "LawWorkspaceName": {
+            "defaultValue": "LAW-PRD-ANF-CustomLogs",
+            "type": "String",
+            "metadata": {
+                "description": "LogAnalytics Workspace Name"
+            }
         }
     },
     "resources": [
@@ -36,7 +43,7 @@
             }
         },
         {
-            "name": "LAW-PRD-ANF-CustomLogs",
+            "name": "[parameters('LawWorkspaceName')]",
             "type": "Microsoft.OperationalInsights/workspaces",
             "apiVersion": "2022-10-01",
             "location": "[resourceGroup().location]",
@@ -52,10 +59,10 @@
             "apiVersion": "2022-08-08",
             "name": "[concat(parameters('AutomationAccountName'), '/LAW-ANFCustomLogs-ID')]",
             "dependsOn": [
-                "[resourceId('Microsoft.OperationalInsights/workspaces', 'LAW-PRD-ANF-CustomLogs')]"
+                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('LawWorkspaceName'))]"
             ],
             "properties": {
-                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', 'LAW-PRD-ANF-CustomLogs'), '2022-10-01').customerId]",
+                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', parameters('LawWorkspaceName')), '2022-10-01').customerId]",
                 "type": "String",
                 "isEncrypted": false
             }
