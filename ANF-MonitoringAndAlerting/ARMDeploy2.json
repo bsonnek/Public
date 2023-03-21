@@ -82,7 +82,8 @@
                 "[resourceId('Microsoft.OperationalInsights/workspaces', 'LAW-PRD-ANF-CustomLogs')]"
             ],
             "properties": {
-                "isEncrypted": true
+                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', 'LAW-PRD-ANF-CustomLogs'), '2022-10-01').customerId]",
+                "isEncrypted": false
             }
         },
         {
