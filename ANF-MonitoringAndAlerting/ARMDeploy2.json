@@ -18,7 +18,7 @@
         }
     },
     "variables": {
-        "logAnalyticsName": "LAW-PRD-ANF-CustomLogs"
+        "logAnalyticsName": "/LAW-PRD-ANF-CustomLogs"
     },
     "resources": [
         {
