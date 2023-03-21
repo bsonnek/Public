@@ -61,7 +61,29 @@
             }
             }
         },
-
+        {
+            "name": "LAW-PRD-ANF-CustomLogs",
+            "type": "Microsoft.OperationalInsights/workspaces",
+            "apiVersion": "2020-03-01-preview",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "retentionInDays" : "90",
+                "sku": {
+                    "name": "pergb2018"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/variables",
+            "apiVersion": "2022-08-08",
+            "name": "[concat(parameters('AutomationAccountName'), '/LAW-ANFCustomLogs-ID')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
+            ],
+            "properties": {
+                "isEncrypted": true
+            }
+        },
         {
             "type": "Microsoft.Automation/automationAccounts/variables",
             "apiVersion": "2022-08-08",
@@ -77,17 +99,6 @@
             "type": "Microsoft.Automation/automationAccounts/variables",
             "apiVersion": "2022-08-08",
             "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-NoSnapshot')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
-            ],
-            "properties": {
-                "isEncrypted": true
-            }
-        },
-        {
-            "type": "Microsoft.Automation/automationAccounts/variables",
-            "apiVersion": "2022-08-08",
-            "name": "[concat(parameters('AutomationAccountName'), '/LAW-ANFCustomLogs-ID')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
             ],
@@ -341,18 +352,6 @@
                     "outputs": {}
                 },
                 "parameters": {}
-            }
-        },
-        {
-            "name": "LAW-PRD-ANF-CustomLogs",
-            "type": "Microsoft.OperationalInsights/workspaces",
-            "apiVersion": "2020-03-01-preview",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "retentionInDays" : "90",
-                "sku": {
-                    "name": "pergb2018"
-                }
             }
         },
         {
