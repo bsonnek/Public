@@ -24,6 +24,10 @@
             }
         }
     },
+    "variables": {
+        "logicAppUrl": "[reference(resourceId('Microsoft.Logic/workflows', 'LA-PRD-ANF-LowStorage', '2017-07-01').outputs.'HTTP URL'.value]",
+        "logicAppUrl2": "[reference(resourceId('Microsoft.Logic/workflows', 'LA-PRD-ANF-NoSnapshot', '2017-07-01').outputs.'HTTP URL'.value]"
+    },
     "resources": [
         {
             "type": "Microsoft.Automation/automationAccounts",
@@ -70,7 +74,9 @@
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
             ],
             "properties": {
-                "isEncrypted": true
+                "isEncrypted": true,
+                "name": "LA-ANF-LowStorage",
+                "value": "[variables('logicAppUrl')]"
             }
         },
         {
@@ -81,7 +87,9 @@
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
             ],
             "properties": {
-                "isEncrypted": true
+                "isEncrypted": true,
+                "name": "LA-ANF-NoSnapshot",
+                "value": "[variables('logicAppUrl2')]"
             }
         },
         {
