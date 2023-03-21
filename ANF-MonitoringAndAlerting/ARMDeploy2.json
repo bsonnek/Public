@@ -24,6 +24,9 @@
             }
         }
     },
+    "variables": {
+    "logAnalyticsName": "[parameters('LawWorkspaceName')]"
+  },
     "resources": [
         {
             "type": "Microsoft.Automation/automationAccounts",
@@ -63,7 +66,7 @@
             ],
             "properties": {
                 "type": "String",
-                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', parameters('LawWorkspaceName')), '2022-10-01').customerId]",
+                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', variables('logAnalyticsName')), '2022-10-01').customerId]",
                 "isEncrypted": false
             }
         }
@@ -71,7 +74,7 @@
     "outputs": {
         "customerId": {
             "type": "string",
-            "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', parameters('LawWorkspaceName')), '2022-10-01').customerId]"
+            "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', variables('logAnalyticsName')), '2022-10-01').customerId]"
         }
     }
 }
