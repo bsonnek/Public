@@ -17,9 +17,6 @@
             }
         }
     },
-    "variables": {
-        "customerId": "[reference(concat('Microsoft.OperationalInsights/workspaces/', 'LAW-PRD-ANF-CustomLogs'), '2015-11-01-preview').customerId]"
-    },
     "resources": [
         {
             "type": "Microsoft.Automation/automationAccounts",
@@ -59,7 +56,7 @@
                 "[resourceId('Microsoft.OperationalInsights/workspaces', 'LAW-PRD-ANF-CustomLogs')]"
             ],
             "properties": {
-                "value": "[variables('customerId')]",
+                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', '/LAW-PRD-ANF-CustomLogs'), '2022-10-01').customerId]",
                 "isEncrypted": false
             }
         }
