@@ -15,13 +15,6 @@
             "metadata": {
                 "description": "Location for automation account"
             }
-        },
-        "SchedulerGuid": {
-            "defaultValue": "[newGuid()]",
-            "type": "String",
-            "metadata": {
-                "description": "GUID for the schedule creation - automatically created at deploy"
-            }
         }
     },
     "variables": {
