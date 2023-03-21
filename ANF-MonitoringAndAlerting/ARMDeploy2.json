@@ -55,7 +55,7 @@
                 "[resourceId('Microsoft.OperationalInsights/workspaces', 'LAW-PRD-ANF-CustomLogs')]"
             ],
             "properties": {
-                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', 'LAW-PRD-ANF-CustomLogs'), '2015-11-01-preview').customerId]",
+                "value": "[reference(concat('Microsoft.OperationalInsights/workspaces/', 'LAW-PRD-ANF-CustomLogs')).sharedKeys.primaryKey]",
                 "type": "String",
                 "isEncrypted": false
             }
