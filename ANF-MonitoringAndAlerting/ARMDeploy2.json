@@ -71,14 +71,6 @@
             "type": "string",
             "value": "[parameters('LawWorkspaceName')]"
         },
-        "provisioningState": {
-            "type": "string",
-            "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', parameters('LawWorkspaceName')), '2022-10-01').provisioningState]"
-        },
-        "source": {
-            "type": "string",
-            "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', parameters('LawWorkspaceName')), '2022-10-01').source]"
-        },
         "customerId": {
             "type": "string",
             "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', parameters('LawWorkspaceName')), '2022-10-01').customerId]"
