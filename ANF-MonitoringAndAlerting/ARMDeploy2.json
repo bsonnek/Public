@@ -22,17 +22,10 @@
             "metadata": {
                 "description": "GUID for the schedule creation - automatically created at deploy"
             }
-        },
-        "workspaceName": {
-            "defaultValue": "LAW-PRD-ANF-CustomLogs",
-            "type": "string",
-            "metadata": {
-                "description": "Name of the Log Analytics workspace"
-            }
         }
     },
     "variables": {
-        "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', variables('logAnalyticsName')), '2022-10-01').customerId]"
+        "logAnalyticsName": "LAW-PRD-ANF-CustomLogs"
     },
     "resources": [
         {
@@ -72,7 +65,7 @@
             }
         },
         {
-            "name": "LAW-PRD-ANF-CustomLogs",
+            "name": "variables('logAnalyticsName')",
             "type": "Microsoft.OperationalInsights/workspaces",
             "apiVersion": "2020-03-01-preview",
             "location": "[resourceGroup().location]",
@@ -115,7 +108,7 @@
             ],
             "properties": {
                 "isEncrypted": false,
-                "value": "[variables('customerId')]"
+                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', variables('logAnalyticsName')), '2022-10-01').customerId]"
             }
         },
         {
