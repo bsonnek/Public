@@ -17,7 +17,7 @@
             }
         },
         "LawWorkspaceName": {
-            "defaultValue": "LAW-PRD-ANF-CustomLogs",
+            "defaultValue": "LAW-PRD-ANF-CustomLog",
             "type": "String",
             "metadata": {
                 "description": "LogAnalytics Workspace Name"
@@ -63,6 +63,7 @@
             ],
             "properties": {
                 "type": "String",
+                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', parameters('LawWorkspaceName')), '2022-10-01').customerId]",
                 "isEncrypted": false
             }
         }
