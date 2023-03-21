@@ -101,12 +101,11 @@
             "name": "[concat(parameters('AutomationAccountName'), '/LAW-ANFCustomLogs-ID')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
-                "[resourceId('Microsoft.OperationalInsights/workspace', '/LAW-PRD-ANF-CustomLogs')]"
+                "[resourceId('Microsoft.OperationalInsights/workspace/', 'LAW-PRD-ANF-CustomLogs')]"
             ],
             "properties": {
                 "isEncrypted": false,
-                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', '/LAW-PRD-ANF-CustomLogs'), '2022-10-01').customerId]"
-
+                "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', 'LAW-PRD-ANF-CustomLogs'), '2022-10-01').customerId]"
             }
         },
         {
