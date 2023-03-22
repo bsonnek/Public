@@ -104,7 +104,7 @@
             ],
             "properties": {
                 "description": "Log Analytics Workspace ID",
-                "isEncrypted": false,
+                "isEncrypted": true,
                 "value": "[concat('\"', reference(concat('Microsoft.OperationalInsights/workspaces/', parameters('LawWorkspaceName')), '2020-08-01').customerId, '\"')]"
             }
         },
@@ -118,7 +118,7 @@
             ],
             "properties": {
                 "description": "Log Analytics Workspace KEY",
-                "isEncrypted": false,
+                "isEncrypted": true,
                 "value": "[concat('\"', listKeys(concat('Microsoft.OperationalInsights/workspaces/', parameters('LawWorkspaceName')), '2020-08-01').primarySharedKey, '\"')]"
             }
         },
@@ -428,7 +428,7 @@
                 "[resourceId('Microsoft.Logic/workflows', parameters('LogicAppNoSnap'))]"
             ],
             "properties": {
-                "isEncrypted": false,
+                "isEncrypted": true,
                 "value": "[concat('\"', listCallbackUrl(resourceId('Microsoft.Logic/workflows/triggers', parameters('LogicAppNoSnap'), 'manual'), '2016-06-01').value, '\"')]"
             }
         },
@@ -441,7 +441,7 @@
                 "[resourceId('Microsoft.Logic/workflows', parameters('LogicAppLowStorage'))]"
             ],
             "properties": {
-                "isEncrypted": false,
+                "isEncrypted": true,
                 "value": "[concat('\"', listCallbackUrl(resourceId('Microsoft.Logic/workflows/triggers', parameters('LogicAppLowStorage'), 'manual'), '2016-06-01').value, '\"')]"
             }
         }
