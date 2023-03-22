@@ -7,6 +7,7 @@ TLDR - Brief Steps for Deployment:
  - Create a New Resource Group - Example "RG-PRD-ANF-CustomLogging
  - **Do Not Change the Log Analytics Workspace Name** - This will break the Workbook paramaters and query.
  - Once The Deployment Starts - Go add the Managed Identity to "Reader" permissions on the Subscription of the Resource Group. Follow Instructions.
+ - The runbook should automatically run on a schedule every 3 hours and populate the Workbook. If not make sure to follow these steps exactly as written.
 
 **Deploy ANF Monitoring and Alerting**:  
 **ATTENTION - Create a New Azure Resource Group During the Deployment**
