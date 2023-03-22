@@ -8,13 +8,18 @@ TLDR - Brief Steps for Deployment:
  - **Do Not Change the Log Analytics Workspace Name** - This will break the Workbook paramaters and query.
  - Once The Deployment Starts - Go add the Managed Identity to "Reader" permissions on the Subscription of the Resource Group. Follow Instructions.
  - The runbook should automatically run on a schedule every 3 hours and populate the Workbook. If not make sure to follow these steps exactly as written.
+ - Deployment will take aproximatly 5 minutes to complete.
 
 **Deploy ANF Monitoring and Alerting**:  
 **ATTENTION - Create a New Azure Resource Group During the Deployment**
 
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbsonnek%2FPublic%2Fmain%2FANF-MonitoringAndAlerting%2FARMDeploy.json)
 
-### This is a custom Azure NetApp Files deployment script that will deploy 6 resources into an Resource Group. Create a new Resource Group during the deployment.
+
+# Instructions After Deployment
+**[Follow These Instructions After the Deployment](https://github.com/bsonnek/Public/blob/main/ANF-MonitoringAndAlerting/Instructions.md)**
+
+### This is a custom Azure NetApp Files deployment script that will deploy 6 resources into an Resource Group. Please Create a new Resource Group during the deployment.
 List of Az Resources and purpose:
  - Automation Account:
 	 - Variables - Environment Variables used in the Runbook to Trigger Logic Apps and write logs to a custom table in Log Analytics Workspace.
@@ -28,18 +33,13 @@ List of Az Resources and purpose:
  - Log Analytics Workspace
 	 - The Runbook will create a custom log table called "NetAppFilesStats_CL"
 	 - The Azure Monitor Workbook will read the custom log table to visualize the data.
- - Azure Monitor Workbook
+ - Azure Monitor Workbook ( Wait 24 hours before the "Custom Logs" Tab starts Showing results)
 	 - This will be used to visualize the data from the Custom log Table and Azure Monitor Metrics of ANF.
 	 - You can pin this workbook to an Azure dashboard to make it easy to access later.
 
 
 #### When the deployment is complete you will find 6 resources in the new Resource Group:
 ![image](https://user-images.githubusercontent.com/10324197/226236789-d7980477-ba85-44bb-a469-8e9327869bb7.png)
-
-
-# Instructions After Deployment
-**[Follow These Instructions After the Deployment](https://github.com/bsonnek/Public/blob/main/ANF-MonitoringAndAlerting/Instructions.md)**
-
 
 ## ANF Custom Workbook - Screenshot Examples from Workbook
 
