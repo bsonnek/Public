@@ -1,1 +1,0 @@
-"[reference(resourceId('Microsoft.OperationalInsights/workspaces/', variables('logAnalyticsName')), '2022-10-01').customerId]",
