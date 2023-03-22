@@ -109,32 +109,6 @@
             }
         },
         {
-            "type": "Microsoft.Automation/automationAccounts/variables",
-            "apiVersion": "2022-08-08",
-            "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-NoSnapshot')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
-                "[resourceId('Microsoft.OperationalInsights/workspaces', 'LA-PRD-ANF-NoSnapshot')]"
-            ],
-            "properties": {
-                "isEncrypted": true,
-                "value": "\"[listCallbackUrl(resourceId('Microsoft.Logic/workflows/triggers', 'LA-PRD-ANF-NoSnapshot', 'manual'), '2016-06-01').value]\""
-            }
-        },
-        {
-            "type": "Microsoft.Automation/automationAccounts/variables",
-            "apiVersion": "2022-08-08",
-            "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-LowStorage')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
-                "[resourceId('Microsoft.OperationalInsights/workspaces', 'LA-PRD-ANF-LowStorage')]"
-            ],
-            "properties": {
-                "isEncrypted": true,
-                "value": "\"[listCallbackUrl(resourceId('Microsoft.Logic/workflows/triggers', 'LA-PRD-ANF-LowStorage', 'manual'), '2016-06-01').value]\""
-            }
-        },
-        {
             "name": "dbfe15f8-1d39-4f29-97fc-19e34226c4ca",
             "type": "microsoft.insights/workbooks",
             "location": "[resourceGroup().location]",
@@ -429,6 +403,32 @@
                 "schedule": {
                     "name": "RB-ANF-CustomMonitoring-3hr-Schedule"
                 }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/variables",
+            "apiVersion": "2022-08-08",
+            "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-NoSnapshot')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
+                "[resourceId('Microsoft.OperationalInsights/workspaces', 'LA-PRD-ANF-NoSnapshot')]"
+            ],
+            "properties": {
+                "isEncrypted": true,
+                "value": "\"[listCallbackUrl(resourceId('Microsoft.Logic/workflows/triggers', 'LA-PRD-ANF-NoSnapshot', 'manual'), '2016-06-01').value]\""
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/variables",
+            "apiVersion": "2022-08-08",
+            "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-LowStorage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
+                "[resourceId('Microsoft.OperationalInsights/workspaces', 'LA-PRD-ANF-LowStorage')]"
+            ],
+            "properties": {
+                "isEncrypted": true,
+                "value": "\"[listCallbackUrl(resourceId('Microsoft.Logic/workflows/triggers', 'LA-PRD-ANF-LowStorage', 'manual'), '2016-06-01').value]\""
             }
         }
     ],
