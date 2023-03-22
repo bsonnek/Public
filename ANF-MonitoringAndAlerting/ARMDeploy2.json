@@ -114,7 +114,7 @@
             "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-NoSnapshot')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
-                "[resourceId('Microsoft.OperationalInsights/workspaces', '/LA-PRD-ANF-NoSnapshot')]"
+                "[resourceId('Microsoft.OperationalInsights/workspaces', 'LA-PRD-ANF-NoSnapshot')]"
             ],
             "properties": {
                 "isEncrypted": true,
@@ -127,7 +127,7 @@
             "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-LowStorage')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
-                "[resourceId('Microsoft.OperationalInsights/workspaces', '/LA-PRD-ANF-LowStorage')]"
+                "[resourceId('Microsoft.OperationalInsights/workspaces', 'LA-PRD-ANF-LowStorage')]"
             ],
             "properties": {
                 "isEncrypted": true,
