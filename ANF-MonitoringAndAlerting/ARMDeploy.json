@@ -22,6 +22,27 @@
             "metadata": {
                 "description": "GUID for the schedule creation - automatically created at deploy"
             }
+        },
+        "LawWorkspaceName": {
+            "defaultValue": "LAW-PRD-ANF-CustomLog",
+            "type": "String",
+            "metadata": {
+                "description": "LogAnalytics Workspace Name"
+            }
+        },
+        "LogicAppLowStorage": {
+            "defaultValue": "LA-PRD-ANF-LowStorage",
+            "type": "String",
+            "metadata": {
+                "description": "Logic App for Low Storage Alerting"
+            }
+        },
+        "LogicAppNoSnap": {
+            "defaultValue": "LA-PRD-ANF-NoSnapshot",
+            "type": "String",
+            "metadata": {
+                "description": "Logic App for now snapshot alerting"
+            }
         }
     },
     "resources": [
@@ -61,27 +82,16 @@
             }
             }
         },
-
         {
-            "type": "Microsoft.Automation/automationAccounts/variables",
-            "apiVersion": "2022-08-08",
-            "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-LowStorage')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
-            ],
+            "name": "[parameters('LawWorkspaceName')]",
+            "type": "Microsoft.OperationalInsights/workspaces",
+            "apiVersion": "2022-10-01",
+            "location": "[resourceGroup().location]",
             "properties": {
-                "isEncrypted": true
-            }
-        },
-        {
-            "type": "Microsoft.Automation/automationAccounts/variables",
-            "apiVersion": "2022-08-08",
-            "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-NoSnapshot')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
-            ],
-            "properties": {
-                "isEncrypted": true
+                "retentionInDays" : "90",
+                "sku": {
+                    "name": "pergb2018"
+                }
             }
         },
         {
@@ -89,10 +99,13 @@
             "apiVersion": "2022-08-08",
             "name": "[concat(parameters('AutomationAccountName'), '/LAW-ANFCustomLogs-ID')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
+                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('LawWorkspaceName'))]"
             ],
             "properties": {
-                "isEncrypted": true
+                "description": "Log Analytics Workspace ID",
+                "isEncrypted": true,
+                "value": "\"[reference(concat('Microsoft.OperationalInsights/workspaces/', parameters('LawWorkspaceName')), '2020-08-01').customerId]\""
             }
         },
         {
@@ -100,10 +113,13 @@
             "apiVersion": "2022-08-08",
             "name": "[concat(parameters('AutomationAccountName'), '/LAW-ANFCustomLogs-Key')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
+                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('LawWorkspaceName'))]"
             ],
             "properties": {
-                "isEncrypted": true
+                "description": "Log Analytics Workspace KEY",
+                "isEncrypted": true,
+                "value": "\"[listKeys(concat('Microsoft.OperationalInsights/workspaces/', parameters('LawWorkspaceName')), '2020-08-01').primarySharedKey]\""
             }
         },
         {
@@ -122,7 +138,7 @@
             }
         },
         {
-            "name": "LA-PRD-ANF-LowStorage",
+            "name": "[parameters('LogicAppLowStorage')]",
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
             "location": "[resourceGroup().location]",
@@ -233,7 +249,7 @@
             }
         },
         {
-            "name": "LA-PRD-ANF-NoSnapshot",
+            "name": "[parameters('LogicAppNoSnap')]",
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
             "location": "[resourceGroup().location]",
@@ -344,18 +360,6 @@
             }
         },
         {
-            "name": "LAW-PRD-ANF-CustomLogs",
-            "type": "Microsoft.OperationalInsights/workspaces",
-            "apiVersion": "2020-03-01-preview",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "retentionInDays" : "90",
-                "sku": {
-                    "name": "pergb2018"
-                }
-            }
-        },
-        {
             "type": "Microsoft.Automation/automationAccounts/modules",
             "apiVersion": "2022-08-08",
             "name": "[concat(parameters('AutomationAccountName'), '/Az.Accounts')]",
@@ -414,7 +418,42 @@
                     "name": "RB-ANF-CustomMonitoring-3hr-Schedule"
                 }
             }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/variables",
+            "apiVersion": "2022-08-08",
+            "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-NoSnapshot')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
+                "[resourceId('Microsoft.Logic/workflows', parameters('LogicAppNoSnap'))]"
+            ],
+            "properties": {
+                "isEncrypted": true,
+                "value": "\"[listCallbackUrl(resourceId('Microsoft.Logic/workflows/triggers', parameters('LogicAppNoSnap'), 'manual'), '2016-06-01').value]\""
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/variables",
+            "apiVersion": "2022-08-08",
+            "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-LowStorage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
+                "[resourceId('Microsoft.Logic/workflows', parameters('LogicAppLowStorage'))]"
+            ],
+            "properties": {
+                "isEncrypted": true,
+                "value": "\"[listCallbackUrl(resourceId('Microsoft.Logic/workflows/triggers', parameters('LogicAppLowStorage'), 'manual'), '2016-06-01').value]\""
+            }
         }
-
-    ]
+    ],
+        "outputs": {
+        "workspaceName": {
+            "type": "string",
+            "value": "[parameters('LawWorkspaceName')]"
+        },
+        "customerId": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', parameters('LawWorkspaceName')), '2022-10-01').customerId]"
+        }
+    }
 }
