@@ -1,6 +1,13 @@
 
 ##  **Deploy** Custom Azure NetApp Files Monitoring and Alerting
 
+#### **Summary of Steps**
+TLDR - Brief Steps for Deployment:
+ - Deploy this solution in the same Subscription as your Azure NetApp Files volumes. 
+ - Create a New Resource Group - Example "RG-PRD-ANF-CustomLogging
+ - **Do Not Change the Log Analytics Workspace Name** - This will break the Workbook paramaters and query.
+ - Once The Deployment Starts - Go add the Managed Identity to "Reader" permissions on the Subscription of the Resource Group. Follow Instructions.
+
 **Deploy ANF Monitoring and Alerting**:  
 **ATTENTION - Create a New Azure Resource Group During the Deployment**
 
