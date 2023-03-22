@@ -173,6 +173,38 @@ foreach($ANFAccount in $ANFAccounts)
         if ($Response.StatusCode -eq 200) {
             Write-output "------SUCCESS--Stored Event in Log Analytics Workspace-----"
         }
+        if ($Response.StatusCode -eq 403) {
+            Write-output "¯\_(ツ)_/¯--Failed First Attempt to Event in Log Analytics Workspace-----"
+            $CustomerId = $LAWID
+            $SharedKey = $LAWKEY
+            $StringToSign = "POST" + "`n" + $Body.Length + "`n" + "application/json" + "`n" + $("x-ms-date:" + [DateTime]::UtcNow.ToString("r")) + "`n" + "/api/logs"
+            $BytesToHash = [Text.Encoding]::UTF8.GetBytes($StringToSign)
+            $KeyBytes = [Convert]::FromBase64String($SharedKey)
+            $HMACSHA256 = New-Object System.Security.Cryptography.HMACSHA256
+            $HMACSHA256.Key = $KeyBytes
+            $CalculatedHash = $HMACSHA256.ComputeHash($BytesToHash)
+            $EncodedHash = [Convert]::ToBase64String($CalculatedHash)
+            $Authorization = 'SharedKey {0}:{1}' -f $CustomerId, $EncodedHash
+            Write-output "------------Api String Built--------"
+            $Uri = "https://" + $CustomerId + ".ods.opinsights.azure.com" + "/api/logs" + "?api-version=2016-04-01"
+            $Headers = @{
+                "Authorization"        = $Authorization;
+                "Log-Type"             = "NetAppFilesStats";
+                "x-ms-date"            = [DateTime]::UtcNow.ToString("r");
+                "time-generated-field" = $(Get-Date)
+            }
+        
+            try {
+                $Response2 = Invoke-WebRequest -Uri $Uri -Method Post -ContentType "application/json" -Headers $Headers -Body $Body -UseBasicParsing
+                Write-output "!! - 2nd Attempt SUCCESS--Stored Event in Log Analytics Workspace-----"
+            }
+            catch {
+                Write-Error -Message $_.Exception
+                Write-Output "¯\_(ツ)_/¯ - 2nd Attempt Failed to Event in Log Analytics Workspace-----"
+                throw $_.Exception
+            }
+            
+        }
         
     }
 }
