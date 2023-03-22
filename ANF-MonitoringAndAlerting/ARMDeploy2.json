@@ -34,14 +34,14 @@
             "defaultValue": "LA-PRD-ANF-LowStorage",
             "type": "String",
             "metadata": {
-                "description": "LogAnalytics Workspace Name"
+                "description": "Logic App for Low Storage Alerting"
             }
         },
         "LogicAppNoSnap": {
             "defaultValue": "LA-PRD-ANF-NoSnapshot",
             "type": "String",
             "metadata": {
-                "description": "LogAnalytics Workspace Name"
+                "description": "Logic App for now snapshot alerting"
             }
         }
     },
@@ -425,7 +425,7 @@
             "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-NoSnapshot')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
-                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('LogicAppNoSnap'))]"
+                "[resourceId('Microsoft.Logic/workflows', parameters('LogicAppNoSnap'))]"
             ],
             "properties": {
                 "isEncrypted": true,
@@ -438,7 +438,7 @@
             "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-LowStorage')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
-                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('LogicAppLowStorage'))]"
+                "[resourceId('Microsoft.Logic/workflows', parameters('LogicAppLowStorage'))]"
             ],
             "properties": {
                 "isEncrypted": true,
