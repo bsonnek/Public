@@ -50,7 +50,7 @@ $SnapshotThreshold = (Get-Date).AddDays(-2)
 
 #get list of subscriptions
 $subscriptionName = Get-AzSubscription
-$setcontext = set-AzContext -Subscription $subscriptionName.Id
+$setcontext = set-AzContext -SubscriptionId $subscriptionName.Id
 
 Write-Output "----STARTING------Subscription Name: $($subscriptionName.Name)"
 Write-Output "----WORKING On--Processing subscription $($setcontext.Subscription.Name)-------"

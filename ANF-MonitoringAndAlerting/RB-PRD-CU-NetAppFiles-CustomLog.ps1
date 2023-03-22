@@ -58,7 +58,7 @@ foreach($sub in $subscriptionName)
 {
     #select the subscription
     Write-Output "----STARTING------Subscription Id: $($sub.Id)"
-    $setcontext = set-AzContext -Subscription $sub.Id
+    $setcontext = set-AzContext -SubscriptionId $sub.Id
 	{
 		Write-Output "----WORKING On--Processing subscription $($setcontext.Subscription.Name)-------"
 		$ANFAccounts = Get-AzResource | Where-Object {$_.ResourceType -eq "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"}
