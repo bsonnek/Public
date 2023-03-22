@@ -4,7 +4,7 @@
 **Deploy ANF Monitoring and Alerting**:  
 **ATTENTION - Create a New Azure Resource Group During the Deployment**
 
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbsonnek%2FPublic%2Fmain%2FANF-MonitoringAndAlerting%2FARMDeploy2.json)
+[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbsonnek%2FPublic%2Fmain%2FANF-MonitoringAndAlerting%2FARMDeploy.json)
 
 ### This is a custom Azure NetApp Files deployment script that will deploy 6 resources into an Resource Group. Create a new Resource Group during the deployment.
 List of Az Resources and purpose:
