@@ -170,9 +170,13 @@ foreach($ANFAccount in $ANFAccounts)
         }
     
         $Response = Invoke-WebRequest -Uri $Uri -Method Post -ContentType "application/json" -Headers $Headers -Body $Body -UseBasicParsing
+        
         if ($Response.StatusCode -eq 200) {
             Write-output "------SUCCESS--Stored Event in Log Analytics Workspace-----"
+        }else{
+            write-output "¯\_(ツ)_/¯--FAILED--1st Attempt to write to Log Analytics Workspace-----"
         }
+
         if ($Response.StatusCode -eq 403) {
             Write-output "¯\_(ツ)_/¯--Failed First Attempt to Event in Log Analytics Workspace-----"
             $CustomerId = $LAWID
