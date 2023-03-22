@@ -2,7 +2,7 @@
 <#
 .NOTES
   Author: Blair Sonnek
-  Creation Date:  10/2022
+  Creation Date:  3/2023
   Purpose/Change: Monitoring and Alerting of Azure NetApp Files
  
  DESCRIPTION
@@ -14,18 +14,19 @@
     
  
  OUTPUTS
-    Log Analytics Account - LOG-PRD-CU-PlatformLogs-OPS // Custom Log Table "AzureNetAppFilesStats"
+    Log Analytics Account - LAW-PRD-ANF-CustomLog // Custom Log Table "NetAppFilesStats_CL"
  
  LINK
     Useful Link to resources or others.
  
  MODULES
-    List Az Modules Required for Script to Run
+    Az.Account - 2.12.1  (Required Upgrade)
+    Az.NetAppFiles - 0.22.1 (Required Upgrade)
 
  RBAC ROLES
   
 .CHANGELOG
-    2/23/2023 - Sanitized Runbook and Migrated to GitHub - Blair Sonnek
+    3/22/2023 - Sanitized Runbook and Migrated to GitHub - Blair Sonnek
 #>
 
 try
@@ -48,12 +49,7 @@ $LogicAppUri2 = Get-AutomationVariable -Name LA-ANF-NoSnapshot
 #Variables
 $SnapshotThreshold = (Get-Date).AddDays(-2)
 
-#get list of subscriptions
-$subscriptionName = Get-AzSubscription
-$setcontext = set-AzContext -SubscriptionId $subscriptionName.Id
 
-Write-Output "----STARTING------Subscription Name: $($subscriptionName.Name)"
-Write-Output "----WORKING On--Processing subscription $($setcontext.Subscription.Name)-------"
 $ANFAccounts = Get-AzResource | Where-Object {$_.ResourceType -eq "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"}
 foreach($ANFAccount in $ANFAccounts)
 {			

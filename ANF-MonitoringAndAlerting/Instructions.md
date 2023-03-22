@@ -1,6 +1,6 @@
 #### Instructions After Deployment
 
-**A runbook was created and needs final configuration to have access to write custom logs and trigger events using logic Apps**
+**A runbook was created and requires access to "Read" the subscription**
 
 1. Allow the Automation Account Managed Identity permission - For now allow Reader permissions to the Subscription.
     - Search Azure for Subscriptions - Select the subscription with your ANF Volumes
