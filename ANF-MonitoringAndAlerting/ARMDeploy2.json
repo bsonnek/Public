@@ -29,6 +29,20 @@
             "metadata": {
                 "description": "LogAnalytics Workspace Name"
             }
+        },
+        "LogicAppLowStorage": {
+            "defaultValue": "LA-PRD-ANF-LowStorage",
+            "type": "String",
+            "metadata": {
+                "description": "LogAnalytics Workspace Name"
+            }
+        },
+        "LogicAppNoSnap": {
+            "defaultValue": "LA-PRD-ANF-NoSnapshot",
+            "type": "String",
+            "metadata": {
+                "description": "LogAnalytics Workspace Name"
+            }
         }
     },
     "resources": [
@@ -124,7 +138,7 @@
             }
         },
         {
-            "name": "LA-PRD-ANF-LowStorage",
+            "name": "[parameters('LogicAppLowStorage')]",
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
             "location": "[resourceGroup().location]",
@@ -235,7 +249,7 @@
             }
         },
         {
-            "name": "LA-PRD-ANF-NoSnapshot",
+            "name": "[parameters('LogicAppNoSnap')]",
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
             "location": "[resourceGroup().location]",
@@ -411,11 +425,11 @@
             "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-NoSnapshot')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
-                "[resourceId('Microsoft.OperationalInsights/workspaces', 'LA-PRD-ANF-NoSnapshot')]"
+                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('LogicAppNoSnap'))]"
             ],
             "properties": {
                 "isEncrypted": true,
-                "value": "\"[listCallbackUrl(resourceId('Microsoft.Logic/workflows/triggers', 'LA-PRD-ANF-NoSnapshot', 'manual'), '2016-06-01').value]\""
+                "value": "\"[listCallbackUrl(resourceId('Microsoft.Logic/workflows/triggers', parameters('LogicAppNoSnap'), 'manual'), '2016-06-01').value]\""
             }
         },
         {
@@ -424,11 +438,11 @@
             "name": "[concat(parameters('AutomationAccountName'), '/LA-ANF-LowStorage')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]",
-                "[resourceId('Microsoft.OperationalInsights/workspaces', 'LA-PRD-ANF-LowStorage')]"
+                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('LogicAppLowStorage'))]"
             ],
             "properties": {
                 "isEncrypted": true,
-                "value": "\"[listCallbackUrl(resourceId('Microsoft.Logic/workflows/triggers', 'LA-PRD-ANF-LowStorage', 'manual'), '2016-06-01').value]\""
+                "value": "\"[listCallbackUrl(resourceId('Microsoft.Logic/workflows/triggers', parameters('LogicAppLowStorage'), 'manual'), '2016-06-01').value]\""
             }
         }
     ],
