@@ -44,8 +44,11 @@ List of Az Resources and purpose:
 
 ## ANF Custom Workbook - Screenshot Examples from Workbook
 
+### Overview of the environment using Azure Monitor Metrics and Graph data.
 ![image](https://user-images.githubusercontent.com/10324197/226236184-6713c0ee-a5ed-4361-836a-18766d93e584.png)
 
+### Details from the Custom Log Table created by the PowerShell runbook.
 ![image](https://user-images.githubusercontent.com/10324197/226235878-e5dcede9-036e-4a6e-a7d1-c0f67194977e.png)
 
+### Additional details from Azure Monitor Metrics
 ![image](https://user-images.githubusercontent.com/10324197/226236611-7aad9c52-504c-4d4b-b61b-a16292b4f457.png)
