@@ -1,5 +1,6 @@
 
 ##  **Deploy** Custom Azure NetApp Files Monitoring and Alerting
+**The current limitations with Azure NetApp Files in the Azure Portal is the lack of Insights workbooks and Diagnostic Logging on the ANF resource. The solution provided in the deployment below, will create a custom log table in Log Analytics, and also an Azure Insights Workbook to visualize and monitor the health of all ANF resources in a subscription. There are also alerts for low storage and no snapshots that can be triggered from the automation runbook**
 
 #### **Summary of Steps**
 TLDR - Brief Steps for Deployment:
@@ -16,7 +17,7 @@ TLDR - Brief Steps for Deployment:
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbsonnek%2FPublic%2Fmain%2FANF-MonitoringAndAlerting%2FARMDeploy.json)
 
 
-# Instructions After Deployment
+## Instructions After Deployment
 **[Follow These Instructions After the Deployment](https://github.com/bsonnek/Public/blob/main/ANF-MonitoringAndAlerting/Instructions.md)**
 
 ### This is a custom Azure NetApp Files deployment script that will deploy 6 resources into an Resource Group. Please Create a new Resource Group during the deployment.
