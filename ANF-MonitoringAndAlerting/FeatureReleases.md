@@ -23,5 +23,5 @@ Future Roadmap
 
 ## Release Notes:
 
-- v1. Initial Release and of Working Deployment (3/22/2023)
+- v1. Initial Release of Working Deployment (3/22/2023)
     - 2x Logic Apps, 1 Runbook, 1 LogAnalytics Workspace, 1 Azure Monitor Workbook.
