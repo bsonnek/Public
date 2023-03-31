@@ -14,6 +14,7 @@ Future Roadmap
 - Runbook
     - Continue to improve Error handling as new issues are discovered
     - Modify API calls to the Logic App to a standard communication to a single Logic App. 1 Logic App to do all alerting
+    - Configure Diagnostic Logging to Logic App. Configure in ARM Template. Then configure a Tab in the workbook to show the health of the runbook.
 - Dashboard - Create a Shared Azure Dashboard for Azure NetApp Files
     - Pin Workbook and other Azure Resource Graph queries to the dashboard
 - OpenAI integration in ticketing and alerting.
