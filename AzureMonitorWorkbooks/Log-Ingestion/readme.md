@@ -8,23 +8,24 @@ The workbook has multiple tabs for drilling down into Log Analytic workspace tab
 
 
 ### Overview Tab:
-![image](.\Screenshots\1-Overview.png)
+![image](https://raw.githubusercontent.com/bsonnek/Public/main/AzureMonitorWorkbooks/Log-Ingestion/Screenshots/1-Overview.png)
 
-![image](.\Screenshots\2-OverviewGraphs.png)
+![image](https://raw.githubusercontent.com/bsonnek/Public/main/AzureMonitorWorkbooks/Log-Ingestion/Screenshots/2-OverviewGraphs.png)
+
 
 
 ### Subscription Size:
-![image](.\Screenshots\3-SubscriptionSizes.png)
+![image](https://raw.githubusercontent.com/bsonnek/Public/main/AzureMonitorWorkbooks/Log-Ingestion/Screenshots/3-SubscriptionSizes.png)
 
 
 ### Log Type Size by Table
-![image](.\Screenshots\4-LogTypeSizeByTable.png)
+![image](https://raw.githubusercontent.com/bsonnek/Public/main/AzureMonitorWorkbooks/Log-Ingestion/Screenshots/4-LogTypeSizeByTable.png)
 
 
 ### Log Type Size by Subscription
 Filter by Log Type  - The results will show all subscirptions filtered by the log type and display ingestion volume and Cost
 
-![image](.\Screenshots\5-LogTypeSizeBySubscription.png)
+![image](https://raw.githubusercontent.com/bsonnek/Public/main/AzureMonitorWorkbooks/Log-Ingestion/Screenshots/5-LogTypeSizeBySubscription.png)
 
 
 ### Other misc tabs specific to our environment
