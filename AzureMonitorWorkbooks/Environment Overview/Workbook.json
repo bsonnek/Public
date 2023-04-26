@@ -1,0 +1,566 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "0a902029-8139-431e-b145-8fb4a2288e5b",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "value": [
+              "value::all"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "c6e9cc98-ae42-49de-ba87-c3f706a71d90",
+            "version": "KqlParameterItem/1.0",
+            "name": "LogAnayltics",
+            "label": "Log Anayltics",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "where type =~ 'Microsoft.OperationalInsights/workspaces'\n| project id, name\n| order by name desc",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "isHiddenWhenLocked": true,
+            "typeSettings": {
+              "resourceTypeFilter": {
+                "microsoft.operationalinsights/workspaces": true
+              },
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "cf3c3811-0deb-4711-8c7f-657deb77d803",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeRange",
+            "type": 4,
+            "value": {
+              "durationMs": 14400000
+            },
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                },
+                {
+                  "durationMs": 1209600000
+                },
+                {
+                  "durationMs": 2419200000
+                },
+                {
+                  "durationMs": 2592000000
+                }
+              ]
+            }
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "name": "parameters - 0"
+    },
+    {
+      "type": 11,
+      "content": {
+        "version": "LinkItem/1.0",
+        "style": "tabs",
+        "tabStyle": "bigger",
+        "links": [
+          {
+            "id": "f83e6fca-2cc9-4982-9153-7957bdd8bca6",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Host Pool Overview",
+            "subTarget": "HostPoolOverview",
+            "style": "link"
+          },
+          {
+            "id": "8b32a02a-7b74-45b6-b186-4518d429de62",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "AVD Host Health",
+            "subTarget": "AVDHostHealth",
+            "style": "link"
+          },
+          {
+            "id": "1d107df4-a5e5-4656-89df-97290aca09a8",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "VM Overview",
+            "subTarget": "VMOverview",
+            "style": "link"
+          }
+        ]
+      },
+      "name": "links - 8",
+      "styleSettings": {
+        "showBorder": true
+      }
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "AVD Host Health",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "Link for UpdateState status levels.\r\nhttps://docs.microsoft.com/en-us/rest/api/desktopvirtualization/session-hosts/update"
+            },
+            "customWidth": "100",
+            "name": "text - 6"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "desktopvirtualizationresources\r\n| where type == \"microsoft.desktopvirtualization/hostpools/sessionhosts\"\r\n| where properties['sessionHostHealthCheckResults'][0]['healthCheckResult'] == \"HealthCheckSucceeded\"\r\n| summarize count() by id, name, location",
+              "size": 1,
+              "title": "Healthy Session Hosts",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "visualization": "map",
+              "mapSettings": {
+                "locInfo": "AzureLoc",
+                "locInfoColumn": "location",
+                "sizeSettings": "count_",
+                "sizeAggregation": "Sum",
+                "minSize": 1,
+                "maxSize": 40,
+                "defaultSize": 1,
+                "labelSettings": "location",
+                "legendMetric": "count_",
+                "legendAggregation": "Sum",
+                "itemColorSettings": null
+              }
+            },
+            "customWidth": "50",
+            "showPin": true,
+            "name": "query - 3"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "desktopvirtualizationresources\r\n| where type == \"microsoft.desktopvirtualization/hostpools/sessionhosts\"\r\n| where properties['sessionHostHealthCheckResults'][0]['healthCheckResult'] == \"HealthCheckFailed\" or properties['sessionHostHealthCheckResults'][0]['healthCheckResult'] == \"SessionHostShutdown\" or properties['sessionHostHealthCheckResults'][0]['healthCheckResult'] == \"Unknown\" or properties.updateState == \"Initial\" or properties.status == \"Unavailable\"\r\n| summarize count() by id, name, location",
+              "size": 0,
+              "title": "Unhealthy Session Hosts",
+              "noDataMessage": "There Currently NO Unhealthy Session Hosts",
+              "noDataMessageStyle": 3,
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "visualization": "map",
+              "mapSettings": {
+                "locInfo": "AzureLoc",
+                "locInfoColumn": "location",
+                "sizeSettings": "count_",
+                "sizeAggregation": "Count",
+                "minSize": 10,
+                "maxSize": 50,
+                "minData": 0,
+                "maxData": 50,
+                "defaultSize": 0,
+                "labelSettings": "location",
+                "legendMetric": "count_",
+                "legendAggregation": "Sum",
+                "itemColorSettings": {
+                  "nodeColorField": "count_",
+                  "colorAggregation": "Sum",
+                  "type": "thresholds",
+                  "thresholdsGrid": [
+                    {
+                      "operator": "Default",
+                      "thresholdValue": null,
+                      "representation": "redBright"
+                    }
+                  ]
+                }
+              }
+            },
+            "customWidth": "50",
+            "showPin": true,
+            "name": "query - 3 - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "desktopvirtualizationresources\r\n| where type == \"microsoft.desktopvirtualization/hostpools/sessionhosts\"\r\n| where properties['sessionHostHealthCheckResults'][0]['healthCheckResult'] == \"HealthCheckFailed\" or properties['sessionHostHealthCheckResults'][0]['healthCheckResult'] == \"SessionHostShutdown\" or properties['sessionHostHealthCheckResults'][0]['healthCheckResult'] == \"Unknown\" or properties.updateState == \"Initial\" or properties.status == \"Unavailable\"\r\n| project id, properties, location, properties.updateState, properties.status",
+              "size": 0,
+              "title": "Unhealthy Session Hosts",
+              "noDataMessage": "There Currently NO Unhealthy Session Hosts",
+              "noDataMessageStyle": 3,
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "gridSettings": {
+                "sortBy": [
+                  {
+                    "itemKey": "location",
+                    "sortOrder": 1
+                  }
+                ]
+              },
+              "sortBy": [
+                {
+                  "itemKey": "location",
+                  "sortOrder": 1
+                }
+              ],
+              "mapSettings": {
+                "locInfo": "AzureLoc",
+                "locInfoColumn": "location",
+                "sizeSettings": "count_",
+                "sizeAggregation": "Sum",
+                "minSize": 1,
+                "maxSize": 40,
+                "defaultSize": 1,
+                "labelSettings": "location",
+                "legendMetric": "count_",
+                "legendAggregation": "Sum",
+                "itemColorSettings": null
+              }
+            },
+            "customWidth": "50",
+            "showPin": true,
+            "name": "query - 3 - Copy - Copy"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "AVDHostHealth"
+      },
+      "name": "group - AVD Host Health"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "HostPoolOverview",
+        "items": [
+          {
+            "type": 9,
+            "content": {
+              "version": "KqlParameterItem/1.0",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "parameters": [
+                {
+                  "id": "5ac09acd-6f07-46f0-a091-1a0c6caa1d78",
+                  "version": "KqlParameterItem/1.0",
+                  "name": "LogAnalytics_Admin",
+                  "type": 5,
+                  "isRequired": true,
+                  "multiSelect": true,
+                  "quote": "'",
+                  "delimiter": ",",
+                  "query": "where type =~ 'Microsoft.OperationalInsights/workspaces'\r\n| project id",
+                  "crossComponentResources": [
+                    "value::all"
+                  ],
+                  "isHiddenWhenLocked": true,
+                  "typeSettings": {
+                    "additionalResourceOptions": [
+                      "value::all"
+                    ]
+                  },
+                  "timeContext": {
+                    "durationMs": 86400000
+                  },
+                  "defaultValue": "value::all",
+                  "queryType": 1,
+                  "resourceType": "microsoft.resourcegraph/resources"
+                }
+              ],
+              "style": "pills",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources"
+            },
+            "name": "parameters - 3"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "SessionHostStatus_CL\r\n| summarize arg_max(TimeGenerated, PoolName_s) by HostName_s //Grab the last TimeGenerated log entry to Join\r\n| join kind=leftouter (\r\n \t\tSessionHostStatus_CL\r\n        | distinct PoolName_s, HostName_s, CurrentSessions_d, TimeGenerated, SubscriptionId) on TimeGenerated\r\n| project-away HostName_s1, PoolName_s1, TimeGenerated1\r\n| summarize TotalSessioHosts=count(HostName_s), ActiveLogins = sum(CurrentSessions_d) by PoolName_s, SubscriptionId\r\n| project SubscriptionId, HostPool=PoolName_s, ActiveLogins, TotalSessioHosts\r\n| sort by ActiveLogins\r\n//| summarize arg_max(TimeGenerated, *) by SubscriptionId, PoolName_s, CurrentSessions_d, HostName_s\r\n//| where HostName_s == \"vm-32c1627ff698.ad.clecco.com\"\r\n//| project TimeGenerated, SubscriptionId, VMPowerState_s, AllowNewSession_b, HostName_s, PoolName_s, CurrentSessions_d, StatusTimestamp_t, SxSStackVersion_s, HealthCheckResult_s, AgentVersion_s",
+              "size": 2,
+              "title": "All Remote Sessions Per Subscription and Host Pool",
+              "timeContextFromParameter": "TimeRange",
+              "showExportToExcel": true,
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnalytics_Admin}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "$gen_group",
+                    "formatter": 13,
+                    "formatOptions": {
+                      "linkTarget": null,
+                      "showIcon": true
+                    }
+                  },
+                  {
+                    "columnMatch": "SubscriptionId",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "ActiveLogins",
+                    "formatter": 8,
+                    "formatOptions": {
+                      "min": 0,
+                      "max": 50,
+                      "palette": "lightBlue",
+                      "aggregation": "Sum"
+                    }
+                  },
+                  {
+                    "columnMatch": "TotalSessioHosts",
+                    "formatter": 0,
+                    "formatOptions": {
+                      "aggregation": "Sum"
+                    }
+                  }
+                ],
+                "hierarchySettings": {
+                  "treeType": 1,
+                  "groupBy": [
+                    "SubscriptionId"
+                  ],
+                  "expandTopLevel": false
+                }
+              },
+              "sortBy": []
+            },
+            "customWidth": "50",
+            "showPin": true,
+            "name": "query - 7"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "WVDAgentHealthStatus\r\n| summarize ActiveSessions= max(toint(ActiveSessions) + toint(InactiveSessions)), InactiveSessions=max(toint(InactiveSessions)) by bin(TimeGenerated, 15m), SessionHostName\r\n| summarize ActiveSessions= sum(ActiveSessions), InactiveSessions = sum(InactiveSessions) by bin(TimeGenerated, 15m)\r\n| project ActiveSessions, InactiveSessions\r\n| limit 1\r\n\r\n\r\n",
+              "size": 1,
+              "title": "Current AVD Sessions",
+              "timeContext": {
+                "durationMs": 1800000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "visualization": "table",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Sessions",
+                    "formatter": 3,
+                    "formatOptions": {
+                      "min": 0,
+                      "max": 200,
+                      "palette": "lightBlue"
+                    }
+                  },
+                  {
+                    "columnMatch": "InactiveSessions",
+                    "formatter": 3,
+                    "formatOptions": {
+                      "min": 0,
+                      "max": 100,
+                      "palette": "redBright"
+                    }
+                  }
+                ]
+              },
+              "tileSettings": {
+                "showBorder": false
+              }
+            },
+            "customWidth": "35",
+            "showPin": true,
+            "name": "query - 2",
+            "styleSettings": {
+              "showBorder": true
+            }
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "WVDAgentHealthStatus\r\n| summarize Sessions= max(toint(ActiveSessions) + toint(InactiveSessions)), InactiveSessions=max(toint(InactiveSessions)) by bin(TimeGenerated, 15m), SessionHostName\r\n| summarize Sessions= sum(Sessions), InactiveSessions = sum(InactiveSessions) by TimeGenerated\r\n//| make-series Sessions = max(Sessions),[\"Idle Sessions\"] = max(InactiveSessions) on TimeGenerated\r\n//| where array_length(TimeGenerated) > 0",
+              "size": 0,
+              "aggregation": 3,
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "visualization": "linechart"
+            },
+            "showPin": true,
+            "name": "Current Active and Inactive AVD Sessions"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "HostPoolOverview"
+      },
+      "name": "group - HostPoolOverview"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "VMOverview",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "VMTracking_CL\r\n| summarize arg_max(TimeGenerated, SubscriptionId) by vmName_s\r\n| summarize count() by SubscriptionId\r\n| sort by count_\r\n",
+              "size": 0,
+              "timeContext": {
+                "durationMs": 1800000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                ""
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "SubscriptionId",
+                    "formatter": 13,
+                    "formatOptions": {
+                      "linkTarget": null,
+                      "showIcon": true
+                    }
+                  }
+                ]
+              }
+            },
+            "name": "query - 0"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "VMTracking_CL\r\n| summarize TotalVMs=count(vmName_s) by bin(TimeGenerated, 10m) \r\n\r\n",
+              "size": 0,
+              "aggregation": 5,
+              "timeContext": {
+                "durationMs": 604800000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "/subscriptions/3cf49d7d-a2b1-4445-9342-7168f6b29bba/resourceGroups/netapp-vdms-admin/providers/microsoft.operationalinsights/workspaces/netapp-vdms-admin-workspace"
+              ],
+              "visualization": "timechart",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "SubscriptionId",
+                    "formatter": 13,
+                    "formatOptions": {
+                      "linkTarget": null,
+                      "showIcon": true
+                    }
+                  }
+                ]
+              },
+              "graphSettings": {
+                "type": 0
+              }
+            },
+            "name": "query - 0 - Copy"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "VMOverview"
+      },
+      "name": "group - VMOverview"
+    }
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}

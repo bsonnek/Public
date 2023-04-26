@@ -1,0 +1,3046 @@
+{
+    "version": "Notebook/1.0",
+    "items": [
+      {
+        "type": 9,
+        "content": {
+          "version": "KqlParameterItem/1.0",
+          "crossComponentResources": [
+            "{Subscription}"
+          ],
+          "parameters": [
+            {
+              "id": "b859a03f-2283-43dd-8536-42714bbfced6",
+              "version": "KqlParameterItem/1.0",
+              "name": "Subscription",
+              "type": 6,
+              "isRequired": true,
+              "value": null,
+              "typeSettings": {
+                "additionalResourceOptions": [],
+                "includeAll": false,
+                "showDefault": false
+              }
+            },
+            {
+              "id": "2e3dfd9b-2d0f-4feb-94e8-107f220c4e28",
+              "version": "KqlParameterItem/1.0",
+              "name": "ResourceGroup",
+              "label": "Resource Group",
+              "type": 5,
+              "isRequired": true,
+              "multiSelect": true,
+              "quote": "'",
+              "delimiter": ",",
+              "query": "resources\r\n| where type contains  \"desktopvirtualization\"\r\n| summarize Count = count() by resourceGroup\r\n| project resourceGroup",
+              "crossComponentResources": [
+                "{Subscription}"
+              ],
+              "typeSettings": {
+                "additionalResourceOptions": [
+                  "value::all"
+                ],
+                "showDefault": false
+              },
+              "defaultValue": "value::all",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources"
+            },
+            {
+              "id": "35bc6d24-33ba-44b6-bd6d-ab6ed6197ff2",
+              "version": "KqlParameterItem/1.0",
+              "name": "LogAnalyticsWorkspace",
+              "type": 5,
+              "isRequired": true,
+              "query": "resources\r\n| where type =~ \"Microsoft.OperationalInsights/workspaces\"\r\n| project id, label=name",
+              "crossComponentResources": [
+                "{Subscription}"
+              ],
+              "value": "",
+              "typeSettings": {
+                "additionalResourceOptions": [],
+                "showDefault": false
+              },
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources"
+            }
+          ],
+          "style": "pills",
+          "queryType": 1,
+          "resourceType": "microsoft.resourcegraph/resources"
+        },
+        "name": "parameters_general"
+      },
+      {
+        "type": 11,
+        "content": {
+          "version": "LinkItem/1.0",
+          "style": "tabs",
+          "tabStyle": "bigger",
+          "links": [
+            {
+              "id": "e874fedc-33a2-4ecb-ae26-e51a09f2d8c7",
+              "cellValue": "selectedTab",
+              "linkTarget": "parameter",
+              "linkLabel": "Log Analytics Agent Config",
+              "subTarget": "LogAnalyticsAgent",
+              "style": "link"
+            },
+            {
+              "id": "f8e26014-2257-4e5f-b479-efea8666d387",
+              "cellValue": "selectedTab",
+              "linkTarget": "parameter",
+              "linkLabel": "AVD Group",
+              "subTarget": "AVDGroup",
+              "preText": "AzureVi",
+              "style": "link"
+            },
+            {
+              "id": "be3d4a84-f7d4-416c-8321-1f836550cceb",
+              "cellValue": "selectedTab",
+              "linkTarget": "parameter",
+              "linkLabel": "Recovery Service Vault",
+              "subTarget": "RecoveryServiceVault",
+              "style": "link"
+            },
+            {
+              "id": "63dbadea-5200-45cd-9198-19dc31051879",
+              "cellValue": "selectedTab",
+              "linkTarget": "parameter",
+              "linkLabel": "Storage Accounts",
+              "subTarget": "StorageAccounts",
+              "style": "link"
+            },
+            {
+              "id": "921b81e0-2968-4eff-b7b6-1fe80f62ef94",
+              "cellValue": "selectedTab",
+              "linkTarget": "parameter",
+              "linkLabel": "Network Group",
+              "subTarget": "NetworkGroup",
+              "style": "link"
+            },
+            {
+              "id": "7e2e4288-38be-43de-b91d-483f2368da5f",
+              "cellValue": "selectedTab",
+              "linkTarget": "parameter",
+              "linkLabel": "LogAnalytics",
+              "subTarget": "LogAnalytics",
+              "style": "link"
+            },
+            {
+              "id": "fccd598d-62d7-48e2-83d2-f013df7ab995",
+              "cellValue": "selectedTab",
+              "linkTarget": "parameter",
+              "linkLabel": "Automation",
+              "subTarget": "Automation",
+              "style": "link"
+            },
+            {
+              "id": "933b30f9-34c9-4d62-9af2-41528c167dd2",
+              "cellValue": "selectedTab",
+              "linkTarget": "parameter",
+              "linkLabel": "KeyVault",
+              "subTarget": "KeyVault",
+              "style": "link"
+            },
+            {
+              "id": "253b82bb-a2ee-48d4-829b-83a3f1895abb",
+              "cellValue": "selectedTab",
+              "linkTarget": "parameter",
+              "linkLabel": "CosmosDB",
+              "subTarget": "CosmosDB",
+              "style": "link"
+            },
+            {
+              "id": "f808591c-d8b2-4bce-9b35-53c72f3631ff",
+              "cellValue": "selectedTab",
+              "linkTarget": "parameter",
+              "linkLabel": "Monitor Activity Log",
+              "subTarget": "MonitorActivityLog",
+              "style": "link"
+            }
+          ]
+        },
+        "name": "links - 2",
+        "styleSettings": {
+          "showBorder": true
+        }
+      },
+      {
+        "type": 12,
+        "content": {
+          "version": "NotebookGroup/1.0",
+          "groupType": "editable",
+          "title": "Log Analytics Agent Configuration",
+          "items": [
+            {
+              "type": 11,
+              "content": {
+                "version": "LinkItem/1.0",
+                "style": "tabs",
+                "links": [
+                  {
+                    "id": "dcb75622-99a3-457d-85a9-cfa0613cf798",
+                    "cellValue": "selectedTab",
+                    "linkTarget": "parameter",
+                    "linkLabel": "Performance Counters",
+                    "subTarget": "PerformanceCounters",
+                    "style": "link"
+                  },
+                  {
+                    "id": "f5b5f512-36b2-4e97-9076-b06a42684265",
+                    "cellValue": "selectedTab",
+                    "linkTarget": "parameter",
+                    "linkLabel": "Event Logs",
+                    "subTarget": "EventLogs",
+                    "style": "link"
+                  },
+                  {
+                    "id": "6a511367-3419-4804-93c5-e6506871292c",
+                    "cellValue": "selectedTab",
+                    "linkTarget": "parameter",
+                    "linkLabel": "Custom Log Files",
+                    "subTarget": "CustomLogFile",
+                    "style": "link"
+                  }
+                ]
+              },
+              "name": "links - 2"
+            },
+            {
+              "type": 1,
+              "content": {
+                "json": "** This page will show what Event Logs and Performance Counters are collected from Virtual Machines where the Log Analytics \"MMA\" Agent is installed.**\r\n\r\n** If the Log Analytics Workspaces does not receive a heartbeat from the MMA Agent, then these Logs and Counters will not show up in the logs for that Virtual Machine **\r\n\r\n** Impact If Not Configured: Alerts and Tickets will not be created / Workbooks and Dashboards will not display information / SLA and Historical Data will not be kept for a Virtual Machine/ etc.. **",
+                "style": "info"
+              },
+              "name": "text - 3"
+            },
+            {
+              "type": 12,
+              "content": {
+                "version": "NotebookGroup/1.0",
+                "groupType": "editable",
+                "title": "Performance counters",
+                "items": [
+                  {
+                    "type": 9,
+                    "content": {
+                      "version": "KqlParameterItem/1.0",
+                      "parameters": [
+                        {
+                          "id": "a6e7a4af-45b6-404f-aafe-fc6842dfb874",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "PerfConfig",
+                          "type": 1,
+                          "isRequired": true,
+                          "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GETARRAY\",\"path\":\"{LogAnalyticsWorkspace}/dataSources?%24filter=kind%20eq%20'WindowsPerformanceCounter'&api-version=2020-03-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":null}",
+                          "isHiddenWhenLocked": true,
+                          "timeContext": {
+                            "durationMs": 0
+                          },
+                          "queryType": 12,
+                          "value": null
+                        }
+                      ],
+                      "style": "pills",
+                      "queryType": 12
+                    },
+                    "name": "parameters_workspaceperfcounters"
+                  },
+                  {
+                    "type": 3,
+                    "content": {
+                      "version": "KqlItem/1.0",
+                      "query": "datatable(cfg:string) [\"{PerfConfig:base64}\"]\r\n| project cfg=parse_json(base64_decode_tostring(cfg))\r\n| mv-expand cfg\r\n| project objectName=cfg.properties.objectName, counterName=cfg.properties.counterName, instanceName=cfg.properties.instanceName, interval=cfg.properties.intervalSeconds\r\n| extend id = strcat(objectName, \", \", counterName, \", \" , instanceName )",
+                      "size": 3,
+                      "title": "Configured counters",
+                      "noDataMessage": "No configured performance counters",
+                      "noDataMessageStyle": 4,
+                      "showExportToExcel": true,
+                      "exportToExcelOptions": "all",
+                      "queryType": 0,
+                      "resourceType": "microsoft.operationalinsights/workspaces",
+                      "crossComponentResources": [
+                        "{LogAnalyticsWorkspace}"
+                      ],
+                      "gridSettings": {
+                        "formatters": [
+                          {
+                            "columnMatch": "id",
+                            "formatter": 5
+                          },
+                          {
+                            "columnMatch": "properties",
+                            "formatter": 5
+                          }
+                        ],
+                        "sortBy": [
+                          {
+                            "itemKey": "objectName",
+                            "sortOrder": 1
+                          }
+                        ],
+                        "labelSettings": [
+                          {
+                            "columnId": "objectName",
+                            "label": "Object name"
+                          },
+                          {
+                            "columnId": "counterName",
+                            "label": "Counter name"
+                          },
+                          {
+                            "columnId": "instanceName",
+                            "label": "Instance name"
+                          },
+                          {
+                            "columnId": "interval",
+                            "label": "Interval"
+                          }
+                        ]
+                      },
+                      "sortBy": [
+                        {
+                          "itemKey": "objectName",
+                          "sortOrder": 1
+                        }
+                      ]
+                    },
+                    "customWidth": "50",
+                    "name": "CurrentCounters"
+                  },
+                  {
+                    "type": 3,
+                    "content": {
+                      "version": "KqlItem/1.0",
+                      "query": "{\"version\":\"1.0.0\",\"content\":\"[\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"LogicalDisk\\\",\\r\\n        \\\"instanceName\\\": \\\"C:\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"60\\\",\\r\\n        \\\"counterName\\\": \\\"% Free Space\\\",\\r\\n        \\\"idx\\\": \\\"LogicalDisk, % Free Space, C:\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"LogicalDisk\\\",\\r\\n        \\\"instanceName\\\": \\\"C:\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"30\\\",\\r\\n        \\\"counterName\\\": \\\"Avg. Disk Queue Length\\\",\\r\\n        \\\"idx\\\": \\\"LogicalDisk, Avg. Disk Queue Length, C:\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"LogicalDisk\\\",\\r\\n        \\\"instanceName\\\": \\\"C:\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"60\\\",\\r\\n        \\\"counterName\\\": \\\"Avg. Disk sec/Transfer\\\",\\r\\n        \\\"idx\\\": \\\"LogicalDisk, Avg. Disk sec/Transfer, C:\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"LogicalDisk\\\",\\r\\n        \\\"instanceName\\\": \\\"C:\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"30\\\",\\r\\n        \\\"counterName\\\": \\\"Current Disk Queue Length\\\",\\r\\n        \\\"idx\\\": \\\"LogicalDisk, Current Disk Queue Length, C:\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"Memory\\\",\\r\\n        \\\"instanceName\\\": \\\"*\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"30\\\",\\r\\n        \\\"counterName\\\": \\\"Available Mbytes\\\",\\r\\n        \\\"idx\\\": \\\"Memory, Available Mbytes, *\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"Memory\\\",\\r\\n        \\\"instanceName\\\": \\\"*\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"30\\\",\\r\\n        \\\"counterName\\\": \\\"Page Faults/sec\\\",\\r\\n        \\\"idx\\\": \\\"Memory, Page Faults/sec, *\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"Memory\\\",\\r\\n        \\\"instanceName\\\": \\\"*\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"30\\\",\\r\\n        \\\"counterName\\\": \\\"Pages/sec\\\",\\r\\n        \\\"idx\\\": \\\"Memory, Pages/sec, *\\\"\\r\\n    },\\r\\n\\t{\\r\\n        \\\"objectName\\\": \\\"Memory\\\",\\r\\n        \\\"instanceName\\\": \\\"*\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"30\\\",\\r\\n        \\\"counterName\\\": \\\"% Committed Bytes In Use\\\",\\r\\n        \\\"idx\\\": \\\"Memory, % Committed Bytes In Use, *\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"PhysicalDisk\\\",\\r\\n        \\\"instanceName\\\": \\\"*\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"30\\\",\\r\\n        \\\"counterName\\\": \\\"Avg. Disk Queue Length\\\",\\r\\n        \\\"idx\\\": \\\"PhysicalDisk, Avg. Disk Queue Length, *\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"PhysicalDisk\\\",\\r\\n        \\\"instanceName\\\": \\\"*\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"30\\\",\\r\\n        \\\"counterName\\\": \\\"Avg. Disk sec/Read\\\",\\r\\n        \\\"idx\\\": \\\"PhysicalDisk, Avg. Disk sec/Read, *\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"PhysicalDisk\\\",\\r\\n        \\\"instanceName\\\": \\\"*\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"30\\\",\\r\\n        \\\"counterName\\\": \\\"Avg. Disk sec/Transfer\\\",\\r\\n        \\\"idx\\\": \\\"PhysicalDisk, Avg. Disk sec/Transfer, *\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"PhysicalDisk\\\",\\r\\n        \\\"instanceName\\\": \\\"*\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"30\\\",\\r\\n        \\\"counterName\\\": \\\"Avg. Disk sec/Write\\\",\\r\\n        \\\"idx\\\": \\\"PhysicalDisk, Avg. Disk sec/Write, *\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"Processor Information\\\",\\r\\n        \\\"instanceName\\\": \\\"_Total\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"30\\\",\\r\\n        \\\"counterName\\\": \\\"% Processor Time\\\",\\r\\n        \\\"idx\\\": \\\"Processor Information, % Processor Time, _Total\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"Terminal Services\\\",\\r\\n        \\\"instanceName\\\": \\\"*\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"60\\\",\\r\\n        \\\"counterName\\\": \\\"Active Sessions\\\",\\r\\n        \\\"idx\\\": \\\"Terminal Services, Active Sessions, *\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"Terminal Services\\\",\\r\\n        \\\"instanceName\\\": \\\"*\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"60\\\",\\r\\n        \\\"counterName\\\": \\\"Inactive Sessions\\\",\\r\\n        \\\"idx\\\": \\\"Terminal Services, Inactive Sessions, *\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"Terminal Services\\\",\\r\\n        \\\"instanceName\\\": \\\"*\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"60\\\",\\r\\n        \\\"counterName\\\": \\\"Total Sessions\\\",\\r\\n        \\\"idx\\\": \\\"Terminal Services, Total Sessions, *\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"User Input Delay per Process\\\",\\r\\n        \\\"instanceName\\\": \\\"*\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"30\\\",\\r\\n        \\\"counterName\\\": \\\"Max Input Delay\\\",\\r\\n        \\\"idx\\\": \\\"User Input Delay per Process, Max Input Delay, *\\\"\\r\\n    },\\r\\n    {\\r\\n        \\\"objectName\\\": \\\"User Input Delay per Session\\\",\\r\\n        \\\"instanceName\\\": \\\"*\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"30\\\",\\r\\n        \\\"counterName\\\": \\\"Max Input Delay\\\",\\r\\n        \\\"idx\\\": \\\"User Input Delay per Session, Max Input Delay, *\\\"\\r\\n\\t},\\r\\n\\t    {\\r\\n        \\\"objectName\\\": \\\"RemoteFX Network \\\",\\r\\n        \\\"instanceName\\\": \\\"*\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"30\\\",\\r\\n        \\\"counterName\\\": \\\"Current TCP RTT\\\",\\r\\n        \\\"idx\\\": \\\"RemoteFX Network, Current TCP RTT, *\\\"\\r\\n    },\\r\\n\\t    {\\r\\n        \\\"objectName\\\": \\\"RemoteFX Network\\\",\\r\\n        \\\"instanceName\\\": \\\"*\\\",\\r\\n        \\\"intervalSeconds\\\": \\\"30\\\",\\r\\n        \\\"counterName\\\": \\\"Current UDP Bandwidth\\\",\\r\\n        \\\"idx\\\": \\\"RemoteFX Network, Current UDP Bandwidth, *\\\"\\r\\n    }\\r\\n]\\r\\n\",\"transformers\":[{\"type\":\"jsonpath\",\"settings\":{\"columns\":[{\"path\":\"$.idx\",\"columnid\":\"idx\"}]}}]}",
+                      "size": 0,
+                      "queryType": 8
+                    },
+                    "conditionalVisibility": {
+                      "parameterName": "alwayshide",
+                      "comparison": "isNotEqualTo"
+                    },
+                    "name": "ExpectedCounters"
+                  },
+                  {
+                    "type": 3,
+                    "content": {
+                      "version": "KqlItem/1.0",
+                      "query": "{\"version\":\"Merge/1.0\",\"merges\":[{\"id\":\"9ef8403b-bc05-43bd-a724-5bacc686c2c9\",\"mergeType\":\"leftanti\",\"leftTable\":\"ExpectedCounters\",\"rightTable\":\"CurrentCounters\",\"leftColumn\":\"idx\",\"rightColumn\":\"id\"}],\"projectRename\":[{\"originalName\":\"[ExpectedCounters].idx\",\"mergedName\":\"idx\",\"fromId\":\"9ef8403b-bc05-43bd-a724-5bacc686c2c9\"}]}",
+                      "size": 3,
+                      "title": "Missing counters",
+                      "noDataMessage": "No missing performance counters",
+                      "noDataMessageStyle": 3,
+                      "queryType": 7
+                    },
+                    "customWidth": "50",
+                    "showPin": false,
+                    "name": "MissingCounters"
+                  }
+                ]
+              },
+              "conditionalVisibility": {
+                "parameterName": "selectedTab",
+                "comparison": "isEqualTo",
+                "value": "PerformanceCounters"
+              },
+              "name": "PerfGroup",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 12,
+              "content": {
+                "version": "NotebookGroup/1.0",
+                "groupType": "editable",
+                "title": "Windows event logs",
+                "items": [
+                  {
+                    "type": 9,
+                    "content": {
+                      "version": "KqlParameterItem/1.0",
+                      "crossComponentResources": [
+                        "{Subscription}"
+                      ],
+                      "parameters": [
+                        {
+                          "id": "546d9405-54fa-4fce-94a1-5b6290f3fd47",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "ConfigEvents",
+                          "type": 1,
+                          "isRequired": true,
+                          "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GETARRAY\",\"path\":\"{LogAnalyticsWorkspace}/dataSources?%24filter=kind%20eq%20'WindowsEvent'&api-version=2020-03-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":null}",
+                          "isHiddenWhenLocked": true,
+                          "timeContext": {
+                            "durationMs": 0
+                          },
+                          "queryType": 12
+                        },
+                        {
+                          "version": "KqlParameterItem/1.0",
+                          "name": "RequiresEvents",
+                          "type": 1,
+                          "isRequired": true,
+                          "value": "[\r\n{\"name\":\"Microsoft-Windows-TerminalServices-RemoteConnectionManager/Admin\",\"type\":\"Error\",\"idx\":\"Microsoft-Windows-TerminalServices-RemoteConnectionManager/Admin, Error\"},\r\n{\"name\":\"Microsoft-Windows-TerminalServices-RemoteConnectionManager/Admin\",\"type\":\"Warning\",\"idx\":\"Microsoft-Windows-TerminalServices-RemoteConnectionManager/Admin, Warning\"},\r\n{\"name\":\"Microsoft-Windows-TerminalServices-RemoteConnectionManager/Admin\",\"type\":\"Information\",\"idx\":\"Microsoft-Windows-TerminalServices-RemoteConnectionManager/Admin, Information\"},\r\n{\"name\":\"Microsoft-Windows-TerminalServices-LocalSessionManager/Operational\",\"type\":\"Error\",\"idx\":\"Microsoft-Windows-TerminalServices-LocalSessionManager/Operational, Error\"},\r\n{\"name\":\"Microsoft-Windows-TerminalServices-LocalSessionManager/Operational\",\"type\":\"Warning\",\"idx\":\"Microsoft-Windows-TerminalServices-LocalSessionManager/Operational, Warning\"},\r\n{\"name\":\"Microsoft-Windows-TerminalServices-LocalSessionManager/Operational\",\"type\":\"Information\",\"idx\":\"Microsoft-Windows-TerminalServices-LocalSessionManager/Operational, Information\"},\r\n{\"name\":\"System\",\"type\":\"Error\",\"idx\":\"System, Error\"},\r\n{\"name\":\"System\",\"type\":\"Warning\",\"idx\":\"System, Warning\"},\r\n{\"name\":\"Microsoft-FSLogix-Apps/Operational\",\"type\":\"Error\",\"idx\":\"Microsoft-FSLogix-Apps/Operational, Error\"},\r\n{\"name\":\"Microsoft-FSLogix-Apps/Operational\",\"type\":\"Warning\",\"idx\":\"Microsoft-FSLogix-Apps/Operational, Warning\"},\r\n{\"name\":\"Microsoft-FSLogix-Apps/Operational\",\"type\":\"Information\",\"idx\":\"Microsoft-FSLogix-Apps/Operational, Information\"},\r\n{\"name\":\"Application\",\"type\":\"Error\",\"idx\":\"Application, Error\"},\r\n{\"name\":\"Application\",\"type\":\"Warning\",\"idx\":\"Application, Warning\"},\r\n{\"name\":\"Microsoft-FSLogix-Apps/Admin\",\"type\":\"Error\",\"idx\":\"Microsoft-FSLogix-Apps/Admin, Error\"},\r\n{\"name\":\"Microsoft-FSLogix-Apps/Admin\",\"type\":\"Warning\",\"idx\":\"Microsoft-FSLogix-Apps/Admin, Warning\"},\r\n{\"name\":\"Microsoft-FSLogix-Apps/Admin\",\"type\":\"Information\",\"idx\":\"Microsoft-FSLogix-Apps/Admin, Information\"}\r\n]\r\n",
+                          "isHiddenWhenLocked": true,
+                          "typeSettings": {
+                            "multiLineText": true,
+                            "editorLanguage": "text"
+                          },
+                          "timeContext": {
+                            "durationMs": 0
+                          },
+                          "id": "c0010571-85f4-4852-9e8b-6270df7200a0"
+                        },
+                        {
+                          "id": "6e2845b3-a1c8-4dac-b7ee-18764f3d2b88",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "TemplateData",
+                          "type": 1,
+                          "isRequired": true,
+                          "query": "let required=datatable ( required: dynamic) [dynamic({RequiresEvents})]\r\n| mvexpand required\r\n| project  name=tostring(required.name), types=tostring(required.type)\r\n| evaluate pivot(types);\r\nlet current = datatable(current:dynamic)[dynamic({ConfigEvents})]\r\n| mvexpand current\r\n| project name = current.properties.eventLogName, types=current.properties.eventTypes, deployedName=current.name\r\n| mvexpand types\r\n| project name=tostring(name), types=tostring(types.eventType), deployedname=tostring(deployedName)\r\n| evaluate pivot(types)\r\n| project name, deployedname, Error = column_ifexists(\"Error\", 0), Information=column_ifexists(\"Information\", 0), Warning=column_ifexists(\"Warning\", 0);\r\nrequired\r\n| join kind=leftouter current on name\r\n| project name, deployedname, Error=binary_or(Error, coalesce(Error1,0)), Information=binary_or(Information, coalesce(Information1,0)),Warning=binary_or(Warning, coalesce(Warning1,0))\r\n| extend types= array_concat(iff(Error==1, dynamic([{\"eventType\":\"Error\"}]), dynamic([])),\r\n                             iff(Information==1, dynamic([{\"eventType\":\"Information\"}]), dynamic([])),\r\n                             iff(Warning==1, dynamic([{\"eventType\":\"Warning\"}]),dynamic([])))\r\n| project name, deployedName = iff(isempty( deployedname), strcat(\"DataSource_WindowsEvent_\", tostring(new_guid())), deployedname), types\r\n| project obj=pack_all()\r\n| summarize make_list(obj)\r\n",
+                          "crossComponentResources": [
+                            "{LogAnalyticsWorkspace}"
+                          ],
+                          "isHiddenWhenLocked": true,
+                          "timeContext": {
+                            "durationMs": 0
+                          },
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces"
+                        },
+                        {
+                          "id": "51e2780c-4563-4a08-bb52-115954d56093",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "ConfigWorkspaceLocation",
+                          "type": 1,
+                          "isRequired": true,
+                          "query": "Resources\r\n| where id == \"{LogAnalyticsWorkspace}\"\r\n| project location",
+                          "crossComponentResources": [
+                            "{Subscription}"
+                          ],
+                          "isHiddenWhenLocked": true,
+                          "timeContext": {
+                            "durationMs": 0
+                          },
+                          "queryType": 1,
+                          "resourceType": "microsoft.resourcegraph/resources"
+                        }
+                      ],
+                      "style": "pills",
+                      "queryType": 1,
+                      "resourceType": "microsoft.resourcegraph/resources"
+                    },
+                    "name": "parameters_eventconfig"
+                  },
+                  {
+                    "type": 3,
+                    "content": {
+                      "version": "KqlItem/1.0",
+                      "query": "datatable(cfg:string) [\"{ConfigEvents:base64}\"]\r\n| project cfg=parse_json(base64_decode_tostring(cfg))\r\n| mv-expand cfg\r\n| project Name=cfg.properties.eventLogName, Types = cfg.properties.eventTypes\r\n| mv-expand Types\r\n| project Name, Type=Types.eventType\r\n| extend idx = strcat(Name, \", \", Type)\r\n",
+                      "size": 3,
+                      "title": "Configured event logs",
+                      "noDataMessage": "No configured events",
+                      "noDataMessageStyle": 4,
+                      "timeContext": {
+                        "durationMs": 0
+                      },
+                      "showExportToExcel": true,
+                      "exportToExcelOptions": "all",
+                      "queryType": 0,
+                      "resourceType": "microsoft.operationalinsights/workspaces",
+                      "crossComponentResources": [
+                        "{LogAnalyticsWorkspace}"
+                      ],
+                      "gridSettings": {
+                        "formatters": [
+                          {
+                            "columnMatch": "idx",
+                            "formatter": 5
+                          }
+                        ]
+                      }
+                    },
+                    "customWidth": "50",
+                    "name": "CurrentEvents1"
+                  },
+                  {
+                    "type": 3,
+                    "content": {
+                      "version": "KqlItem/1.0",
+                      "query": "datatable ( required: dynamic) [dynamic({RequiresEvents})]\r\n| mvexpand required\r\n| project  Name=tostring(required.name), Type=tostring(required.type), idx=tostring(required.idx)",
+                      "size": 0,
+                      "queryType": 0,
+                      "resourceType": "microsoft.operationalinsights/workspaces",
+                      "crossComponentResources": [
+                        "{LogAnalyticsWorkspace}"
+                      ]
+                    },
+                    "conditionalVisibility": {
+                      "parameterName": "noparameter",
+                      "comparison": "isNotEqualTo"
+                    },
+                    "name": "ExpectedEvents1"
+                  },
+                  {
+                    "type": 3,
+                    "content": {
+                      "version": "KqlItem/1.0",
+                      "query": "{\"version\":\"Merge/1.0\",\"merges\":[{\"id\":\"9c01efde-5927-4847-8f0b-efb7aec6c0fa\",\"mergeType\":\"leftanti\",\"leftTable\":\"ExpectedEvents1\",\"rightTable\":\"CurrentEvents1\",\"leftColumn\":\"idx\",\"rightColumn\":\"idx\"}],\"projectRename\":[{\"originalName\":\"[ExpectedEvents1].Name\",\"mergedName\":\"Name\",\"fromId\":\"9c01efde-5927-4847-8f0b-efb7aec6c0fa\"},{\"originalName\":\"[ExpectedEvents1].Type\",\"mergedName\":\"Type\",\"fromId\":\"9c01efde-5927-4847-8f0b-efb7aec6c0fa\"},{\"originalName\":\"[ExpectedEvents1].idx\"}]}",
+                      "size": 3,
+                      "title": "Missing event logs",
+                      "noDataMessage": "No missing events found",
+                      "noDataMessageStyle": 3,
+                      "queryType": 7
+                    },
+                    "customWidth": "50",
+                    "showPin": false,
+                    "name": "MissingEvents"
+                  }
+                ]
+              },
+              "conditionalVisibility": {
+                "parameterName": "selectedTab",
+                "comparison": "isEqualTo",
+                "value": "EventLogs"
+              },
+              "name": "EventsGroup",
+              "styleSettings": {
+                "showBorder": true
+              }
+            }
+          ]
+        },
+        "conditionalVisibility": {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "LogAnalyticsAgent"
+        },
+        "name": "LogAnalyticsAgent"
+      },
+      {
+        "type": 12,
+        "content": {
+          "version": "NotebookGroup/1.0",
+          "groupType": "editable",
+          "title": "Azure Virtual Desktop Resources",
+          "items": [
+            {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "parameters": [
+                  {
+                    "id": "4885da0a-e59f-44ca-943a-b057f6859c0e",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "HostPool",
+                    "label": "Host Pool",
+                    "type": 5,
+                    "isRequired": true,
+                    "query": "resources\r\n| where type == \"microsoft.desktopvirtualization/hostpools\"",
+                    "crossComponentResources": [
+                      "{Subscription}"
+                    ],
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "showDefault": false
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 1
+                  },
+                  {
+                    "id": "bcaf4317-8cc9-4c28-8123-397039c7070f",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "pooldiagcheck",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/{HostPool}/providers/microsoft.insights/diagnosticSettings?api-version=2021-05-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":null}",
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 12
+                  },
+                  {
+                    "id": "c6d6bac3-eb5a-429b-bb73-6d7e6e67cc7d",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "requiredTables",
+                    "type": 1,
+                    "isRequired": true,
+                    "value": "'checkpoint', 'error', 'management', 'connection', 'hostregistration', 'agenthealthstatus', 'networkdata', 'sessionhostmanagement'",
+                    "isHiddenWhenLocked": true,
+                    "typeSettings": {
+                      "multiLineText": true,
+                      "editorLanguage": "text"
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    }
+                  },
+                  {
+                    "id": "079c3bb6-0eb1-4b84-821f-f1948161d028",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "MissingTables",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "datatable(config:string) ['{pooldiagcheck}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| mv-expand tables\r\n| project Name, Workspace, Table=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTables}] ) on $left.Table == $right.Required\r\n| where Enabled == false and isnotempty(Required)\r\n| summarize result = count()\r\n| project tostring(result)",
+                    "crossComponentResources": [
+                      "{LogAnalyticsWorkspace}"
+                    ],
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces"
+                  }
+                ],
+                "style": "formVertical",
+                "queryType": 12
+              },
+              "customWidth": "15",
+              "name": "parameters - 0"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "datatable(config:string) ['{pooldiagcheck}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| mv-expand tables\r\n| project Name, Workspace, Groups=tables.categoryGroup, Table=tostring(tables.category), tableId=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTables}] ) on $left.tableId == $right.Required\r\n| project Name, Workspace, Groups, Table, Required = iif(isempty(Required),\"No\",\"Yes\"), Enabled = iff(Enabled == true, \"Yes\", \"No\"), Critical = iff(Enabled == false and isnotempty(Required), \"Yes\",\"No\")",
+                "size": 1,
+                "timeContext": {
+                  "durationMs": 86400000
+                },
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "gridSettings": {
+                  "formatters": [
+                    {
+                      "columnMatch": "Required",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "Yes",
+                            "representation": "success",
+                            "text": "{0}{1}"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "2",
+                            "text": "{0}{1}"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "columnMatch": "Enabled",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Critical",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "No",
+                            "representation": "success",
+                            "text": "[\"Enabled\"]"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "4",
+                            "text": "[\"Enabled\"]"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "labelSettings": [
+                    {
+                      "columnId": "Name",
+                      "label": "Name"
+                    },
+                    {
+                      "columnId": "Workspace",
+                      "label": "Workspace"
+                    },
+                    {
+                      "columnId": "Groups",
+                      "label": "Groups"
+                    },
+                    {
+                      "columnId": "Table",
+                      "label": "Table"
+                    },
+                    {
+                      "columnId": "Required",
+                      "label": "Required"
+                    },
+                    {
+                      "columnId": "Enabled",
+                      "label": "Enabled"
+                    },
+                    {
+                      "columnId": "Critical",
+                      "label": "Critical"
+                    }
+                  ]
+                }
+              },
+              "customWidth": "85",
+              "name": "query - 2"
+            },
+            {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "parameters": [
+                  {
+                    "id": "4885da0a-e59f-44ca-943a-b057f6859c0e",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "wvdworkspace",
+                    "label": "AVD Workspaces",
+                    "type": 5,
+                    "isRequired": true,
+                    "query": "resources\r\n| where type == \"microsoft.desktopvirtualization/workspaces\"\r\n| project id, name\r\n\r\n",
+                    "crossComponentResources": [
+                      "{Subscription}"
+                    ],
+                    "value": "/subscriptions/a5f0557c-b87c-40ac-b099-2d753112982a/resourceGroups/aim/providers/Microsoft.DesktopVirtualization/workspaces/j0tt",
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "showDefault": false
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 1
+                  },
+                  {
+                    "id": "bcaf4317-8cc9-4c28-8123-397039c7070f",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "wvdworkspacediag",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/{wvdworkspace}/providers/microsoft.insights/diagnosticSettings?api-version=2021-05-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":null}",
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 12,
+                    "value": null
+                  },
+                  {
+                    "id": "c6d6bac3-eb5a-429b-bb73-6d7e6e67cc7d",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "requiredTablesWkspc",
+                    "type": 1,
+                    "isRequired": true,
+                    "value": "'checkpoint', 'error', 'management', 'feed'",
+                    "isHiddenWhenLocked": true,
+                    "typeSettings": {
+                      "multiLineText": true,
+                      "editorLanguage": "text"
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    }
+                  },
+                  {
+                    "id": "079c3bb6-0eb1-4b84-821f-f1948161d028",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "MissingTablesWkspc",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "datatable(config:string) ['{wvdworkspacediag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| mv-expand tables\r\n| project Name, Workspace, Table=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesWkspc}] ) on $left.Table == $right.Required\r\n| where Enabled == false and isnotempty(Required)\r\n| summarize result = count()\r\n| project tostring(result)",
+                    "crossComponentResources": [
+                      "{LogAnalyticsWorkspace}"
+                    ],
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces"
+                  }
+                ],
+                "style": "formVertical",
+                "queryType": 0,
+                "resourceType": "microsoft.resourcegraph/resources"
+              },
+              "customWidth": "15",
+              "name": "parameters - 0"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "datatable(config:string) ['{wvdworkspacediag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| mv-expand tables\r\n| project Name, Workspace, Groups=tables.categoryGroup, Table=tostring(tables.category), tableId=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesWkspc}] ) on $left.tableId == $right.Required\r\n| project Name, Workspace, Groups, Table, Required = iif(isempty(Required),\"No\",\"Yes\"), Enabled = iff(Enabled == true, \"Yes\", \"No\"), Critical = iff(Enabled == false and isnotempty(Required), \"Yes\",\"No\")",
+                "size": 1,
+                "noDataMessage": "Diagnostic Settings Are Not Configured",
+                "noDataMessageStyle": 5,
+                "timeContext": {
+                  "durationMs": 86400000
+                },
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "gridSettings": {
+                  "formatters": [
+                    {
+                      "columnMatch": "Required",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "Yes",
+                            "representation": "success",
+                            "text": "{0}{1}"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "warning",
+                            "text": "{0}{1}"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "columnMatch": "Enabled",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Critical",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "No",
+                            "representation": "success",
+                            "text": "[\"Enabled\"]"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "4",
+                            "text": "[\"Enabled\"]"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "labelSettings": [
+                    {
+                      "columnId": "Name",
+                      "label": "Name"
+                    },
+                    {
+                      "columnId": "Workspace",
+                      "label": "Workspace"
+                    },
+                    {
+                      "columnId": "Groups",
+                      "label": "Groups"
+                    },
+                    {
+                      "columnId": "Table",
+                      "label": "Table"
+                    },
+                    {
+                      "columnId": "Required",
+                      "label": "Required"
+                    },
+                    {
+                      "columnId": "Enabled",
+                      "label": "Enabled"
+                    },
+                    {
+                      "columnId": "Critical",
+                      "label": "Critical"
+                    }
+                  ]
+                }
+              },
+              "customWidth": "85",
+              "name": "query - 2"
+            },
+            {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "parameters": [
+                  {
+                    "id": "55d17c0f-378f-4cc7-9f74-a07cc80a44af",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "wvdAppGroup",
+                    "label": "AVD App Group",
+                    "type": 5,
+                    "isRequired": true,
+                    "query": "resources\r\n| where type =~ \"microsoft.desktopvirtualization/applicationgroups\"\r\n| project id, name\r\n\r\n",
+                    "crossComponentResources": [
+                      "{Subscription}"
+                    ],
+                    "value": "/subscriptions/a5f0557c-b87c-40ac-b099-2d753112982a/resourceGroups/aim/providers/Microsoft.DesktopVirtualization/applicationgroups/Dissomaster-DAG",
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "showDefault": false
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 1,
+                    "resourceType": "microsoft.resourcegraph/resources"
+                  },
+                  {
+                    "id": "33c65756-91a6-485b-9e6c-452b9f9b5085",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "wvdAppGroupdiag",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/{wvdAppGroup}/providers/microsoft.insights/diagnosticSettings?api-version=2021-05-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":null}",
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 12,
+                    "value": null
+                  },
+                  {
+                    "id": "5776ae6f-8c25-4f49-9023-fe820ae80f8d",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "requiredTablesAppGroup",
+                    "type": 1,
+                    "isRequired": true,
+                    "value": "'checkpoint', 'error', 'management', 'allLogs'",
+                    "isHiddenWhenLocked": true,
+                    "typeSettings": {
+                      "multiLineText": true,
+                      "editorLanguage": "text"
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    }
+                  },
+                  {
+                    "id": "fd4d44ad-15d3-4f59-aea3-8179728e00ba",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "MissingTablesAppGroup",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "datatable(config:string) ['{wvdworkspacediag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| mv-expand tables\r\n| project Name, Workspace, Table=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesWkspc}] ) on $left.Table == $right.Required\r\n| where Enabled == false and isnotempty(Required)\r\n| summarize result = count()\r\n| project tostring(result)",
+                    "crossComponentResources": [
+                      "{LogAnalyticsWorkspace}"
+                    ],
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces"
+                  }
+                ],
+                "style": "formVertical",
+                "queryType": 12
+              },
+              "customWidth": "15",
+              "name": "parameters - 0 - Copy"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "datatable(config:string) ['{wvdAppGroupdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| mv-expand tables\r\n| project Name, Workspace, Groups=tables.categoryGroup, Table=tostring(tables.category), tableId=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesAppGroup}] ) on $left.tableId == $right.Required\r\n| project Name, Workspace, Groups, Table, Required = iif(isempty(Required),\"No\",\"Yes\"), Enabled = iff(Enabled == true, \"Yes\", \"No\"), Critical = iff(Enabled == false and isnotempty(Required), \"Yes\",\"No\")",
+                "size": 1,
+                "noDataMessage": "Diagnostic Settings Are Not Configured",
+                "noDataMessageStyle": 5,
+                "timeContext": {
+                  "durationMs": 86400000
+                },
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "gridSettings": {
+                  "formatters": [
+                    {
+                      "columnMatch": "Required",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "Yes",
+                            "representation": "success",
+                            "text": "{0}{1}"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "warning",
+                            "text": "{0}{1}"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "columnMatch": "Enabled",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Critical",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "No",
+                            "representation": "success",
+                            "text": "[\"Enabled\"]"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "4",
+                            "text": "[\"Enabled\"]"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "labelSettings": [
+                    {
+                      "columnId": "Name",
+                      "label": "Name"
+                    },
+                    {
+                      "columnId": "Workspace",
+                      "label": "Workspace"
+                    },
+                    {
+                      "columnId": "Groups",
+                      "label": "Groups"
+                    },
+                    {
+                      "columnId": "Table",
+                      "label": "Table"
+                    },
+                    {
+                      "columnId": "Required",
+                      "label": "Required"
+                    },
+                    {
+                      "columnId": "Enabled",
+                      "label": "Enabled"
+                    },
+                    {
+                      "columnId": "Critical",
+                      "label": "Critical"
+                    }
+                  ]
+                }
+              },
+              "customWidth": "85",
+              "name": "query - 2 - Copy"
+            }
+          ]
+        },
+        "conditionalVisibility": {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "AVDGroup"
+        },
+        "name": "group - AVD Resources"
+      },
+      {
+        "type": 12,
+        "content": {
+          "version": "NotebookGroup/1.0",
+          "groupType": "editable",
+          "title": "Recovery Service Vault Resource Logs",
+          "items": [
+            {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "parameters": [
+                  {
+                    "id": "4885da0a-e59f-44ca-943a-b057f6859c0e",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "recoveryservicevault",
+                    "label": "Recovery Service Vault",
+                    "type": 5,
+                    "isRequired": true,
+                    "query": "resources\r\n| where type =~ \"microsoft.recoveryservices/vaults\"\r\n",
+                    "crossComponentResources": [
+                      "{Subscription}"
+                    ],
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "showDefault": false
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 1,
+                    "resourceType": "microsoft.resourcegraph/resources"
+                  },
+                  {
+                    "id": "bcaf4317-8cc9-4c28-8123-397039c7070f",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "recoveryservicevaultdiag",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/{recoveryservicevault}/providers/microsoft.insights/diagnosticSettings?api-version=2021-05-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":null}",
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 12
+                  },
+                  {
+                    "id": "c6d6bac3-eb5a-429b-bb73-6d7e6e67cc7d",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "requiredTablesRSV",
+                    "type": 1,
+                    "isRequired": true,
+                    "value": "'coreazurebackup', 'addonazurebackupjobs', 'addonazurebackupalerts', 'addonazurebackuppolicy', 'addonazurebackupstorage', 'addonazurebackupprotectedinstance'",
+                    "isHiddenWhenLocked": true,
+                    "typeSettings": {
+                      "multiLineText": true,
+                      "editorLanguage": "text"
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    }
+                  },
+                  {
+                    "id": "079c3bb6-0eb1-4b84-821f-f1948161d028",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "MissingTables",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "datatable(config:string) ['{recoveryservicevaultdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Table=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesRSV}] ) on $left.Table == $right.Required\r\n| where Enabled == false and isnotempty(Required)\r\n| summarize result = count()\r\n| project tostring(result)\r\n",
+                    "crossComponentResources": [
+                      "{LogAnalyticsWorkspace}"
+                    ],
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces"
+                  }
+                ],
+                "style": "formVertical",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces"
+              },
+              "customWidth": "15",
+              "name": "parameters - 0"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "datatable(config:string) ['{recoveryservicevaultdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Groups=tables.categoryGroup, Table=tostring(tables.category), tableId=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesRSV}] ) on $left.tableId == $right.Required\r\n| project Name, Workspace, Groups, Table, Required = iif(isempty(Required),\"No\",\"Yes\"), Enabled = iff(Enabled == true, \"Yes\", \"No\"), Critical = iff(Enabled == false and isnotempty(Required), \"Yes\",\"No\")",
+                "size": 2,
+                "timeContext": {
+                  "durationMs": 86400000
+                },
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "gridSettings": {
+                  "formatters": [
+                    {
+                      "columnMatch": "Required",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "Yes",
+                            "representation": "success",
+                            "text": "{0}{1}"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "warning",
+                            "text": "{0}{1}"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "columnMatch": "Enabled",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Critical",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "No",
+                            "representation": "success",
+                            "text": "[\"Enabled\"]"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "4",
+                            "text": "[\"Enabled\"]"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "labelSettings": [
+                    {
+                      "columnId": "Name",
+                      "label": "Name"
+                    },
+                    {
+                      "columnId": "Workspace",
+                      "label": "Workspace"
+                    },
+                    {
+                      "columnId": "Groups",
+                      "label": "Groups"
+                    },
+                    {
+                      "columnId": "Table",
+                      "label": "Table"
+                    },
+                    {
+                      "columnId": "Required",
+                      "label": "Required"
+                    },
+                    {
+                      "columnId": "Enabled",
+                      "label": "Enabled"
+                    },
+                    {
+                      "columnId": "Critical",
+                      "label": "Critical"
+                    }
+                  ]
+                }
+              },
+              "customWidth": "85",
+              "name": "query - 2"
+            }
+          ]
+        },
+        "conditionalVisibility": {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "RecoveryServiceVault"
+        },
+        "name": "group - Recovery Service Vault"
+      },
+      {
+        "type": 12,
+        "content": {
+          "version": "NotebookGroup/1.0",
+          "groupType": "editable",
+          "title": "Storage Account Resource Logs",
+          "items": [
+            {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "parameters": [
+                  {
+                    "id": "4885da0a-e59f-44ca-943a-b057f6859c0e",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "StorageAccount",
+                    "label": "Storage Account",
+                    "type": 5,
+                    "isRequired": true,
+                    "query": "resources\r\n| where type =~ \"Microsoft.Storage/storageAccounts\"\r\n",
+                    "crossComponentResources": [
+                      "{Subscription}"
+                    ],
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "showDefault": false
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 1,
+                    "resourceType": "microsoft.resourcegraph/resources"
+                  },
+                  {
+                    "id": "bcaf4317-8cc9-4c28-8123-397039c7070f",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "StorageAccountdiag",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/{StorageAccount}/fileServices/default/providers/microsoft.insights/diagnosticSettings?api-version=2021-05-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":null}",
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 12
+                  },
+                  {
+                    "id": "c6d6bac3-eb5a-429b-bb73-6d7e6e67cc7d",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "requiredTablesStorage",
+                    "type": 1,
+                    "isRequired": true,
+                    "value": "'storageread', 'storagewrite', 'storagedelete'",
+                    "isHiddenWhenLocked": true,
+                    "typeSettings": {
+                      "multiLineText": true,
+                      "editorLanguage": "text"
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    }
+                  },
+                  {
+                    "id": "079c3bb6-0eb1-4b84-821f-f1948161d028",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "MissingTablesStorage",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "datatable(config:string) ['{StorageAccountdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Table=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesStorage}] ) on $left.Table == $right.Required\r\n| where Enabled == false and isnotempty(Required)\r\n| summarize result = count()\r\n| project tostring(result)\r\n",
+                    "crossComponentResources": [
+                      "{LogAnalyticsWorkspace}"
+                    ],
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces"
+                  }
+                ],
+                "style": "formVertical",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces"
+              },
+              "customWidth": "15",
+              "name": "parameters - 0"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "datatable(config:string) ['{StorageAccountdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Groups=tables.categoryGroup, Table=tostring(tables.category), tableId=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesStorage}] ) on $left.tableId == $right.Required\r\n| project Name, Workspace, Groups, Table, Required = iif(isempty(Required),\"No\",\"Yes\"), Enabled = iff(Enabled == true, \"Yes\", \"No\"), Critical = iff(Enabled == false and isnotempty(Required), \"Yes\",\"No\")",
+                "size": 2,
+                "timeContext": {
+                  "durationMs": 86400000
+                },
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "gridSettings": {
+                  "formatters": [
+                    {
+                      "columnMatch": "Required",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "Yes",
+                            "representation": "success",
+                            "text": "{0}{1}"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "warning",
+                            "text": "{0}{1}"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "columnMatch": "Enabled",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Critical",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "No",
+                            "representation": "success",
+                            "text": "[\"Enabled\"]"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "4",
+                            "text": "[\"Enabled\"]"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "labelSettings": [
+                    {
+                      "columnId": "Name",
+                      "label": "Name"
+                    },
+                    {
+                      "columnId": "Workspace",
+                      "label": "Workspace"
+                    },
+                    {
+                      "columnId": "Groups",
+                      "label": "Groups"
+                    },
+                    {
+                      "columnId": "Table",
+                      "label": "Table"
+                    },
+                    {
+                      "columnId": "Required",
+                      "label": "Required"
+                    },
+                    {
+                      "columnId": "Enabled",
+                      "label": "Enabled"
+                    },
+                    {
+                      "columnId": "Critical",
+                      "label": "Critical"
+                    }
+                  ]
+                }
+              },
+              "customWidth": "85",
+              "name": "query - 2"
+            }
+          ]
+        },
+        "conditionalVisibility": {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "StorageAccounts"
+        },
+        "name": "group - Storage Account"
+      },
+      {
+        "type": 12,
+        "content": {
+          "version": "NotebookGroup/1.0",
+          "groupType": "editable",
+          "title": "Network Group",
+          "items": [
+            {
+              "type": 12,
+              "content": {
+                "version": "NotebookGroup/1.0",
+                "groupType": "editable",
+                "title": "Network Security Group",
+                "items": [
+                  {
+                    "type": 9,
+                    "content": {
+                      "version": "KqlParameterItem/1.0",
+                      "crossComponentResources": [
+                        "{LogAnalyticsWorkspace}"
+                      ],
+                      "parameters": [
+                        {
+                          "id": "4885da0a-e59f-44ca-943a-b057f6859c0e",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "NetworkSecurityGroup",
+                          "type": 5,
+                          "isRequired": true,
+                          "query": "resources\r\n| where type =~ \"Microsoft.Network/networkSecurityGroups\"",
+                          "crossComponentResources": [
+                            "{Subscription}"
+                          ],
+                          "typeSettings": {
+                            "additionalResourceOptions": [],
+                            "showDefault": false
+                          },
+                          "timeContext": {
+                            "durationMs": 86400000
+                          },
+                          "queryType": 1,
+                          "resourceType": "microsoft.resourcegraph/resources"
+                        },
+                        {
+                          "id": "bcaf4317-8cc9-4c28-8123-397039c7070f",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "NetworkSecurityGroupdiag",
+                          "type": 1,
+                          "isRequired": true,
+                          "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/{NetworkSecurityGroup}/providers/microsoft.insights/diagnosticSettings?api-version=2021-05-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":null}",
+                          "isHiddenWhenLocked": true,
+                          "timeContext": {
+                            "durationMs": 86400000
+                          },
+                          "queryType": 12
+                        },
+                        {
+                          "id": "c6d6bac3-eb5a-429b-bb73-6d7e6e67cc7d",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "requiredTablesNSG",
+                          "type": 1,
+                          "isRequired": true,
+                          "value": "'networksecuritygroupevent', 'networksecuritygrouprulecounter', 'allLogs'",
+                          "isHiddenWhenLocked": true,
+                          "typeSettings": {
+                            "multiLineText": true,
+                            "editorLanguage": "text"
+                          },
+                          "timeContext": {
+                            "durationMs": 86400000
+                          }
+                        },
+                        {
+                          "id": "079c3bb6-0eb1-4b84-821f-f1948161d028",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "MissingTablesNSG",
+                          "type": 1,
+                          "isRequired": true,
+                          "query": "datatable(config:string) ['{NetworkSecurityGroupdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Table=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesNSG}] ) on $left.Table == $right.Required\r\n| where Enabled == false and isnotempty(Required)\r\n| summarize result = count()\r\n| project tostring(result)\r\n",
+                          "crossComponentResources": [
+                            "{LogAnalyticsWorkspace}"
+                          ],
+                          "isHiddenWhenLocked": true,
+                          "timeContext": {
+                            "durationMs": 86400000
+                          },
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces"
+                        }
+                      ],
+                      "style": "formVertical",
+                      "queryType": 0,
+                      "resourceType": "microsoft.operationalinsights/workspaces"
+                    },
+                    "customWidth": "15",
+                    "name": "parameters - 0"
+                  },
+                  {
+                    "type": 3,
+                    "content": {
+                      "version": "KqlItem/1.0",
+                      "query": "datatable(config:string) ['{NetworkSecurityGroupdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Groups=tables.categoryGroup, Table=tostring(tables.category), tableId=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesNSG}] ) on $left.tableId == $right.Required\r\n| project Name, Workspace, Groups, Table, Required = iif(isempty(Required),\"No\",\"Yes\"), Enabled = iff(Enabled == true, \"Yes\", \"No\"), Critical = iff(Enabled == false and isnotempty(Required), \"Yes\",\"No\")",
+                      "size": 4,
+                      "timeContext": {
+                        "durationMs": 86400000
+                      },
+                      "queryType": 0,
+                      "resourceType": "microsoft.operationalinsights/workspaces",
+                      "crossComponentResources": [
+                        "{LogAnalyticsWorkspace}"
+                      ],
+                      "gridSettings": {
+                        "formatters": [
+                          {
+                            "columnMatch": "Required",
+                            "formatter": 18,
+                            "formatOptions": {
+                              "thresholdsOptions": "icons",
+                              "thresholdsGrid": [
+                                {
+                                  "operator": "==",
+                                  "thresholdValue": "Yes",
+                                  "representation": "success",
+                                  "text": "{0}{1}"
+                                },
+                                {
+                                  "operator": "Default",
+                                  "thresholdValue": null,
+                                  "representation": "warning",
+                                  "text": "{0}{1}"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "columnMatch": "Enabled",
+                            "formatter": 5
+                          },
+                          {
+                            "columnMatch": "Critical",
+                            "formatter": 18,
+                            "formatOptions": {
+                              "thresholdsOptions": "icons",
+                              "thresholdsGrid": [
+                                {
+                                  "operator": "==",
+                                  "thresholdValue": "No",
+                                  "representation": "success",
+                                  "text": "[\"Enabled\"]"
+                                },
+                                {
+                                  "operator": "Default",
+                                  "thresholdValue": null,
+                                  "representation": "4",
+                                  "text": "[\"Enabled\"]"
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "labelSettings": [
+                          {
+                            "columnId": "Name",
+                            "label": "Name"
+                          },
+                          {
+                            "columnId": "Workspace",
+                            "label": "Workspace"
+                          },
+                          {
+                            "columnId": "Groups",
+                            "label": "Groups"
+                          },
+                          {
+                            "columnId": "Table",
+                            "label": "Table"
+                          },
+                          {
+                            "columnId": "Required",
+                            "label": "Required"
+                          },
+                          {
+                            "columnId": "Enabled",
+                            "label": "Enabled"
+                          },
+                          {
+                            "columnId": "Critical",
+                            "label": "Critical"
+                          }
+                        ]
+                      }
+                    },
+                    "customWidth": "85",
+                    "name": "query - 2"
+                  }
+                ]
+              },
+              "name": "group - NSG"
+            },
+            {
+              "type": 12,
+              "content": {
+                "version": "NotebookGroup/1.0",
+                "groupType": "editable",
+                "title": "vNETGateway Group",
+                "items": [
+                  {
+                    "type": 9,
+                    "content": {
+                      "version": "KqlParameterItem/1.0",
+                      "crossComponentResources": [
+                        "{LogAnalyticsWorkspace}"
+                      ],
+                      "parameters": [
+                        {
+                          "id": "4885da0a-e59f-44ca-943a-b057f6859c0e",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "virtualNetworkGateways",
+                          "type": 5,
+                          "isRequired": true,
+                          "query": "resources\r\n| where type =~ \"Microsoft.Network/virtualNetworkGateways\"",
+                          "crossComponentResources": [
+                            "{Subscription}"
+                          ],
+                          "value": null,
+                          "typeSettings": {
+                            "additionalResourceOptions": [],
+                            "showDefault": false
+                          },
+                          "timeContext": {
+                            "durationMs": 86400000
+                          },
+                          "queryType": 1,
+                          "resourceType": "microsoft.resourcegraph/resources"
+                        },
+                        {
+                          "id": "bcaf4317-8cc9-4c28-8123-397039c7070f",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "virtualNetworkGatewaysdiag",
+                          "type": 1,
+                          "isRequired": true,
+                          "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/{virtualNetworkGateways}/providers/microsoft.insights/diagnosticSettings?api-version=2021-05-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":null}",
+                          "isHiddenWhenLocked": true,
+                          "timeContext": {
+                            "durationMs": 86400000
+                          },
+                          "queryType": 12
+                        },
+                        {
+                          "id": "c6d6bac3-eb5a-429b-bb73-6d7e6e67cc7d",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "requiredTablesvNET",
+                          "type": 1,
+                          "isRequired": true,
+                          "value": "'gatewaydiagnosticlog', 'tunneldiagnosticlog', 'routediagnosticlog', 'ikediagnosticlog', 'p2sdiagnosticlog'",
+                          "isHiddenWhenLocked": true,
+                          "typeSettings": {
+                            "multiLineText": true,
+                            "editorLanguage": "text"
+                          },
+                          "timeContext": {
+                            "durationMs": 86400000
+                          }
+                        },
+                        {
+                          "id": "079c3bb6-0eb1-4b84-821f-f1948161d028",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "MissingTablesvNET",
+                          "type": 1,
+                          "isRequired": true,
+                          "query": "datatable(config:string) ['{virtualNetworkGatewaysdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Table=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesvNET}] ) on $left.Table == $right.Required\r\n| where Enabled == false and isnotempty(Required)\r\n| summarize result = count()\r\n| project tostring(result)\r\n",
+                          "crossComponentResources": [
+                            "{LogAnalyticsWorkspace}"
+                          ],
+                          "isHiddenWhenLocked": true,
+                          "timeContext": {
+                            "durationMs": 86400000
+                          },
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces"
+                        }
+                      ],
+                      "style": "formVertical",
+                      "queryType": 0,
+                      "resourceType": "microsoft.operationalinsights/workspaces"
+                    },
+                    "customWidth": "15",
+                    "name": "parameters - 0"
+                  },
+                  {
+                    "type": 3,
+                    "content": {
+                      "version": "KqlItem/1.0",
+                      "query": "datatable(config:string) ['{virtualNetworkGatewaysdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Groups=tables.categoryGroup, Table=tostring(tables.category), tableId=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesvNET}] ) on $left.tableId == $right.Required\r\n| project Name, Workspace, Groups, Table, Required = iif(isempty(Required),\"No\",\"Yes\"), Enabled = iff(Enabled == true, \"Yes\", \"No\"), Critical = iff(Enabled == false and isnotempty(Required), \"Yes\",\"No\")",
+                      "size": 1,
+                      "timeContext": {
+                        "durationMs": 86400000
+                      },
+                      "queryType": 0,
+                      "resourceType": "microsoft.operationalinsights/workspaces",
+                      "crossComponentResources": [
+                        "{LogAnalyticsWorkspace}"
+                      ],
+                      "gridSettings": {
+                        "formatters": [
+                          {
+                            "columnMatch": "Required",
+                            "formatter": 18,
+                            "formatOptions": {
+                              "thresholdsOptions": "icons",
+                              "thresholdsGrid": [
+                                {
+                                  "operator": "==",
+                                  "thresholdValue": "Yes",
+                                  "representation": "success",
+                                  "text": "{0}{1}"
+                                },
+                                {
+                                  "operator": "Default",
+                                  "thresholdValue": null,
+                                  "representation": "warning",
+                                  "text": "{0}{1}"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "columnMatch": "Enabled",
+                            "formatter": 5
+                          },
+                          {
+                            "columnMatch": "Critical",
+                            "formatter": 18,
+                            "formatOptions": {
+                              "thresholdsOptions": "icons",
+                              "thresholdsGrid": [
+                                {
+                                  "operator": "==",
+                                  "thresholdValue": "No",
+                                  "representation": "success",
+                                  "text": "[\"Enabled\"]"
+                                },
+                                {
+                                  "operator": "Default",
+                                  "thresholdValue": null,
+                                  "representation": "4",
+                                  "text": "[\"Enabled\"]"
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "labelSettings": [
+                          {
+                            "columnId": "Name",
+                            "label": "Name"
+                          },
+                          {
+                            "columnId": "Workspace",
+                            "label": "Workspace"
+                          },
+                          {
+                            "columnId": "Groups",
+                            "label": "Groups"
+                          },
+                          {
+                            "columnId": "Table",
+                            "label": "Table"
+                          },
+                          {
+                            "columnId": "Required",
+                            "label": "Required"
+                          },
+                          {
+                            "columnId": "Enabled",
+                            "label": "Enabled"
+                          },
+                          {
+                            "columnId": "Critical",
+                            "label": "Critical"
+                          }
+                        ]
+                      }
+                    },
+                    "customWidth": "85",
+                    "name": "query - 2"
+                  }
+                ]
+              },
+              "name": "group - vNETGateway"
+            },
+            {
+              "type": 12,
+              "content": {
+                "version": "NotebookGroup/1.0",
+                "groupType": "editable",
+                "title": "Public IPs Group",
+                "items": [
+                  {
+                    "type": 9,
+                    "content": {
+                      "version": "KqlParameterItem/1.0",
+                      "parameters": [
+                        {
+                          "id": "4885da0a-e59f-44ca-943a-b057f6859c0e",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "PublicIPs",
+                          "label": "Public IPs",
+                          "type": 5,
+                          "isRequired": true,
+                          "query": "resources\r\n| where type =~ \"Microsoft.Network/publicIPAddresses\"",
+                          "crossComponentResources": [
+                            "{Subscription}"
+                          ],
+                          "typeSettings": {
+                            "additionalResourceOptions": [],
+                            "showDefault": false
+                          },
+                          "timeContext": {
+                            "durationMs": 86400000
+                          },
+                          "queryType": 1,
+                          "resourceType": "microsoft.resourcegraph/resources"
+                        },
+                        {
+                          "id": "bcaf4317-8cc9-4c28-8123-397039c7070f",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "PublicIPsdiag",
+                          "type": 1,
+                          "isRequired": true,
+                          "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/{PublicIPs}/providers/microsoft.insights/diagnosticSettings?api-version=2021-05-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":null}",
+                          "isHiddenWhenLocked": true,
+                          "timeContext": {
+                            "durationMs": 86400000
+                          },
+                          "queryType": 12
+                        },
+                        {
+                          "id": "c6d6bac3-eb5a-429b-bb73-6d7e6e67cc7d",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "requiredTablesPublicIPs",
+                          "type": 1,
+                          "isRequired": true,
+                          "value": "'ddosprotectionnotifications', 'ddosmitigationflowlogs', 'ddosmitigationreports'",
+                          "isHiddenWhenLocked": true,
+                          "typeSettings": {
+                            "multiLineText": true,
+                            "editorLanguage": "text"
+                          },
+                          "timeContext": {
+                            "durationMs": 86400000
+                          }
+                        },
+                        {
+                          "id": "079c3bb6-0eb1-4b84-821f-f1948161d028",
+                          "version": "KqlParameterItem/1.0",
+                          "name": "MissingTablesPublicIPs",
+                          "type": 1,
+                          "isRequired": true,
+                          "query": "datatable(config:string) ['{PublicIPsdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Table=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesPublicIPs}] ) on $left.Table == $right.Required\r\n| where Enabled == false and isnotempty(Required)\r\n| summarize result = count()\r\n| project tostring(result)\r\n",
+                          "crossComponentResources": [
+                            "{LogAnalyticsWorkspace}"
+                          ],
+                          "isHiddenWhenLocked": true,
+                          "timeContext": {
+                            "durationMs": 86400000
+                          },
+                          "queryType": 0,
+                          "resourceType": "microsoft.operationalinsights/workspaces"
+                        }
+                      ],
+                      "style": "formVertical",
+                      "queryType": 12
+                    },
+                    "customWidth": "15",
+                    "name": "parameters - 0"
+                  },
+                  {
+                    "type": 3,
+                    "content": {
+                      "version": "KqlItem/1.0",
+                      "query": "datatable(config:string) ['{PublicIPsdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Groups=tables.categoryGroup, Table=tostring(tables.category), tableId=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesPublicIPs}] ) on $left.tableId == $right.Required\r\n| project Name, Workspace, Groups, Table, Required = iif(isempty(Required),\"No\",\"Yes\"), Enabled = iff(Enabled == true, \"Yes\", \"No\"), Critical = iff(Enabled == false and isnotempty(Required), \"Yes\",\"No\")",
+                      "size": 4,
+                      "timeContext": {
+                        "durationMs": 86400000
+                      },
+                      "queryType": 0,
+                      "resourceType": "microsoft.operationalinsights/workspaces",
+                      "crossComponentResources": [
+                        "{LogAnalyticsWorkspace}"
+                      ],
+                      "gridSettings": {
+                        "formatters": [
+                          {
+                            "columnMatch": "Required",
+                            "formatter": 18,
+                            "formatOptions": {
+                              "thresholdsOptions": "icons",
+                              "thresholdsGrid": [
+                                {
+                                  "operator": "==",
+                                  "thresholdValue": "Yes",
+                                  "representation": "success",
+                                  "text": "{0}{1}"
+                                },
+                                {
+                                  "operator": "Default",
+                                  "thresholdValue": null,
+                                  "representation": "warning",
+                                  "text": "{0}{1}"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "columnMatch": "Enabled",
+                            "formatter": 5
+                          },
+                          {
+                            "columnMatch": "Critical",
+                            "formatter": 18,
+                            "formatOptions": {
+                              "thresholdsOptions": "icons",
+                              "thresholdsGrid": [
+                                {
+                                  "operator": "==",
+                                  "thresholdValue": "No",
+                                  "representation": "success",
+                                  "text": "[\"Enabled\"]"
+                                },
+                                {
+                                  "operator": "Default",
+                                  "thresholdValue": null,
+                                  "representation": "4",
+                                  "text": "[\"Enabled\"]"
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "labelSettings": [
+                          {
+                            "columnId": "Name",
+                            "label": "Name"
+                          },
+                          {
+                            "columnId": "Workspace",
+                            "label": "Workspace"
+                          },
+                          {
+                            "columnId": "Groups",
+                            "label": "Groups"
+                          },
+                          {
+                            "columnId": "Table",
+                            "label": "Table"
+                          },
+                          {
+                            "columnId": "Required",
+                            "label": "Required"
+                          },
+                          {
+                            "columnId": "Enabled",
+                            "label": "Enabled"
+                          },
+                          {
+                            "columnId": "Critical",
+                            "label": "Critical"
+                          }
+                        ]
+                      }
+                    },
+                    "customWidth": "85",
+                    "name": "query - 2"
+                  }
+                ]
+              },
+              "name": "group - PublicIPs"
+            }
+          ]
+        },
+        "conditionalVisibility": {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "NetworkGroup"
+        },
+        "name": "group - NetworkGroup"
+      },
+      {
+        "type": 12,
+        "content": {
+          "version": "NotebookGroup/1.0",
+          "groupType": "editable",
+          "title": "Log Analytics Group",
+          "items": [
+            {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "parameters": [
+                  {
+                    "id": "4885da0a-e59f-44ca-943a-b057f6859c0e",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "LAW",
+                    "label": "Log Analytics Workspace",
+                    "type": 5,
+                    "isRequired": true,
+                    "query": "resources\r\n| where type =~ \"microsoft.operationalinsights/workspaces\"",
+                    "crossComponentResources": [
+                      "{Subscription}"
+                    ],
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "showDefault": false
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 1,
+                    "resourceType": "microsoft.resourcegraph/resources"
+                  },
+                  {
+                    "id": "bcaf4317-8cc9-4c28-8123-397039c7070f",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "LAWdiag",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/{LAW}/providers/microsoft.insights/diagnosticSettings?api-version=2021-05-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":null}",
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 12
+                  },
+                  {
+                    "id": "c6d6bac3-eb5a-429b-bb73-6d7e6e67cc7d",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "requiredTablesLAW",
+                    "type": 1,
+                    "isRequired": true,
+                    "value": "'audit', 'allLogs'",
+                    "isHiddenWhenLocked": true,
+                    "typeSettings": {
+                      "multiLineText": true,
+                      "editorLanguage": "text"
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    }
+                  },
+                  {
+                    "id": "079c3bb6-0eb1-4b84-821f-f1948161d028",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "MissingTablesLAW",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "datatable(config:string) ['{LAWdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Table=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesLAW}] ) on $left.Table == $right.Required\r\n| where Enabled == false and isnotempty(Required)\r\n| summarize result = count()\r\n| project tostring(result)\r\n",
+                    "crossComponentResources": [
+                      "{LogAnalyticsWorkspace}"
+                    ],
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces"
+                  }
+                ],
+                "style": "formVertical",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces"
+              },
+              "customWidth": "15",
+              "name": "parameters - 0"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "datatable(config:string) ['{LAWdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Groups=tables.categoryGroup, Table=tostring(tables.category), tableId=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesLAW}] ) on $left.tableId == $right.Required\r\n| project Name, Workspace, Groups, Table, Required = iif(isempty(Required),\"No\",\"Yes\"), Enabled = iff(Enabled == true, \"Yes\", \"No\"), Critical = iff(Enabled == false and isnotempty(Required), \"Yes\",\"No\")",
+                "size": 4,
+                "timeContext": {
+                  "durationMs": 86400000
+                },
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "gridSettings": {
+                  "formatters": [
+                    {
+                      "columnMatch": "Required",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "Yes",
+                            "representation": "success",
+                            "text": "{0}{1}"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "warning",
+                            "text": "{0}{1}"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "columnMatch": "Enabled",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Critical",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "No",
+                            "representation": "success",
+                            "text": "[\"Enabled\"]"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "4",
+                            "text": "[\"Enabled\"]"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "labelSettings": [
+                    {
+                      "columnId": "Name",
+                      "label": "Name"
+                    },
+                    {
+                      "columnId": "Workspace",
+                      "label": "Workspace"
+                    },
+                    {
+                      "columnId": "Groups",
+                      "label": "Groups"
+                    },
+                    {
+                      "columnId": "Table",
+                      "label": "Table"
+                    },
+                    {
+                      "columnId": "Required",
+                      "label": "Required"
+                    },
+                    {
+                      "columnId": "Enabled",
+                      "label": "Enabled"
+                    },
+                    {
+                      "columnId": "Critical",
+                      "label": "Critical"
+                    }
+                  ]
+                }
+              },
+              "customWidth": "85",
+              "name": "query - 2"
+            }
+          ]
+        },
+        "conditionalVisibility": {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "LogAnalytics"
+        },
+        "name": "group - LogAnalytics"
+      },
+      {
+        "type": 12,
+        "content": {
+          "version": "NotebookGroup/1.0",
+          "groupType": "editable",
+          "title": "Automation Group",
+          "items": [
+            {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "parameters": [
+                  {
+                    "id": "4885da0a-e59f-44ca-943a-b057f6859c0e",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "Automation",
+                    "label": "Automation Account",
+                    "type": 5,
+                    "isRequired": true,
+                    "query": "resources\r\n| where type =~ \"Microsoft.Automation/automationAccounts\"",
+                    "crossComponentResources": [
+                      "{Subscription}"
+                    ],
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "showDefault": false
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 1,
+                    "resourceType": "microsoft.resourcegraph/resources"
+                  },
+                  {
+                    "id": "bcaf4317-8cc9-4c28-8123-397039c7070f",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "Automationdiag",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/{Automation}/providers/microsoft.insights/diagnosticSettings?api-version=2021-05-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":null}",
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 12
+                  },
+                  {
+                    "id": "c6d6bac3-eb5a-429b-bb73-6d7e6e67cc7d",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "requiredTablesAutomation",
+                    "type": 1,
+                    "isRequired": true,
+                    "value": "'joblogs', 'jobstreams', 'dscnodestatus', 'auditevent'",
+                    "isHiddenWhenLocked": true,
+                    "typeSettings": {
+                      "multiLineText": true,
+                      "editorLanguage": "text"
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    }
+                  },
+                  {
+                    "id": "079c3bb6-0eb1-4b84-821f-f1948161d028",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "MissingTablesAutomation",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "datatable(config:string) ['{Automationdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Table=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesAutomation}] ) on $left.Table == $right.Required\r\n| where Enabled == false and isnotempty(Required)\r\n| summarize result = count()\r\n| project tostring(result)\r\n",
+                    "crossComponentResources": [
+                      "{LogAnalyticsWorkspace}"
+                    ],
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces"
+                  }
+                ],
+                "style": "formVertical",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces"
+              },
+              "customWidth": "15",
+              "name": "parameters - 0"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "datatable(config:string) ['{Automationdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Groups=tables.categoryGroup, Table=tostring(tables.category), tableId=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesAutomation}] ) on $left.tableId == $right.Required\r\n| project Name, Workspace, Groups, Table, Required = iif(isempty(Required),\"No\",\"Yes\"), Enabled = iff(Enabled == true, \"Yes\", \"No\"), Critical = iff(Enabled == false and isnotempty(Required), \"Yes\",\"No\")",
+                "size": 1,
+                "timeContext": {
+                  "durationMs": 86400000
+                },
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "gridSettings": {
+                  "formatters": [
+                    {
+                      "columnMatch": "Required",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "Yes",
+                            "representation": "success",
+                            "text": "{0}{1}"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "warning",
+                            "text": "{0}{1}"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "columnMatch": "Enabled",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Critical",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "No",
+                            "representation": "success",
+                            "text": "[\"Enabled\"]"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "4",
+                            "text": "[\"Enabled\"]"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "labelSettings": [
+                    {
+                      "columnId": "Name",
+                      "label": "Name"
+                    },
+                    {
+                      "columnId": "Workspace",
+                      "label": "Workspace"
+                    },
+                    {
+                      "columnId": "Groups",
+                      "label": "Groups"
+                    },
+                    {
+                      "columnId": "Table",
+                      "label": "Table"
+                    },
+                    {
+                      "columnId": "Required",
+                      "label": "Required"
+                    },
+                    {
+                      "columnId": "Enabled",
+                      "label": "Enabled"
+                    },
+                    {
+                      "columnId": "Critical",
+                      "label": "Critical"
+                    }
+                  ]
+                }
+              },
+              "customWidth": "85",
+              "name": "query - 2"
+            }
+          ]
+        },
+        "conditionalVisibility": {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "Automation"
+        },
+        "name": "group - Automation"
+      },
+      {
+        "type": 12,
+        "content": {
+          "version": "NotebookGroup/1.0",
+          "groupType": "editable",
+          "title": "KeyVault Group",
+          "items": [
+            {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "parameters": [
+                  {
+                    "id": "4885da0a-e59f-44ca-943a-b057f6859c0e",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "KeyVault",
+                    "type": 5,
+                    "isRequired": true,
+                    "query": "resources\r\n| where type =~ \"Microsoft.KeyVault/vaults\"",
+                    "crossComponentResources": [
+                      "{Subscription}"
+                    ],
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "showDefault": false
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 1,
+                    "resourceType": "microsoft.resourcegraph/resources"
+                  },
+                  {
+                    "id": "bcaf4317-8cc9-4c28-8123-397039c7070f",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "KeyVaultdiag",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/{KeyVault}/providers/microsoft.insights/diagnosticSettings?api-version=2021-05-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":null}",
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 12
+                  },
+                  {
+                    "id": "c6d6bac3-eb5a-429b-bb73-6d7e6e67cc7d",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "requiredTablesKeyVault",
+                    "type": 1,
+                    "isRequired": true,
+                    "value": "'auditevent', 'azurepolicyevaluationdetails'",
+                    "isHiddenWhenLocked": true,
+                    "typeSettings": {
+                      "multiLineText": true,
+                      "editorLanguage": "text"
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    }
+                  },
+                  {
+                    "id": "079c3bb6-0eb1-4b84-821f-f1948161d028",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "MissingTablesKeyVault",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "datatable(config:string) ['{KeyVaultdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Table=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesKeyVault}] ) on $left.Table == $right.Required\r\n| where Enabled == false and isnotempty(Required)\r\n| summarize result = count()\r\n| project tostring(result)\r\n",
+                    "crossComponentResources": [
+                      "{LogAnalyticsWorkspace}"
+                    ],
+                    "value": null,
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 0
+                  }
+                ],
+                "style": "formVertical",
+                "queryType": 0
+              },
+              "customWidth": "15",
+              "name": "parameters - 0"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "datatable(config:string) ['{KeyVaultdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Groups=tables.categoryGroup, Table=tostring(tables.category), tableId=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesKeyVault}] ) on $left.tableId == $right.Required\r\n| project Name, Workspace, Groups, Table, Required = iif(isempty(Required),\"No\",\"Yes\"), Enabled = iff(Enabled == true, \"Yes\", \"No\"), Critical = iff(Enabled == false and isnotempty(Required), \"Yes\",\"No\")",
+                "size": 4,
+                "timeContext": {
+                  "durationMs": 86400000
+                },
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "gridSettings": {
+                  "formatters": [
+                    {
+                      "columnMatch": "Required",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "Yes",
+                            "representation": "success",
+                            "text": "{0}{1}"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "warning",
+                            "text": "{0}{1}"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "columnMatch": "Enabled",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Critical",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "No",
+                            "representation": "success",
+                            "text": "[\"Enabled\"]"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "4",
+                            "text": "[\"Enabled\"]"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "labelSettings": [
+                    {
+                      "columnId": "Name",
+                      "label": "Name"
+                    },
+                    {
+                      "columnId": "Workspace",
+                      "label": "Workspace"
+                    },
+                    {
+                      "columnId": "Groups",
+                      "label": "Groups"
+                    },
+                    {
+                      "columnId": "Table",
+                      "label": "Table"
+                    },
+                    {
+                      "columnId": "Required",
+                      "label": "Required"
+                    },
+                    {
+                      "columnId": "Enabled",
+                      "label": "Enabled"
+                    },
+                    {
+                      "columnId": "Critical",
+                      "label": "Critical"
+                    }
+                  ]
+                }
+              },
+              "customWidth": "85",
+              "name": "query - 2"
+            }
+          ]
+        },
+        "conditionalVisibility": {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "KeyVault"
+        },
+        "name": "group - KeyVault"
+      },
+      {
+        "type": 12,
+        "content": {
+          "version": "NotebookGroup/1.0",
+          "groupType": "editable",
+          "title": "CosmosDB Group",
+          "items": [
+            {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "parameters": [
+                  {
+                    "id": "4885da0a-e59f-44ca-943a-b057f6859c0e",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "CosmosDB",
+                    "type": 5,
+                    "isRequired": true,
+                    "query": "resources\r\n| where type =~ \"Microsoft.DocumentDB/databaseAccounts\"",
+                    "crossComponentResources": [
+                      "{Subscription}"
+                    ],
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "showDefault": false
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 1,
+                    "resourceType": "microsoft.resourcegraph/resources"
+                  },
+                  {
+                    "id": "bcaf4317-8cc9-4c28-8123-397039c7070f",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "CosmosDBdiag",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/{CosmosDB}/providers/microsoft.insights/diagnosticSettings?api-version=2021-05-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":null}",
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 12
+                  },
+                  {
+                    "id": "c6d6bac3-eb5a-429b-bb73-6d7e6e67cc7d",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "requiredTablesCosmosDB",
+                    "type": 1,
+                    "isRequired": true,
+                    "value": "'dataplanerequests', 'mongorequests', 'queryruntimestatistics', 'partitionkeystatistics', 'partitionkeyruconsumption', 'cassandrarequests', 'gremlinrequests', 'tableapirequests'",
+                    "isHiddenWhenLocked": true,
+                    "typeSettings": {
+                      "multiLineText": true,
+                      "editorLanguage": "text"
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    }
+                  },
+                  {
+                    "id": "079c3bb6-0eb1-4b84-821f-f1948161d028",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "MissingTablesCosmosDB",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "datatable(config:string) ['{CosmosDBdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Table=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesCosmosDB}] ) on $left.Table == $right.Required\r\n| where Enabled == false and isnotempty(Required)\r\n| summarize result = count()\r\n| project tostring(result)\r\n",
+                    "crossComponentResources": [
+                      "{LogAnalyticsWorkspace}"
+                    ],
+                    "value": null,
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 0
+                  }
+                ],
+                "style": "formVertical",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces"
+              },
+              "customWidth": "15",
+              "name": "parameters - 0"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "datatable(config:string) ['{CosmosDBdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Groups=tables.categoryGroup, Table=tostring(tables.category), tableId=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesCosmosDB}] ) on $left.tableId == $right.Required\r\n| project Name, Workspace, Groups, Table, Required = iif(isempty(Required),\"No\",\"Yes\"), Enabled = iff(Enabled == true, \"Yes\", \"No\"), Critical = iff(Enabled == false and isnotempty(Required), \"Yes\",\"No\")",
+                "size": 0,
+                "timeContext": {
+                  "durationMs": 86400000
+                },
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "gridSettings": {
+                  "formatters": [
+                    {
+                      "columnMatch": "Required",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "Yes",
+                            "representation": "success",
+                            "text": "{0}{1}"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "warning",
+                            "text": "{0}{1}"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "columnMatch": "Enabled",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Critical",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "No",
+                            "representation": "success",
+                            "text": "[\"Enabled\"]"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "4",
+                            "text": "[\"Enabled\"]"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "labelSettings": [
+                    {
+                      "columnId": "Name",
+                      "label": "Name"
+                    },
+                    {
+                      "columnId": "Workspace",
+                      "label": "Workspace"
+                    },
+                    {
+                      "columnId": "Groups",
+                      "label": "Groups"
+                    },
+                    {
+                      "columnId": "Table",
+                      "label": "Table"
+                    },
+                    {
+                      "columnId": "Required",
+                      "label": "Required"
+                    },
+                    {
+                      "columnId": "Enabled",
+                      "label": "Enabled"
+                    },
+                    {
+                      "columnId": "Critical",
+                      "label": "Critical"
+                    }
+                  ]
+                }
+              },
+              "customWidth": "85",
+              "name": "query - 2"
+            }
+          ]
+        },
+        "conditionalVisibility": {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "CosmosDB"
+        },
+        "name": "group - CosmosDB"
+      },
+      {
+        "type": 12,
+        "content": {
+          "version": "NotebookGroup/1.0",
+          "groupType": "editable",
+          "title": "Monitor ActivityLog Group",
+          "items": [
+            {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "parameters": [
+                  {
+                    "id": "4885da0a-e59f-44ca-943a-b057f6859c0e",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "StorageAccount",
+                    "label": "Storage Account",
+                    "type": 5,
+                    "isRequired": true,
+                    "query": "resources\r\n| where type =~ \"Microsoft.Storage/storageAccounts\"\r\n",
+                    "crossComponentResources": [
+                      "{Subscription}"
+                    ],
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "showDefault": false
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 1,
+                    "resourceType": "microsoft.resourcegraph/resources"
+                  },
+                  {
+                    "id": "bcaf4317-8cc9-4c28-8123-397039c7070f",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "StorageAccountdiag",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/{StorageAccount}/fileServices/default/providers/microsoft.insights/diagnosticSettings?api-version=2021-05-01-preview\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":null}",
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 12
+                  },
+                  {
+                    "id": "c6d6bac3-eb5a-429b-bb73-6d7e6e67cc7d",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "requiredTablesStorage",
+                    "type": 1,
+                    "isRequired": true,
+                    "value": "'storageread', 'storagewrite', 'storagedelete'",
+                    "isHiddenWhenLocked": true,
+                    "typeSettings": {
+                      "multiLineText": true,
+                      "editorLanguage": "text"
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    }
+                  },
+                  {
+                    "id": "079c3bb6-0eb1-4b84-821f-f1948161d028",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "MissingTablesStorage",
+                    "type": 1,
+                    "isRequired": true,
+                    "query": "datatable(config:string) ['{StorageAccountdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Table=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesStorage}] ) on $left.Table == $right.Required\r\n| where Enabled == false and isnotempty(Required)\r\n| summarize result = count()\r\n| project tostring(result)\r\n",
+                    "crossComponentResources": [
+                      "{LogAnalyticsWorkspace}"
+                    ],
+                    "isHiddenWhenLocked": true,
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces"
+                  }
+                ],
+                "style": "formVertical",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces"
+              },
+              "customWidth": "15",
+              "name": "parameters - 0"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "datatable(config:string) ['{StorageAccountdiag}']\r\n| project config = parse_json(config).value\r\n| mv-expand config\r\n| project Name=config.name, Workspace=tostring(config.properties.workspaceId), tables=config.properties.logs\r\n| where Workspace =~ \"{LogAnalyticsWorkspace}\"\r\n| mv-expand tables\r\n| project Name, Workspace, Groups=tables.categoryGroup, Table=tostring(tables.category), tableId=tolower(tables.category), Enabled=tables.enabled\r\n| join kind=leftouter (datatable(Required:string) [{requiredTablesStorage}] ) on $left.tableId == $right.Required\r\n| project Name, Workspace, Groups, Table, Required = iif(isempty(Required),\"No\",\"Yes\"), Enabled = iff(Enabled == true, \"Yes\", \"No\"), Critical = iff(Enabled == false and isnotempty(Required), \"Yes\",\"No\")",
+                "size": 2,
+                "timeContext": {
+                  "durationMs": 86400000
+                },
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "{LogAnalyticsWorkspace}"
+                ],
+                "gridSettings": {
+                  "formatters": [
+                    {
+                      "columnMatch": "Required",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "Yes",
+                            "representation": "success",
+                            "text": "{0}{1}"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "warning",
+                            "text": "{0}{1}"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "columnMatch": "Enabled",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Critical",
+                      "formatter": 18,
+                      "formatOptions": {
+                        "thresholdsOptions": "icons",
+                        "thresholdsGrid": [
+                          {
+                            "operator": "==",
+                            "thresholdValue": "No",
+                            "representation": "success",
+                            "text": "[\"Enabled\"]"
+                          },
+                          {
+                            "operator": "Default",
+                            "thresholdValue": null,
+                            "representation": "4",
+                            "text": "[\"Enabled\"]"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "labelSettings": [
+                    {
+                      "columnId": "Name",
+                      "label": "Name"
+                    },
+                    {
+                      "columnId": "Workspace",
+                      "label": "Workspace"
+                    },
+                    {
+                      "columnId": "Groups",
+                      "label": "Groups"
+                    },
+                    {
+                      "columnId": "Table",
+                      "label": "Table"
+                    },
+                    {
+                      "columnId": "Required",
+                      "label": "Required"
+                    },
+                    {
+                      "columnId": "Enabled",
+                      "label": "Enabled"
+                    },
+                    {
+                      "columnId": "Critical",
+                      "label": "Critical"
+                    }
+                  ]
+                }
+              },
+              "customWidth": "85",
+              "name": "query - 2"
+            }
+          ]
+        },
+        "conditionalVisibility": {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "MonitorActivityLog"
+        },
+        "name": "group - MonitorActivityLog"
+      }
+    ],
+    "fallbackResourceIds": [
+      "Azure Monitor"
+    ],
+    "fromTemplateId": "community-Workbooks/Windows Virtual Desktop/Check Configuration",
+    "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+  }

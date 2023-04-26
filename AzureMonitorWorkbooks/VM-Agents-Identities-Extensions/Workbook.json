@@ -1,0 +1,1994 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "## Log Analytics and Azure Monitor Agent Health Workbook\r\nUse this workbook to monitor and verify Agent health for managed environments"
+      },
+      "name": "text - 0"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "value::all"
+        ],
+        "parameters": [
+          {
+            "id": "1ca69445-60fc-4806-b43d-ac7e6aad630a",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscription",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resourcecontainers\r\n| where type == \"microsoft.resources/subscriptions\"\r\n| project id",
+            "crossComponentResources": [
+              "value::all"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "e94aafa3-c5d9-4523-89f0-4e87aa754511",
+            "version": "KqlParameterItem/1.0",
+            "name": "Workspace",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "where type =~ 'microsoft.operationalinsights/workspaces'\n| project id",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "resourceTypeFilter": {
+                "microsoft.operationalinsights/workspaces": true
+              },
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          },
+          {
+            "id": "c4b69c01-2263-4ada-8d9c-43433b739ff3",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeRange",
+            "type": 4,
+            "isRequired": true,
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 300000
+                },
+                {
+                  "durationMs": 900000
+                },
+                {
+                  "durationMs": 1800000
+                },
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                },
+                {
+                  "durationMs": 1209600000
+                },
+                {
+                  "durationMs": 2592000000
+                }
+              ],
+              "allowCustom": true
+            },
+            "value": {
+              "durationMs": 1800000
+            }
+          },
+          {
+            "id": "15920bec-4a72-4e23-a0ee-c7b4e0b7acb4",
+            "version": "KqlParameterItem/1.0",
+            "name": "UnhealthyCriteria",
+            "label": "Unhealthy Criteria",
+            "type": 2,
+            "isRequired": true,
+            "typeSettings": {
+              "additionalResourceOptions": []
+            },
+            "jsonData": "[\r\n    { \"value\":\"1m\", \"label\":\"1 minute without heartbeat\", \"selected\":false },\r\n    { \"value\":\"5m\", \"label\":\"5 minutes without heartbeat\", \"selected\":false },\r\n    { \"value\":\"30m\", \"label\":\"30 minutes without heartbeat\", \"selected\":false },\r\n    { \"value\":\"1h\", \"label\":\"1 hour without heartbeat\", \"selected\":true },\r\n    { \"value\":\"2h\", \"label\":\"2 hours without heartbeat\", \"selected\":false },\r\n    { \"value\":\"8h\", \"label\":\"8 hours without heartbeat\", \"selected\":false },\r\n    { \"value\":\"1d\", \"label\":\"1 day without heartbeat\", \"selected\":false },\r\n    { \"value\":\"2d\", \"label\":\"2 days without heartbeat\", \"selected\":false },\r\n    { \"value\":\"7d\", \"label\":\"7 days without heartbeat\", \"selected\":false }\r\n]",
+            "value": "5m"
+          },
+          {
+            "id": "a059c7cb-934a-4b82-afd4-86e144e85f69",
+            "version": "KqlParameterItem/1.0",
+            "name": "HasHeartbeat",
+            "type": 2,
+            "isRequired": true,
+            "query": "Heartbeat\r\n| take 1\r\n| summarize count() ",
+            "value": "value::1",
+            "isHiddenWhenLocked": true,
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::1"
+              ]
+            },
+            "timeContext": {
+              "durationMs": 0
+            },
+            "timeContextFromParameter": "TimeRange",
+            "queryType": 0,
+            "resourceType": "microsoft.operationalinsights/workspaces"
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "name": "parameters - 1"
+    },
+    {
+      "type": 11,
+      "content": {
+        "version": "LinkItem/1.0",
+        "style": "tabs",
+        "links": [
+          {
+            "id": "15ad2dfb-ed24-421c-b1ee-20413bdad79e",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Overview",
+            "subTarget": "Overview",
+            "style": "link"
+          },
+          {
+            "id": "603dac52-2fea-4d8e-ada9-ee9e1683780b",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Log Analytics Agent Overview",
+            "subTarget": "LogAnalyticsAgentOverview",
+            "style": "link"
+          },
+          {
+            "id": "eceec53c-dbbd-4142-92f7-a8625a3e3772",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Azure Monitor Agent Overview",
+            "subTarget": "AzureMonitorAgentOverview",
+            "style": "link"
+          },
+          {
+            "id": "0610c42a-ed34-49e6-a4d7-12f8a7eb9aef",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "VM Extensions",
+            "subTarget": "VMExtensions",
+            "style": "link"
+          },
+          {
+            "id": "8b4b2e6c-c6bc-4045-aec5-da5e658f11c0",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Managed Identities",
+            "subTarget": "ManagedIdentities",
+            "style": "link"
+          },
+          {
+            "id": "5cd3f966-725e-4008-b0e5-685819d1c536",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": " Health Service",
+            "subTarget": "HealthService",
+            "postText": "",
+            "style": "primary",
+            "workbookContext": {
+              "componentIdSource": "workbook",
+              "resourceIdsSource": "workbook",
+              "templateIdSource": "static",
+              "templateId": "Community-Workbooks/Azure Monitor - Agents/Health Service Performance",
+              "typeSource": "workbook",
+              "gallerySource": "workbook",
+              "locationSource": "default"
+            }
+          },
+          {
+            "id": "fab7e150-ff73-4d8d-9652-98b0768749ba",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": " Monitoring Host",
+            "subTarget": "MonitoringHost",
+            "style": "primary",
+            "workbookContext": {
+              "componentIdSource": "workbook",
+              "resourceIdsSource": "workbook",
+              "templateIdSource": "static",
+              "templateId": "Community-Workbooks/Azure Monitor - Agents/Monitoring Host Performance",
+              "typeSource": "workbook",
+              "gallerySource": "workbook",
+              "locationSource": "default"
+            }
+          },
+          {
+            "id": "d1accda4-1cce-4a8a-a4aa-c8a5ea040cd1",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Get Started",
+            "subTarget": "GetStarted",
+            "style": "link"
+          }
+        ]
+      },
+      "name": "Navigation links",
+      "styleSettings": {
+        "margin": "10px 0 0 0"
+      }
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "**Agent summary details**"
+            },
+            "name": "text - 14"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Resources\r\n| where type =~ 'Microsoft.Compute/virtualMachines'\r\n| summarize count() by tostring(type)\r\n| project TotalVirtualMachines = count_",
+              "size": 4,
+              "title": "Total Virtual Machines",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{Subscription}"
+              ],
+              "visualization": "tiles",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "TotalVirtualMachines",
+                    "formatter": 1
+                  }
+                ]
+              },
+              "tileSettings": {
+                "titleContent": {
+                  "formatter": 1
+                },
+                "leftContent": {
+                  "columnMatch": "TotalVirtualMachines",
+                  "formatter": 12,
+                  "formatOptions": {
+                    "palette": "redGreen",
+                    "compositeBarSettings": {
+                      "labelText": "",
+                      "columnSettings": []
+                    }
+                  },
+                  "numberFormat": {
+                    "unit": 17,
+                    "options": {
+                      "style": "decimal",
+                      "useGrouping": true
+                    }
+                  }
+                },
+                "showBorder": false
+              }
+            },
+            "customWidth": "15",
+            "name": "query - 10"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Heartbeat\r\n| where Category == \"Direct Agent\"\r\n| summarize AggregatedValue = dcount(Computer) by Category\r\n",
+              "size": 4,
+              "title": "Total Log Analytics Agents",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ],
+              "visualization": "tiles",
+              "tileSettings": {
+                "titleContent": {
+                  "formatter": 1
+                },
+                "leftContent": {
+                  "columnMatch": "AggregatedValue",
+                  "formatter": 12,
+                  "formatOptions": {
+                    "palette": "auto"
+                  },
+                  "numberFormat": {
+                    "unit": 17,
+                    "options": {
+                      "style": "decimal",
+                      "maximumFractionDigits": 2,
+                      "maximumSignificantDigits": 3
+                    }
+                  }
+                },
+                "showBorder": false
+              }
+            },
+            "customWidth": "15",
+            "name": "DirectAgentsSumQuery",
+            "styleSettings": {
+              "maxWidth": "30%"
+            }
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "datatable(State:string, Rank:int)[\"Unhealthy\", 0, \"Healthy\", 1]\r\n| join kind = leftouter (Heartbeat\r\n| where TimeGenerated {TimeRange:query}\r\n| where Category =~ \"Direct Agent\"\r\n| summarize LastHeartbeat = max(TimeGenerated) by Computer\r\n| extend State = iff(LastHeartbeat < ago({UnhealthyCriteria}), 'Unhealthy', 'Healthy')\r\n| summarize Count = dcount(Computer) by State) on State\r\n| extend Count = iff(isempty(State1), 0, Count)\r\n| project-away State1\r\n| extend Rank = iff(State == 'Unhealthy' and Count == 0, 2, Rank)\r\n| order by Rank asc",
+              "size": 4,
+              "showAnalytics": true,
+              "title": "Log Analytics Agents",
+              "noDataMessage": "Looks like you have no agents sending heartbeat information in this time range. Pick a larger time range or a different workspace.",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ],
+              "visualization": "tiles",
+              "tileSettings": {
+                "titleContent": {
+                  "columnMatch": "State",
+                  "formatter": 1,
+                  "formatOptions": {
+                    "showIcon": true
+                  }
+                },
+                "leftContent": {
+                  "columnMatch": "Count",
+                  "formatter": 12,
+                  "formatOptions": {
+                    "showIcon": true
+                  },
+                  "numberFormat": {
+                    "unit": 17,
+                    "options": {
+                      "style": "decimal",
+                      "useGrouping": false,
+                      "maximumFractionDigits": 2,
+                      "maximumSignificantDigits": 3
+                    }
+                  }
+                },
+                "rightContent": {
+                  "columnMatch": "State",
+                  "formatter": 18,
+                  "formatOptions": {
+                    "showIcon": true,
+                    "thresholdsOptions": "icons",
+                    "thresholdsGrid": [
+                      {
+                        "operator": "==",
+                        "thresholdValue": "Unhealthy",
+                        "representation": "critical",
+                        "text": ""
+                      },
+                      {
+                        "operator": "Default",
+                        "thresholdValue": null,
+                        "representation": "success",
+                        "text": ""
+                      }
+                    ]
+                  }
+                },
+                "showBorder": true
+              }
+            },
+            "customWidth": "25",
+            "conditionalVisibility": {
+              "parameterName": "HasHeartbeat",
+              "comparison": "isNotEqualTo",
+              "value": "0"
+            },
+            "showPin": true,
+            "name": "AgentHealthStateQuery",
+            "styleSettings": {
+              "padding": "0px",
+              "maxWidth": "50"
+            }
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Heartbeat\r\n| where Category == \"Azure Monitor Agent\"\r\n| summarize AggregatedValue = dcount(Computer) by Category",
+              "size": 4,
+              "title": "Total Azure Monitor Agents",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ],
+              "visualization": "tiles",
+              "tileSettings": {
+                "titleContent": {
+                  "formatter": 1
+                },
+                "leftContent": {
+                  "columnMatch": "AggregatedValue",
+                  "formatter": 12,
+                  "formatOptions": {
+                    "palette": "auto"
+                  },
+                  "numberFormat": {
+                    "unit": 17,
+                    "options": {
+                      "maximumSignificantDigits": 3,
+                      "maximumFractionDigits": 2
+                    }
+                  }
+                },
+                "showBorder": false
+              }
+            },
+            "customWidth": "15",
+            "name": "OpsMgrMSSumQuery",
+            "styleSettings": {
+              "maxWidth": "40%"
+            }
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "datatable(State:string, Rank:int)[\"Unhealthy\", 0, \"Healthy\", 1]\r\n| join kind = leftouter (Heartbeat\r\n| where TimeGenerated {TimeRange:query}\r\n| where Category =~ \"Azure Monitor Agent\"\r\n| summarize LastHeartbeat = max(TimeGenerated) by Computer\r\n| extend State = iff(LastHeartbeat < ago({UnhealthyCriteria}), 'Unhealthy', 'Healthy')\r\n| summarize Count = dcount(Computer) by State) on State\r\n| extend Count = iff(isempty(State1), 0, Count)\r\n| project-away State1\r\n| extend Rank = iff(State == 'Unhealthy' and Count == 0, 2, Rank)\r\n| order by Rank asc",
+              "size": 4,
+              "showAnalytics": true,
+              "title": "Azure Monitor Agents",
+              "noDataMessage": "Looks like you have no agents sending heartbeat information in this time range. Pick a larger time range or a different workspace.",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ],
+              "visualization": "tiles",
+              "tileSettings": {
+                "titleContent": {
+                  "columnMatch": "State",
+                  "formatter": 1,
+                  "formatOptions": {
+                    "showIcon": true
+                  }
+                },
+                "leftContent": {
+                  "columnMatch": "Count",
+                  "formatter": 12,
+                  "formatOptions": {
+                    "showIcon": true
+                  },
+                  "numberFormat": {
+                    "unit": 17,
+                    "options": {
+                      "style": "decimal",
+                      "useGrouping": false,
+                      "maximumFractionDigits": 2,
+                      "maximumSignificantDigits": 3
+                    }
+                  }
+                },
+                "rightContent": {
+                  "columnMatch": "State",
+                  "formatter": 18,
+                  "formatOptions": {
+                    "showIcon": true,
+                    "thresholdsOptions": "icons",
+                    "thresholdsGrid": [
+                      {
+                        "operator": "==",
+                        "thresholdValue": "Unhealthy",
+                        "representation": "critical",
+                        "text": ""
+                      },
+                      {
+                        "operator": "Default",
+                        "thresholdValue": null,
+                        "representation": "success",
+                        "text": ""
+                      }
+                    ]
+                  }
+                },
+                "showBorder": true
+              }
+            },
+            "customWidth": "25",
+            "conditionalVisibility": {
+              "parameterName": "HasHeartbeat",
+              "comparison": "isNotEqualTo",
+              "value": "0"
+            },
+            "showPin": true,
+            "name": "AMAStateQuery - Copy",
+            "styleSettings": {
+              "padding": "0px",
+              "maxWidth": "50"
+            }
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Heartbeat\r\n| where TimeGenerated {TimeRange:query}\r\n| where Category =~ \"Direct Agent\"\r\n| summarize LastHeartbeat = max(TimeGenerated) by Computer\r\n| extend State = iff(LastHeartbeat < ago({UnhealthyCriteria}), 'Unhealthy', 'Healthy')\r\n| extend TimeFromNow = now() - LastHeartbeat\r\n| extend [\"TimeAgo\"] = strcat(case(TimeFromNow < 2m, strcat(toint(TimeFromNow / 1m), ' seconds'), TimeFromNow < 2h, strcat(toint(TimeFromNow / 1m), ' minutes'), TimeFromNow < 2d, strcat(toint(TimeFromNow / 1h), ' hours'), strcat(toint(TimeFromNow / 1d), ' days')), ' ago')\r\n| join (\r\nHeartbeat\r\n| where TimeGenerated {TimeRange:query}\r\n| where Category =~ \"Direct Agent\"\r\n| extend Packed = pack_all()\r\n) on Computer\r\n| where TimeGenerated == LastHeartbeat\r\n| join (\r\nHeartbeat\r\n| where TimeGenerated {TimeRange:query}\r\n| where Category =~ \"Direct Agent\"\r\n| make-series InternalTrend=iff(count() > 0, 1, 0) default = 0 on TimeGenerated from {TimeRange:start} to {TimeRange:end} step {UnhealthyCriteria} by Computer\r\n| extend Trend=array_slice(InternalTrend, array_length(InternalTrend) - 30, array_length(InternalTrend)-1)\r\n| extend (s_min, s_minId, s_max, s_maxId, s_avg, s_var, s_stdev) = series_stats(Trend)\r\n| project Computer, Trend, s_avg\r\n) on Computer\r\n| order by State, s_avg asc, TimeAgo\r\n| project [\"_ComputerName_\"] = Computer, [\"Computer\"]=strcat('🖥️ ', Computer), State, [\"Environment\"] = iff(ComputerEnvironment == \"Azure\", ComputerEnvironment, Category), [\"OS\"]=iff(isempty(OSName), OSType, OSName), [\"Azure Resource\"]=ResourceId, Version, [\"Time\"]=strcat('🕒 ', TimeAgo), [\"Heartbeat Trend\"]=Trend, [\"Details\"]=Packed\r\n",
+              "size": 0,
+              "showAnalytics": true,
+              "title": "Log Analytics Agent Details",
+              "noDataMessage": "Looks like you have no agents sending heartbeat information to this workspace. Pick a different workspace.",
+              "timeContextFromParameter": "TimeRange",
+              "exportFieldName": "_ComputerName_",
+              "exportParameterName": "ComputerName",
+              "exportDefaultValue": "\"\"",
+              "showExportToExcel": true,
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "_ComputerName_",
+                    "formatter": 5,
+                    "formatOptions": {
+                      "showIcon": true
+                    }
+                  },
+                  {
+                    "columnMatch": "State",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "showIcon": true,
+                      "thresholdsOptions": "icons",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Unhealthy",
+                          "representation": "4",
+                          "text": "{0}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "success",
+                          "text": "{0}"
+                        }
+                      ]
+                    },
+                    "tooltipFormat": {
+                      "tooltip": "Click to see details of the last event sent by this computer."
+                    }
+                  },
+                  {
+                    "columnMatch": "Heartbeat Trend",
+                    "formatter": 10,
+                    "formatOptions": {
+                      "palette": "redGreen",
+                      "showIcon": true
+                    },
+                    "tooltipFormat": {
+                      "tooltip": "Each bar represents the bucket of time based on the Unhealthy Criteria. Showing last 30 buckets max."
+                    }
+                  },
+                  {
+                    "columnMatch": "Details",
+                    "formatter": 5,
+                    "formatOptions": {
+                      "showIcon": true
+                    }
+                  }
+                ],
+                "rowLimit": 1000,
+                "filter": true,
+                "sortBy": [
+                  {
+                    "itemKey": "Computer",
+                    "sortOrder": 1
+                  }
+                ]
+              },
+              "sortBy": [
+                {
+                  "itemKey": "Computer",
+                  "sortOrder": 1
+                }
+              ],
+              "tileSettings": {
+                "titleContent": {
+                  "columnMatch": "Computer",
+                  "formatter": 1,
+                  "formatOptions": {
+                    "showIcon": true
+                  }
+                },
+                "subtitleContent": {
+                  "columnMatch": "LastCall",
+                  "formatter": 6,
+                  "formatOptions": {
+                    "showIcon": true
+                  }
+                },
+                "showBorder": false
+              },
+              "graphSettings": {
+                "type": 0
+              }
+            },
+            "showPin": true,
+            "name": "AgentDetailsQuery"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Heartbeat\r\n| where TimeGenerated {TimeRange:query}\r\n| where Category =~ \"Azure Monitor Agent\"\r\n| summarize LastHeartbeat = max(TimeGenerated) by Computer\r\n| extend State = iff(LastHeartbeat < ago({UnhealthyCriteria}), 'Unhealthy', 'Healthy')\r\n| extend TimeFromNow = now() - LastHeartbeat\r\n| extend [\"TimeAgo\"] = strcat(case(TimeFromNow < 2m, strcat(toint(TimeFromNow / 1m), ' seconds'), TimeFromNow < 2h, strcat(toint(TimeFromNow / 1m), ' minutes'), TimeFromNow < 2d, strcat(toint(TimeFromNow / 1h), ' hours'), strcat(toint(TimeFromNow / 1d), ' days')), ' ago')\r\n| join (\r\nHeartbeat\r\n| where TimeGenerated {TimeRange:query}\r\n| where Category =~ \"Azure Monitor Agent\"\r\n| extend Packed = pack_all()\r\n) on Computer\r\n| where TimeGenerated == LastHeartbeat\r\n| join (\r\nHeartbeat\r\n| where TimeGenerated {TimeRange:query}\r\n| where Category =~ \"Azure Monitor Agent\"\r\n| make-series InternalTrend=iff(count() > 0, 1, 0) default = 0 on TimeGenerated from {TimeRange:start} to {TimeRange:end} step {UnhealthyCriteria} by Computer\r\n| extend Trend=array_slice(InternalTrend, array_length(InternalTrend) - 30, array_length(InternalTrend)-1)\r\n| extend (s_min, s_minId, s_max, s_maxId, s_avg, s_var, s_stdev) = series_stats(Trend)\r\n| project Computer, Trend, s_avg\r\n) on Computer\r\n| order by State, s_avg asc, TimeAgo\r\n| project [\"_ComputerName_\"] = Computer, [\"Computer\"]=strcat('🖥️ ', Computer), State, [\"Environment\"] = iff(ComputerEnvironment == \"Azure\", ComputerEnvironment, Category), [\"OS\"]=iff(isempty(OSName), OSType, OSName), [\"Azure Resource\"]=ResourceId, Version, [\"Time\"]=strcat('🕒 ', TimeAgo), [\"Heartbeat Trend\"]=Trend, [\"Details\"]=Packed\r\n",
+              "size": 0,
+              "showAnalytics": true,
+              "title": "Azure Monitor Agent Details",
+              "noDataMessage": "Looks like you have no agents sending heartbeat information to this workspace. Pick a different workspace.",
+              "exportFieldName": "_ComputerName_",
+              "exportParameterName": "ComputerName",
+              "exportDefaultValue": "\"\"",
+              "showExportToExcel": true,
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "_ComputerName_",
+                    "formatter": 5,
+                    "formatOptions": {
+                      "showIcon": true
+                    }
+                  },
+                  {
+                    "columnMatch": "State",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "showIcon": true,
+                      "thresholdsOptions": "icons",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Unhealthy",
+                          "representation": "4",
+                          "text": "{0}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "success",
+                          "text": "{0}"
+                        }
+                      ]
+                    },
+                    "tooltipFormat": {
+                      "tooltip": "Click to see details of the last event sent by this computer."
+                    }
+                  },
+                  {
+                    "columnMatch": "Heartbeat Trend",
+                    "formatter": 10,
+                    "formatOptions": {
+                      "palette": "redGreen",
+                      "showIcon": true
+                    },
+                    "tooltipFormat": {
+                      "tooltip": "Each bar represents the bucket of time based on the Unhealthy Criteria. Showing last 30 buckets max."
+                    }
+                  },
+                  {
+                    "columnMatch": "Details",
+                    "formatter": 5,
+                    "formatOptions": {
+                      "showIcon": true
+                    }
+                  }
+                ],
+                "rowLimit": 1000,
+                "filter": true,
+                "sortBy": [
+                  {
+                    "itemKey": "Computer",
+                    "sortOrder": 1
+                  }
+                ]
+              },
+              "sortBy": [
+                {
+                  "itemKey": "Computer",
+                  "sortOrder": 1
+                }
+              ],
+              "tileSettings": {
+                "titleContent": {
+                  "columnMatch": "Computer",
+                  "formatter": 1,
+                  "formatOptions": {
+                    "showIcon": true
+                  }
+                },
+                "subtitleContent": {
+                  "columnMatch": "LastCall",
+                  "formatter": 6,
+                  "formatOptions": {
+                    "showIcon": true
+                  }
+                },
+                "showBorder": false
+              },
+              "graphSettings": {
+                "type": 0
+              }
+            },
+            "showPin": true,
+            "name": "AgentDetailsQuery - Copy"
+          },
+          {
+            "type": 1,
+            "content": {
+              "json": "<br>\r\n### Details about {ComputerName}"
+            },
+            "conditionalVisibility": {
+              "parameterName": "ComputerName",
+              "comparison": "isNotEqualTo",
+              "value": "\"\""
+            },
+            "name": "AgentDetailsText"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Heartbeat\r\n| where Computer == \"{ComputerName}\"\r\n| make-series Trend=count() default = 0 on TimeGenerated from {TimeRange:start} to {TimeRange:end} step {UnhealthyCriteria} by Computer",
+              "size": 0,
+              "showAnalytics": true,
+              "title": "Heartbeat volume trend",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ],
+              "visualization": "areachart"
+            },
+            "conditionalVisibility": {
+              "parameterName": "ComputerName",
+              "comparison": "isNotEqualTo",
+              "value": "\"\""
+            },
+            "name": "SelectedAgentHeartbeatTrendQuery",
+            "styleSettings": {
+              "progressStyle": "spinner"
+            }
+          }
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "Subscription",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "Overview"
+        }
+      ],
+      "name": "AgentHealthOverviewGroup"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "template",
+        "loadFromTemplateId": "Community-Workbooks/Azure Monitor - Agents/Health Service Performance",
+        "items": []
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "HealthService"
+      },
+      "name": "HealthServiceGroup"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "template",
+        "loadFromTemplateId": "Community-Workbooks/Azure Monitor - Agents/Monitoring Host Performance",
+        "items": []
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "MonitoringHost"
+      },
+      "name": "MonitoringHostPerfGroup"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Log Analytics Agent Overview",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Resources\n| join kind=leftouter (ResourceContainers | where type=='microsoft.resources/subscriptions' | project SubscriptionName=name, subscriptionId) on subscriptionId\n| where type == 'microsoft.compute/virtualmachines'\n| project id, resourceGroup, SubscriptionName",
+              "size": 0,
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{Subscription}"
+              ]
+            },
+            "conditionalVisibility": {
+              "parameterName": "hidden",
+              "comparison": "isEqualTo",
+              "value": "hidden"
+            },
+            "name": "allvirtualmachines"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Heartbeat\r\n| where Category =~ \"Direct Agent\"\r\n| summarize LastHeartbeat = max(TimeGenerated) by _ResourceId",
+              "size": 0,
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "conditionalVisibility": {
+              "parameterName": "hidden",
+              "comparison": "isEqualTo",
+              "value": "hidden"
+            },
+            "name": "virtualmachineswithheartbeat"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "{\"version\":\"Merge/1.0\",\"merges\":[{\"id\":\"64dd11f7-17bf-4b4e-abda-5e654a4cd0ef\",\"mergeType\":\"leftouter\",\"leftTable\":\"allvirtualmachines\",\"rightTable\":\"virtualmachineswithheartbeat\",\"leftColumn\":\"id\",\"rightColumn\":\"_ResourceId\"}],\"projectRename\":[{\"originalName\":\"[allvirtualmachines].id\",\"mergedName\":\"id\",\"fromId\":\"64dd11f7-17bf-4b4e-abda-5e654a4cd0ef\"},{\"originalName\":\"[Added column]\",\"mergedName\":\"Agent Reporting\",\"fromId\":null,\"isNewItem\":true,\"newItemData\":[{\"criteriaContext\":{\"leftOperand\":\"_ResourceId\",\"operator\":\"startsWith\",\"rightValType\":\"static\",\"rightVal\":\"/sub\",\"resultValType\":\"static\",\"resultVal\":\"Yes\"}},{\"criteriaContext\":{\"operator\":\"Default\",\"rightValType\":\"column\",\"resultValType\":\"static\",\"resultVal\":\"No\"}}]},{\"originalName\":\"[virtualmachineswithheartbeat].LastHeartbeat\",\"mergedName\":\"LastHeartbeat\",\"fromId\":\"64dd11f7-17bf-4b4e-abda-5e654a4cd0ef\"},{\"originalName\":\"[allvirtualmachines].location\",\"mergedName\":\"location\",\"fromId\":\"64dd11f7-17bf-4b4e-abda-5e654a4cd0ef\"},{\"originalName\":\"[allvirtualmachines].resourceGroup\",\"mergedName\":\"resourceGroup\",\"fromId\":\"64dd11f7-17bf-4b4e-abda-5e654a4cd0ef\"},{\"originalName\":\"[virtualmachineswithheartbeat]._ResourceId\",\"mergedName\":\"_ResourceId\",\"fromId\":\"64dd11f7-17bf-4b4e-abda-5e654a4cd0ef\"},{\"originalName\":\"[allvirtualmachines].name\",\"mergedName\":\"name\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].type\",\"mergedName\":\"type\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].tenantId\",\"mergedName\":\"tenantId\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].kind\",\"mergedName\":\"kind\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].subscriptionId\",\"mergedName\":\"subscriptionId\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].managedBy\",\"mergedName\":\"managedBy\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].sku\",\"mergedName\":\"sku\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].plan\",\"mergedName\":\"plan\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].properties\",\"mergedName\":\"properties\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].tags\",\"mergedName\":\"tags\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].identity\",\"mergedName\":\"identity\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].zones\",\"mergedName\":\"zones\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].extendedLocation\",\"mergedName\":\"extendedLocation\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column1\",\"mergedName\":\"Column1\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column2\",\"mergedName\":\"Column2\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column3\",\"mergedName\":\"Column3\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column4\",\"mergedName\":\"Column4\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column5\",\"mergedName\":\"Column5\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column6\",\"mergedName\":\"Column6\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column7\",\"mergedName\":\"Column7\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column8\",\"mergedName\":\"Column8\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column9\",\"mergedName\":\"Column9\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column10\",\"mergedName\":\"Column10\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column11\",\"mergedName\":\"Column11\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column12\",\"mergedName\":\"Column12\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column13\",\"mergedName\":\"Column13\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column14\",\"mergedName\":\"Column14\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column15\",\"mergedName\":\"Column15\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column16\",\"mergedName\":\"Column16\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column17\",\"mergedName\":\"Column17\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column18\",\"mergedName\":\"Column18\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column19\",\"mergedName\":\"Column19\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column20\",\"mergedName\":\"Column20\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column21\",\"mergedName\":\"Column21\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column22\",\"mergedName\":\"Column22\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column23\",\"mergedName\":\"Column23\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column24\",\"mergedName\":\"Column24\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column25\",\"mergedName\":\"Column25\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column26\",\"mergedName\":\"Column26\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column27\",\"mergedName\":\"Column27\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column28\",\"mergedName\":\"Column28\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column29\",\"mergedName\":\"Column29\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column30\",\"mergedName\":\"Column30\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column31\",\"mergedName\":\"Column31\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].SubName\",\"mergedName\":\"SubName\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].subscriptionId1\",\"mergedName\":\"subscriptionId1\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].SubscriptionName\",\"mergedName\":\"SubscriptionName\",\"fromId\":\"unknown\"}]}",
+              "size": 2,
+              "queryType": 7,
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "$gen_group",
+                    "formatter": 13,
+                    "formatOptions": {
+                      "linkTarget": null,
+                      "showIcon": true
+                    }
+                  },
+                  {
+                    "columnMatch": "id",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "Agent Reporting",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "colors",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Yes",
+                          "representation": "green",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "redBright",
+                          "text": "{0}{1}"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "columnMatch": "resourceGroup",
+                    "formatter": 16,
+                    "formatOptions": {
+                      "showIcon": true
+                    }
+                  },
+                  {
+                    "columnMatch": "_ResourceId",
+                    "formatter": 5
+                  }
+                ],
+                "hierarchySettings": {
+                  "treeType": 1,
+                  "groupBy": [
+                    "SubscriptionName"
+                  ],
+                  "expandTopLevel": true,
+                  "finalBy": "id"
+                },
+                "labelSettings": [
+                  {
+                    "columnId": "Agent Reporting",
+                    "label": "Agent Reporting"
+                  }
+                ]
+              },
+              "sortBy": [],
+              "tileSettings": {
+                "titleContent": {},
+                "leftContent": {
+                  "columnMatch": "Agent Reporting"
+                },
+                "rightContent": {
+                  "columnMatch": "id"
+                },
+                "showBorder": false
+              },
+              "graphSettings": {
+                "type": 2,
+                "topContent": {
+                  "columnMatch": "SubscriptionName"
+                },
+                "centerContent": {
+                  "columnMatch": "Agent Reporting"
+                },
+                "bottomContent": {
+                  "columnMatch": "id",
+                  "formatter": 13,
+                  "formatOptions": {
+                    "linkTarget": null,
+                    "showIcon": false
+                  }
+                },
+                "hivesContent": {
+                  "columnMatch": "SubscriptionName",
+                  "formatter": 1
+                },
+                "nodeIdField": "id",
+                "sourceIdField": "Agent Reporting",
+                "targetIdField": "LastHeartbeat",
+                "graphOrientation": 3,
+                "showOrientationToggles": false,
+                "nodeSize": null,
+                "staticNodeSize": 100,
+                "colorSettings": {
+                  "nodeColorField": "Agent Reporting",
+                  "type": 1,
+                  "colorPalette": "default"
+                },
+                "groupByField": "SubscriptionName",
+                "hivesMargin": 5
+              }
+            },
+            "name": "merge - Copy"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "LogAnalyticsAgentOverview"
+      },
+      "name": "LogAnalyticsAgentOverview"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Azure Monitor Agent Overview",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Resources\r\n| join kind=leftouter (ResourceContainers | where type=='microsoft.resources/subscriptions' | project SubscriptionName=name, subscriptionId) on subscriptionId\r\n| where type == 'microsoft.compute/virtualmachines'\r\n| project id, resourceGroup, SubscriptionName",
+              "size": 0,
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{Subscription}"
+              ],
+              "gridSettings": {
+                "rowLimit": 1000
+              }
+            },
+            "conditionalVisibility": {
+              "parameterName": "hidden",
+              "comparison": "isEqualTo",
+              "value": "hidden"
+            },
+            "name": "allvirtualmachines"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Heartbeat\r\n| where Category == \"Azure Monitor Agent\"\r\n| summarize LastHeartbeat = max(TimeGenerated) by _ResourceId",
+              "size": 0,
+              "timeContext": {
+                "durationMs": 43200000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ],
+              "gridSettings": {
+                "rowLimit": 1000
+              }
+            },
+            "conditionalVisibility": {
+              "parameterName": "hidden",
+              "comparison": "isEqualTo",
+              "value": "hidden"
+            },
+            "name": "virtualmachineswithheartbeat"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "{\"version\":\"Merge/1.0\",\"merges\":[{\"id\":\"64dd11f7-17bf-4b4e-abda-5e654a4cd0ef\",\"mergeType\":\"leftouter\",\"leftTable\":\"allvirtualmachines\",\"rightTable\":\"virtualmachineswithheartbeat\",\"leftColumn\":\"id\",\"rightColumn\":\"_ResourceId\"}],\"projectRename\":[{\"originalName\":\"[allvirtualmachines].id\",\"mergedName\":\"id\",\"fromId\":\"64dd11f7-17bf-4b4e-abda-5e654a4cd0ef\"},{\"originalName\":\"[Added column]\",\"mergedName\":\"Agent Reporting\",\"fromId\":null,\"isNewItem\":true,\"newItemData\":[{\"criteriaContext\":{\"leftOperand\":\"_ResourceId\",\"operator\":\"startsWith\",\"rightValType\":\"static\",\"rightVal\":\"/sub\",\"resultValType\":\"static\",\"resultVal\":\"Yes\"}},{\"criteriaContext\":{\"operator\":\"Default\",\"rightValType\":\"column\",\"resultValType\":\"static\",\"resultVal\":\"No\"}}]},{\"originalName\":\"[virtualmachineswithheartbeat].LastHeartbeat\",\"mergedName\":\"LastHeartbeat\",\"fromId\":\"64dd11f7-17bf-4b4e-abda-5e654a4cd0ef\"},{\"originalName\":\"[allvirtualmachines].location\",\"mergedName\":\"location\",\"fromId\":\"64dd11f7-17bf-4b4e-abda-5e654a4cd0ef\"},{\"originalName\":\"[allvirtualmachines].resourceGroup\",\"mergedName\":\"resourceGroup\",\"fromId\":\"64dd11f7-17bf-4b4e-abda-5e654a4cd0ef\"},{\"originalName\":\"[virtualmachineswithheartbeat]._ResourceId\",\"mergedName\":\"_ResourceId\",\"fromId\":\"64dd11f7-17bf-4b4e-abda-5e654a4cd0ef\"},{\"originalName\":\"[allvirtualmachines].name\",\"mergedName\":\"name\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].type\",\"mergedName\":\"type\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].tenantId\",\"mergedName\":\"tenantId\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].kind\",\"mergedName\":\"kind\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].subscriptionId\",\"mergedName\":\"subscriptionId\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].managedBy\",\"mergedName\":\"managedBy\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].sku\",\"mergedName\":\"sku\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].plan\",\"mergedName\":\"plan\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].properties\",\"mergedName\":\"properties\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].tags\",\"mergedName\":\"tags\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].identity\",\"mergedName\":\"identity\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].zones\",\"mergedName\":\"zones\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].extendedLocation\",\"mergedName\":\"extendedLocation\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column1\",\"mergedName\":\"Column1\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column2\",\"mergedName\":\"Column2\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column3\",\"mergedName\":\"Column3\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column4\",\"mergedName\":\"Column4\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column5\",\"mergedName\":\"Column5\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column6\",\"mergedName\":\"Column6\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column7\",\"mergedName\":\"Column7\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column8\",\"mergedName\":\"Column8\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column9\",\"mergedName\":\"Column9\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column10\",\"mergedName\":\"Column10\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column11\",\"mergedName\":\"Column11\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column12\",\"mergedName\":\"Column12\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column13\",\"mergedName\":\"Column13\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column14\",\"mergedName\":\"Column14\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column15\",\"mergedName\":\"Column15\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column16\",\"mergedName\":\"Column16\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column17\",\"mergedName\":\"Column17\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column18\",\"mergedName\":\"Column18\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column19\",\"mergedName\":\"Column19\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column20\",\"mergedName\":\"Column20\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column21\",\"mergedName\":\"Column21\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column22\",\"mergedName\":\"Column22\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column23\",\"mergedName\":\"Column23\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column24\",\"mergedName\":\"Column24\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column25\",\"mergedName\":\"Column25\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column26\",\"mergedName\":\"Column26\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column27\",\"mergedName\":\"Column27\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column28\",\"mergedName\":\"Column28\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column29\",\"mergedName\":\"Column29\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column30\",\"mergedName\":\"Column30\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].Column31\",\"mergedName\":\"Column31\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].SubName\",\"mergedName\":\"SubName\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].subscriptionId1\",\"mergedName\":\"subscriptionId1\",\"fromId\":\"unknown\"},{\"originalName\":\"[allvirtualmachines].SubscriptionName\",\"mergedName\":\"SubscriptionName\",\"fromId\":\"unknown\"}]}",
+              "size": 2,
+              "showExportToExcel": true,
+              "queryType": 7,
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "$gen_group",
+                    "formatter": 13,
+                    "formatOptions": {
+                      "linkTarget": null,
+                      "showIcon": true
+                    }
+                  },
+                  {
+                    "columnMatch": "id",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "Agent Reporting",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "colors",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Yes",
+                          "representation": "green",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "redBright",
+                          "text": "{0}{1}"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "columnMatch": "resourceGroup",
+                    "formatter": 16,
+                    "formatOptions": {
+                      "showIcon": true
+                    }
+                  },
+                  {
+                    "columnMatch": "_ResourceId",
+                    "formatter": 5
+                  }
+                ],
+                "rowLimit": 1000,
+                "filter": true,
+                "hierarchySettings": {
+                  "treeType": 1,
+                  "groupBy": [
+                    "SubscriptionName"
+                  ],
+                  "expandTopLevel": true,
+                  "finalBy": "id"
+                },
+                "labelSettings": [
+                  {
+                    "columnId": "Agent Reporting",
+                    "label": "Agent Reporting"
+                  }
+                ]
+              },
+              "sortBy": [],
+              "tileSettings": {
+                "titleContent": {},
+                "leftContent": {
+                  "columnMatch": "Agent Reporting"
+                },
+                "rightContent": {
+                  "columnMatch": "id"
+                },
+                "showBorder": false
+              },
+              "graphSettings": {
+                "type": 2,
+                "topContent": {
+                  "columnMatch": "SubscriptionName"
+                },
+                "centerContent": {
+                  "columnMatch": "Agent Reporting"
+                },
+                "bottomContent": {
+                  "columnMatch": "id",
+                  "formatter": 13,
+                  "formatOptions": {
+                    "linkTarget": null,
+                    "showIcon": false
+                  }
+                },
+                "hivesContent": {
+                  "columnMatch": "SubscriptionName",
+                  "formatter": 1
+                },
+                "nodeIdField": "id",
+                "sourceIdField": "Agent Reporting",
+                "targetIdField": "LastHeartbeat",
+                "graphOrientation": 3,
+                "showOrientationToggles": false,
+                "nodeSize": null,
+                "staticNodeSize": 100,
+                "colorSettings": {
+                  "nodeColorField": "Agent Reporting",
+                  "type": 1,
+                  "colorPalette": "default"
+                },
+                "groupByField": "SubscriptionName",
+                "hivesMargin": 5
+              }
+            },
+            "name": "merge - Copy"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "AzureMonitorAgentOverview"
+      },
+      "name": "AzureMonitorAgentOverview"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "# Get started\r\n\r\nWelcome to the Azure Monitor Log Analytics agent workbook. This workbook is designed to provide you with an understanding of:\r\n* How many agents are reporting to my workspace and how are they connected?\r\n* What is the agent connected state? How many are actively connected and reporting and how many aren't?\r\n* Are any Windows agents affecting the resource utlization of the host?\r\n\r\nYou can drill-down to review the heartbeat trend for a selected agent machine, and its performance utilization (only available on Windows operating system at this time).\r\n\r\nThe following tabs include performance charts that show resource utilization from the agent's related processes:\r\n\r\n1. **Health Service** - The *HealthService* is the primary agent process responsible for maintaining communication between the agent and Azure Monitor, downloading configuration based on insights and solutions enabled in the workspace, processing the configuration, and sending data collected to a Log Analytics workspace. \r\n2. **Monitoring Host** - The *MonitoringHost* is a child monitoring host process responsible for performing monitoring activities defined in the downloaded configuration from Azure Monitor, such as:\r\n\r\n    * Monitoring and collecting Windows event log data.\r\n    * Monitoring and collecting Log-based file data.\r\n    * Monitoring and collecting performance counter data.\r\n\r\nFor additional information about the Log Analytics agent, see [agent overview](https://docs.microsoft.com/azure/azure-monitor/platform/agents-overview#log-analytics-agent).\r\n\r\n\r\n## Requirements\r\n\r\n* A [Log Analytics workspace](https://docs.microsoft.com/azure/azure-monitor/platform/design-logs-deployment).\r\n\r\nIn order to analyze the performance utlization of the Log Analytics Windows agent, you need to enable the collection of the following performance counters:\r\n* Health Service Management Groups(*)\\Send Queue % Used \r\n* Health Service(*)\\Module Count\r\n* Health Service(*)\\Workflow Count \r\n* Process(HealthService)\\% Processor Time \r\n* Process(HealthService)\\Handle Count \r\n* Process(HealthService)\\Private Bytes \r\n* Process(MonitoringHost*)\\% Processor Time \r\n* Process(MonitoringHost*)\\Private Bytes \r\n\r\nIf you are unfamiliar with how to enable performance counters in your workspace, see [Configure performance data source](https://docs.microsoft.com/azure/azure-monitor/platform/data-sources-performance-counters#configuring-data-sources)."
+            },
+            "name": "GetStartedText"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "GetStarted"
+      },
+      "name": "GetStartedGroup"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 9,
+            "content": {
+              "version": "KqlParameterItem/1.0",
+              "parameters": [
+                {
+                  "id": "4f4dcee1-a2dd-4a5d-aad8-8ce7880c91d2",
+                  "version": "KqlParameterItem/1.0",
+                  "name": "ExtensionName",
+                  "label": "Extension Name",
+                  "type": 2,
+                  "isRequired": true,
+                  "typeSettings": {
+                    "additionalResourceOptions": [],
+                    "showDefault": false
+                  },
+                  "jsonData": "[\r\n {\"value\": \"AzureMonitorWindowsAgent\", \"label\":\"AzureMonitorWindowsAgent\", \"selected\":true},\r\n {\"value\": \"DependencyAgentWindows\", \"label\":\"DependencyAgentWindows\"},\r\n  {\"value\": \"MicrosoftMonitoringAgent\", \"label\":\"MicrosoftMonitoringAgent\"},\r\n  {\"value\": \"IaaSAntimalware\", \"label\":\"IaaSAntimalware\"},\r\n {\"value\": \"WindowsAgent.AzureSecurityCenter\", \"label\":\"WindowsAgent.AzureSecurityCenter\"},\r\n {\"value\": \"MDE.Windows\", \"label\":\"MDE.Windows\"}\r\n]",
+                  "timeContext": {
+                    "durationMs": 86400000
+                  }
+                }
+              ],
+              "style": "pills",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces"
+            },
+            "name": "parameters - 2"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Resources| where type =~ 'Microsoft.Compute/virtualMachines'\r\n| project Computer = name, subscriptionId, Status=properties.extended.instanceView.powerState.displayStatus\r\n|join kind=leftouter(\r\nResources\r\n| where type =~ 'Microsoft.Compute/virtualMachines/extensions'\r\n| where name == '{ExtensionName}'\r\n| extend Computer = tostring(split(id, \"/\")[8]) \r\n| extend ProvisioningState=properties.provisioningState| extend AutoUpgrade = properties.enableAutomaticUpgrade| extend HandlerVersion=properties.typeHandlerVersion| extend EnableAMA=properties.settings.enableAMA\r\n| project subscriptionId, Computer, name, ProvisioningState, AutoUpgrade, HandlerVersion, EnableAMA, properties) on Computer, subscriptionId\r\n| project-away subscriptionId1, Computer1\r\n",
+              "size": 3,
+              "exportFieldName": "subscriptionId",
+              "exportParameterName": "SelectedSub",
+              "showExportToExcel": true,
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{Subscription}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "$gen_group",
+                    "formatter": 13,
+                    "formatOptions": {
+                      "linkTarget": null,
+                      "showIcon": true
+                    }
+                  },
+                  {
+                    "columnMatch": "subscriptionId",
+                    "formatter": 13,
+                    "formatOptions": {
+                      "linkTarget": null,
+                      "showIcon": true
+                    }
+                  },
+                  {
+                    "columnMatch": "Status",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "colors",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "VM running",
+                          "representation": "green",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "redBright",
+                          "text": "{0}{1}"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "columnMatch": "name",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "colors",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "is Empty",
+                          "representation": "redBright",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "green",
+                          "text": "{0}{1}"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "columnMatch": "ProvisioningState",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "icons",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Succeeded",
+                          "representation": "success",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "2",
+                          "text": "{0}{1}"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "columnMatch": "AutoUpgrade",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "colors",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "false",
+                          "representation": "redBright",
+                          "text": "Not Enabled"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "true",
+                          "representation": "green",
+                          "text": "Enabled"
+                        },
+                        {
+                          "operator": "is Empty",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "text": "{0}{1}"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "columnMatch": "EnableAMA",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "icons",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "false",
+                          "representation": "success",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "true",
+                          "representation": "4",
+                          "text": "True - Duplicating VM Insight Data"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "more",
+                          "text": "{0}{1}"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "rowLimit": 2000,
+                "filter": true,
+                "hierarchySettings": {
+                  "treeType": 1,
+                  "groupBy": [
+                    "subscriptionId"
+                  ],
+                  "expandTopLevel": true,
+                  "finalBy": "subscriptionId"
+                }
+              }
+            },
+            "name": "query - 0"
+          },
+          {
+            "type": 1,
+            "content": {
+              "json": "Selected Subscription ID - {SelectedSub}"
+            },
+            "name": "text - 2"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "VMExtensions"
+      },
+      "name": "group - 10"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 11,
+            "content": {
+              "version": "LinkItem/1.0",
+              "style": "tabs",
+              "links": [
+                {
+                  "id": "93134fdb-8c17-4987-a597-f6f7ed8c4b88",
+                  "cellValue": "selectedTab",
+                  "linkTarget": "parameter",
+                  "linkLabel": "Manager1 Only",
+                  "subTarget": "Manager1",
+                  "style": "link"
+                },
+                {
+                  "id": "3a4ba48a-a7fd-44cd-8d5e-fc4608dfa537",
+                  "cellValue": "selectedTab",
+                  "linkTarget": "parameter",
+                  "linkLabel": "All VMs",
+                  "subTarget": "AllVMs",
+                  "style": "link"
+                }
+              ]
+            },
+            "name": "links - 1"
+          },
+          {
+            "type": 12,
+            "content": {
+              "version": "NotebookGroup/1.0",
+              "groupType": "editable",
+              "items": [
+                {
+                  "type": 3,
+                  "content": {
+                    "version": "KqlItem/1.0",
+                    "query": "Resources\r\n| where type =~ 'Microsoft.Compute/virtualMachines'\r\n| where name == 'Manager1'\r\n| extend Computer = tostring(split(id, \"/\")[8]) \r\n| extend IdentityTypes=tostring(identity.type)| extend UserAssignedIdentities=identity.userAssignedIdentities\r\n| summarize UserManager1 = countif(identity contains \"Manager1\"), UserTenantVMs = countif(identity contains \"TenantVMs\") by subscriptionId, id, IdentityTypes\r\n\r\n\r\n\r\n",
+                    "size": 3,
+                    "exportFieldName": "subscriptionId",
+                    "exportParameterName": "SelectedSub",
+                    "showExportToExcel": true,
+                    "queryType": 1,
+                    "resourceType": "microsoft.resourcegraph/resources",
+                    "crossComponentResources": [
+                      "{Subscription}"
+                    ],
+                    "gridSettings": {
+                      "formatters": [
+                        {
+                          "columnMatch": "subscriptionId",
+                          "formatter": 13,
+                          "formatOptions": {
+                            "linkTarget": null,
+                            "showIcon": true
+                          }
+                        },
+                        {
+                          "columnMatch": "IdentityTypes",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "colors",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "!=",
+                                "thresholdValue": "SystemAssigned, UserAssigned",
+                                "representation": "redBright",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "green",
+                                "text": "{0}{1}"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "columnMatch": "UserSpotPCManager1",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "colors",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "==",
+                                "thresholdValue": "0",
+                                "representation": "redBright",
+                                "text": "Not Found"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "green",
+                                "text": "Found"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "columnMatch": "UserTenantVMs",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "colors",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "==",
+                                "thresholdValue": "0",
+                                "representation": "redBright",
+                                "text": "Not Found"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "green",
+                                "text": "Found"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "columnMatch": "name",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "colors",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "is Empty",
+                                "representation": "redBright",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "green",
+                                "text": "{0}{1}"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "columnMatch": "ProvisioningState",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "icons",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "==",
+                                "thresholdValue": "Succeeded",
+                                "representation": "success",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "2",
+                                "text": "{0}{1}"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "columnMatch": "AutoUpgrade",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "colors",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "==",
+                                "thresholdValue": "false",
+                                "representation": "redBright",
+                                "text": "Not Enabled"
+                              },
+                              {
+                                "operator": "==",
+                                "thresholdValue": "true",
+                                "representation": "green",
+                                "text": "Enabled"
+                              },
+                              {
+                                "operator": "is Empty",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "text": "{0}{1}"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "columnMatch": "EnableAMA",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "icons",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "==",
+                                "thresholdValue": "false",
+                                "representation": "success",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "==",
+                                "thresholdValue": "true",
+                                "representation": "4",
+                                "text": "True - Duplicating VM Insight Data"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "more",
+                                "text": "{0}{1}"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "columnMatch": "Status",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "colors",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "==",
+                                "thresholdValue": "VM running",
+                                "representation": "green",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "redBright",
+                                "text": "{0}{1}"
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "rowLimit": 2000,
+                      "filter": true,
+                      "sortBy": [
+                        {
+                          "itemKey": "$gen_thresholds_UserSpotPCManager1_3",
+                          "sortOrder": 1
+                        }
+                      ]
+                    },
+                    "sortBy": [
+                      {
+                        "itemKey": "$gen_thresholds_UserSpotPCManager1_3",
+                        "sortOrder": 1
+                      }
+                    ]
+                  },
+                  "name": "query - 0 - Copy"
+                }
+              ]
+            },
+            "conditionalVisibility": {
+              "parameterName": "selectedTab",
+              "comparison": "isEqualTo",
+              "value": "Manager1"
+            },
+            "name": "group -Manager1"
+          },
+          {
+            "type": 12,
+            "content": {
+              "version": "NotebookGroup/1.0",
+              "groupType": "editable",
+              "items": [
+                {
+                  "type": 3,
+                  "content": {
+                    "version": "KqlItem/1.0",
+                    "query": "Resources\r\n| where type =~ 'Microsoft.Compute/virtualMachines'\r\n| where name != 'Manager1'\r\n| extend Computer = tostring(split(id, \"/\")[8]) \r\n| extend IdentityTypes=tostring(identity.type)| extend UserAssignedIdentities=identity.userAssignedIdentities\r\n| summarize UserTenantVMs = countif(identity contains \"TenantVMs\") by subscriptionId, id, IdentityTypes\r\n\r\n",
+                    "size": 3,
+                    "exportFieldName": "subscriptionId",
+                    "exportParameterName": "SelectedSub",
+                    "showExportToExcel": true,
+                    "queryType": 1,
+                    "resourceType": "microsoft.resourcegraph/resources",
+                    "crossComponentResources": [
+                      "{Subscription}"
+                    ],
+                    "gridSettings": {
+                      "formatters": [
+                        {
+                          "columnMatch": "$gen_group",
+                          "formatter": 13,
+                          "formatOptions": {
+                            "linkTarget": null,
+                            "showIcon": true
+                          }
+                        },
+                        {
+                          "columnMatch": "subscriptionId",
+                          "formatter": 5
+                        },
+                        {
+                          "columnMatch": "IdentityTypes",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "colors",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "!=",
+                                "thresholdValue": "SystemAssigned, UserAssigned",
+                                "representation": "redBright",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "green",
+                                "text": "{0}{1}"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "columnMatch": "UserSpotPCManager1",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "colors",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "==",
+                                "thresholdValue": "0",
+                                "representation": "redBright",
+                                "text": "Not Found"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "green",
+                                "text": "Found"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "columnMatch": "UserTenantVMs",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "colors",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "==",
+                                "thresholdValue": "0",
+                                "representation": "redBright",
+                                "text": "Not Found"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "green",
+                                "text": "Found"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "columnMatch": "name",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "colors",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "is Empty",
+                                "representation": "redBright",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "green",
+                                "text": "{0}{1}"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "columnMatch": "ProvisioningState",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "icons",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "==",
+                                "thresholdValue": "Succeeded",
+                                "representation": "success",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "2",
+                                "text": "{0}{1}"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "columnMatch": "AutoUpgrade",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "colors",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "==",
+                                "thresholdValue": "false",
+                                "representation": "redBright",
+                                "text": "Not Enabled"
+                              },
+                              {
+                                "operator": "==",
+                                "thresholdValue": "true",
+                                "representation": "green",
+                                "text": "Enabled"
+                              },
+                              {
+                                "operator": "is Empty",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "text": "{0}{1}"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "columnMatch": "EnableAMA",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "icons",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "==",
+                                "thresholdValue": "false",
+                                "representation": "success",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "==",
+                                "thresholdValue": "true",
+                                "representation": "4",
+                                "text": "True - Duplicating VM Insight Data"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "more",
+                                "text": "{0}{1}"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "columnMatch": "Status",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "colors",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "==",
+                                "thresholdValue": "VM running",
+                                "representation": "green",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "redBright",
+                                "text": "{0}{1}"
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "rowLimit": 2000,
+                      "filter": true,
+                      "hierarchySettings": {
+                        "treeType": 1,
+                        "groupBy": [
+                          "subscriptionId"
+                        ],
+                        "expandTopLevel": true,
+                        "finalBy": "subscriptionId"
+                      }
+                    },
+                    "sortBy": []
+                  },
+                  "name": "query - 0 - Copy - Copy"
+                }
+              ]
+            },
+            "conditionalVisibility": {
+              "parameterName": "selectedTab",
+              "comparison": "isEqualTo",
+              "value": "AllVMs"
+            },
+            "name": "group - AllVMs"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "ManagedIdentities"
+      },
+      "name": "group -ManagedIdentities"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "Original Workbooks - Log Analytics Agent Health  / Avery and Blair's merged Workbooks\r\n</br>\r\nManaging Authors - Avery Foreman and Blar Sonnek"
+      },
+      "name": "text - 9"
+    }
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "fromTemplateId": "community-Workbooks/Azure Monitor - Agents/Overview",
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
