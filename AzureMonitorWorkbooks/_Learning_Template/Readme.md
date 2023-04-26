@@ -1,6 +1,6 @@
 ### The goal of this guide is to assist you in creating your initial workbook in Azure Monitor. By utilizing the json code provided in this folder, the workbook you create will give you a template for your training environment, complete with pre-built queries. These examples serve as a point of reference during your learning process, showcasing how to query various types of data sources with basic examples. **
 
-### This workbook is also a great template with paramaters, groups, and tabs to start out any workbook.
+### This workbook is also a great starter template that will include core concepts like parameters, groups, and tabs to start out any workbook.
 
 #### Once you create a workbook you can then learn basic KQL queries and the components of a workbook. Use the additional links at the bottom for more video training on Workbooks and KQL training.**
 
