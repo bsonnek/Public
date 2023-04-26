@@ -12,35 +12,35 @@ Track AMA and MMA Agent Health, VM Extenstions, and System and User assigned Man
 ### TAB - Overview
 Overview tab shows Total VMs, MMA, and AMA agents.  Healthy and Unhealthy status set by paramaters in the workbook.
 
-![image](.\Screenshots\1-Overview.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/VM-Agents-Identities-Extensions/Screenshots/1-Overview.png)
 
 
 ### TAB - Log Analytics Agent Overview
 
-![image](.\Screenshots\2-LogAnalyticsAgent.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/VM-Agents-Identities-Extensions/Screenshots/2-LogAnalyticsAgent.png)
 
 **Importance of VM running and if the Agent is reporting**
-![image](.\Screenshots\3-AMAOverview.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/VM-Agents-Identities-Extensions/Screenshots/3-AMAOverview.png)
 
 
 
 ### TAB - Azure Monitor Agent Overview
-![image](.\Screenshots\4-AMA Agent Running.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/VM-Agents-Identities-Extensions/Screenshots/4-AMA%20Agent%20Running.png)
 
 
 
 
 ### TAB - VM Extension
 Monitor VM Extension Installation, Configuration, and Health
-![image](.\Screenshots\6-VMExtensionDetails.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/VM-Agents-Identities-Extensions/Screenshots/6-VMExtensionDetails.png)
 
-![image](.\Screenshots\6-1-AMA-ExtensionDetails.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/VM-Agents-Identities-Extensions/Screenshots/6-1-AMA-ExtensionDetails.png)
 
 
 
 
 ### TAB - Managed Identities
 Customize this tab to track managed identites assigned to your VMs
-![image](.\Screenshots\7-ManagedIdentities.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/VM-Agents-Identities-Extensions/Screenshots/\7-ManagedIdentities.png)
 
 
