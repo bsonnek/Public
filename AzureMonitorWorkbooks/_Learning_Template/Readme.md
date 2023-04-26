@@ -1,4 +1,4 @@
-### The purpose of this guide is to help you create your first workbook in Azure Monitor. The workbook you create using the json code in this folder will give you a workbook template for your training environment with some queries built into the workbook. These examples should give you a point of reference during your learning path of how each type of data source can be queried with some basic examples. **
+### The goal of this guide is to assist you in creating your initial workbook in Azure Monitor. By utilizing the json code provided in this folder, the workbook you create will give you a template for your training environment, complete with pre-built queries. These examples serve as a point of reference during your learning process, showcasing how to query various types of data sources with basic examples. **
 
 ### This workbook is also a great template with paramaters, groups, and tabs to start out any workbook.
 
