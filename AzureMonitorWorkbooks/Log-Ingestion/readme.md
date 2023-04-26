@@ -11,6 +11,8 @@ The workbook has multiple tabs for drilling down into Log Analytic workspace tab
 ![image](https://github.com/bsonnek/Public/edit/main/AzureMonitorWorkbooks/Log-Ingestion/Screenshots/1-Overview.png)
 
 ![image](.\Screenshots\2-OverviewGraphs.png)
+[[Screenshots/2-OverviewGraphs.png]]
+[[/Screenshots/2-OverviewGraphs.png]]
 
 
 ### Subscription Size:
