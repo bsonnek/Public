@@ -11,43 +11,43 @@ There are many Tabs that have many additional sub tabs with detailed subscriptio
 
 ### TAB - Subscription Details
 
-![image](.\Screenshots\1-SubDetails.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/Subscription%20Overview/Screenshots/1-SubDetails.png)
 
 
 ### TAB - Environment
 #### AVD Compute TAB
-![image](.\Screenshots\2-Environment.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/Subscription%20Overview/Screenshots/2-Environment.png)
 
 #### AVD Host Pools TAB
-![image](.\Screenshots\3-AVDHostPool.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/Subscription%20Overview/Screenshots/3-AVDHostPool.png)
 
-![image](.\Screenshots\4-AVDHostPool.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/Subscription%20Overview/Screenshots/4-AVDHostPool.png)
 
 #### Azure Storage
 
-![image](.\Screenshots\5-AzStorage.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/Subscription%20Overview/Screenshots/5-AzStorage.png)
 
 #### VM Disk Storage
-![image](.\Screenshots\6-VMStorage.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/Subscription%20Overview/Screenshots/6-VMStorage.png)
 
 ### TAB - Networking
 
 #### VPNG Gateway
-![image](.\Screenshots\7-Networking.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/Subscription%20Overview/Screenshots/7-Networking.png)
 
 
 ### TAB - Backup Report
 **This was made since the Azure Backup workbooks were too slow and were not usable for us**
-![image](.\Screenshots\8-BackupReport.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/Subscription%20Overview/Screenshots/8-BackupReport.png)
 
 
 ### Monitoring and Security
 
-![image](.\Screenshots\9-MaliciousConnections.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/Subscription%20Overview/Screenshots/9-MaliciousConnections.png)
 
 ### Resource Overviews - Orphaned Resources
 
-![image](.\Screenshots\10-OrphanedResources.png)
+![image](https://github.com/bsonnek/Public/blob/main/AzureMonitorWorkbooks/Subscription%20Overview/Screenshots/10-OrphanedResources.png)
 
 
 
