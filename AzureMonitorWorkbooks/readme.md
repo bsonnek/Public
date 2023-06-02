@@ -8,4 +8,4 @@ This folder will have custom Azure Monitor Workbooks that can be used to monitor
 **If you are unfamilar with this process. Please follow the guide below and training template for a brief overview on how this works**
 
 ### If you are new to Azure Monitor Workbooks you should start with the learning template in this folder 
-[Learning Template Link](https://github.com/bsonnek/Public/tree/main/AzureWorkbooks/_Learning_Template)
+[Learning Template Link](https://github.com/bsonnek/Public/tree/main/AzureMonitorWorkbooks/_Learning_Template)
