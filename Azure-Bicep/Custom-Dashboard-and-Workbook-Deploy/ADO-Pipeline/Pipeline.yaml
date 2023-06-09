@@ -1,0 +1,27 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none
+pr: none
+
+variables:
+  bicepPath: './Monitor/Deploy-DashboardsAndWorkbooks/main.bicep'
+  resourceGroupName: 'RG-DEV-EU-Support-Dashboards'
+
+pool:
+  name: 'Azure Pipelines'
+  vmImage: 'ubuntu-latest'
+  
+steps:
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'ADO-Workbooks-and-Dashboards-service'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az deployment group create \
+        --template-file $(bicepPath) \
+        --resource-group $(resourceGroupName)

@@ -1,0 +1,44 @@
+name: SpotPC PROD DashboardAndWorkbook Deployment
+# Author Blair Sonnek
+# Date: 4/5/2023
+# Overview - This will deploy all workbooks and dashboards using a bicep template to the Spot PC PROD lighthouse environment. 
+
+on:
+# Scheduled to run every night at 1am EST
+  schedule:
+    - cron: "0 6 * * *" 
+
+
+# Variables
+env:
+  resourceGroupName: RG-PRD-EU-Support-Dashboards
+  bicepfilePath: ./Monitor/Deploy-DashboardsAndWorkbooks/main.bicep
+  ImageURL: "[![SpotPC](https://publicfilesharevdms.blob.core.windows.net/SpotPC4.png)](https://docs.spot.io/spot-pc/getting-started/)"
+  PIMLink: "[PIM Access - Click and Drag to browser tab](https://portal.azure.com/#view/Microsoft_Azure_PIMCommon/CommonMenuBlade/~/azurerbac)"
+
+# Job 1 - Deploy Dashboards and Workbooks to Resource Group 
+jobs:
+
+    deploy:
+      runs-on: ubuntu-latest
+      steps:
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
+
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Deploy Bicep Template
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.47.0
+          inlineScript: |
+            az deployment group create \
+            --template-file ${{  env.bicepfilePath }} \
+            --resource-group ${{ env.resourceGroupName }} \
+            --parameters parImageURL="${{ env.ImageURL }}" parPIMLink="${{ env.PIMLink }}"
+
+
