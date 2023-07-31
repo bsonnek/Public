@@ -1,0 +1,1041 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "parameters": [
+          {
+            "id": "0a902029-8139-431e-b145-8fb4a2288e5b",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "value": [
+              ""
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "c6e9cc98-ae42-49de-ba87-c3f706a71d90",
+            "version": "KqlParameterItem/1.0",
+            "name": "LogAnayltics",
+            "label": "Log Anayltics",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "where type =~ 'Microsoft.OperationalInsights/workspaces'\n| project id, name\n| order by name desc",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "resourceTypeFilter": {
+                "microsoft.operationalinsights/workspaces": true
+              },
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              ""
+            ]
+          },
+          {
+            "id": "cf3c3811-0deb-4711-8c7f-657deb77d803",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeRange",
+            "type": 4,
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 900000
+                },
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                },
+                {
+                  "durationMs": 1209600000
+                },
+                {
+                  "durationMs": 2419200000
+                },
+                {
+                  "durationMs": 2592000000
+                }
+              ],
+              "allowCustom": true
+            },
+            "value": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "7461f86a-0c69-4c5f-8ce4-0f35af3e6f57",
+            "version": "KqlParameterItem/1.0",
+            "name": "OpenAIService",
+            "label": "OpenAI Service",
+            "type": 5,
+            "query": "Resources\r\n| where type =~ 'Microsoft.CognitiveServices/accounts'\r\n| where kind == 'OpenAI'\r\n| project name, id",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": []
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": ""
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "name": "parameters - 0"
+    },
+    {
+      "type": 11,
+      "content": {
+        "version": "LinkItem/1.0",
+        "style": "tabs",
+        "tabStyle": "bigger",
+        "links": [
+          {
+            "id": "ba941fda-a589-4cb7-80f2-172981878856",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Token Usage",
+            "subTarget": "TokenUsage",
+            "style": "link"
+          },
+          {
+            "id": "528c960e-2f4d-425b-8504-41a7ed24e51a",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Log Ingestion",
+            "subTarget": "LogIngestionUsage",
+            "style": "link"
+          },
+          {
+            "id": "67e95cc1-835c-4607-a03a-15c173e62329",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "API Management",
+            "subTarget": "APIM",
+            "style": "link"
+          },
+          {
+            "id": "5003d28e-d6b2-440d-9de6-98e99e5c345b",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "OpenAI Services",
+            "subTarget": "AOAIservices",
+            "style": "link"
+          },
+          {
+            "id": "e62cce06-b014-4245-a150-8cf5a540259e",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "OpenAI Metrics",
+            "subTarget": "AOAIMetrics",
+            "style": "link"
+          }
+        ]
+      },
+      "name": "links - 4"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Token Usage",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "ApiManagementGatewayLogs\r\n| where tolower(OperationId) in ('completions_create','chatcompletions_create')\r\n| where ResponseCode  == '200'\r\n| extend modelkey = substring(parse_json(BackendResponseBody)['model'], 0, indexof(parse_json(BackendResponseBody)['model'], '-', 0, -1, 2))\r\n| extend model = tostring(parse_json(BackendResponseBody)['model'])\r\n| extend prompttokens = parse_json(parse_json(BackendResponseBody)['usage'])['prompt_tokens']\r\n| extend completiontokens = parse_json(parse_json(BackendResponseBody)['usage'])['completion_tokens']\r\n| extend totaltokens = parse_json(parse_json(BackendResponseBody)['usage'])['total_tokens']\r\n| extend ip = CallerIpAddress\r\n| where model !=  ''\r\n| summarize\r\n    sum(todecimal(completiontokens)),\r\n    sum(todecimal(prompttokens)),\r\n    sum(todecimal(totaltokens)),\r\n    avg(todecimal(totaltokens))\r\n    by ip, model",
+              "size": 0,
+              "title": "OpenAI - Token Usage by IP",
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "sum_prompttokens",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 17,
+                      "options": {
+                        "style": "decimal"
+                      }
+                    }
+                  },
+                  {
+                    "columnMatch": "sum_completiontokens",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 17,
+                      "options": {
+                        "style": "decimal"
+                      }
+                    }
+                  },
+                  {
+                    "columnMatch": "sum_totaltokens",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 17,
+                      "options": {
+                        "style": "decimal"
+                      }
+                    }
+                  },
+                  {
+                    "columnMatch": "avg_totaltokens",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 17,
+                      "options": {
+                        "style": "decimal"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "name": "query - TokenUsage"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "TokenUsage"
+      },
+      "name": "TokenUsage"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Log Ingestion",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "### Still need to confirm cost is accurate as being billed"
+            },
+            "name": "text - 1"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Usage\r\n|summarize TotalIngestionVol = sum(Quantity)/1024.0 by DataType\r\n|project DataType,TotalIngestionVol,DollarCost=(TotalIngestionVol)*2.5\r\n|sort by TotalIngestionVol",
+              "size": 1,
+              "title": "Total Ingestion by Log Type",
+              "timeContextFromParameter": "TimeRange",
+              "exportedParameters": [
+                {
+                  "fieldName": "DataType",
+                  "parameterName": "setDataType",
+                  "parameterType": 5,
+                  "defaultValue": "Event"
+                }
+              ],
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "TotalIngestionVol",
+                    "formatter": 0,
+                    "formatOptions": {
+                      "aggregation": "Sum"
+                    },
+                    "numberFormat": {
+                      "unit": 39,
+                      "options": {
+                        "style": "decimal"
+                      }
+                    }
+                  },
+                  {
+                    "columnMatch": "DollarCost",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": {
+                        "currency": "USD",
+                        "style": "currency"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "name": "query - 4"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Usage\r\n",
+              "size": 2,
+              "title": "Test query",
+              "timeContextFromParameter": "TimeRange",
+              "exportedParameters": [
+                {
+                  "fieldName": "DataType",
+                  "parameterName": "setDataType",
+                  "parameterType": 5,
+                  "defaultValue": "Event"
+                }
+              ],
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "TotalIngestionVol",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 39,
+                      "options": {
+                        "style": "decimal"
+                      }
+                    }
+                  },
+                  {
+                    "columnMatch": "DollarCost",
+                    "formatter": 0,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": {
+                        "currency": "USD",
+                        "style": "currency"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "name": "query - Testing"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "LogIngestionUsage"
+      },
+      "name": "group - UsageCost"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "API Management",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "ApiManagementGatewayLogs\r\n| where tolower(OperationId) in ('completions_create','chatcompletions_create')\r\n| extend Pack=pack_all()\r\n| extend [\"Details\"]=Pack\r\n| where ResponseCode  == '200'\r\n| extend modelkey = substring(parse_json(BackendResponseBody)['model'], 0, indexof(parse_json(BackendResponseBody)['model'], '-', 0, -1, 2))\r\n| extend model = tostring(parse_json(BackendResponseBody)['model'])\r\n| extend RequestPrompt = tostring(parse_json(RequestBody)['prompt'])\r\n| extend ResponseTextCompletion = parse_json(parse_json(ResponseBody)['choices'])\r\n| extend ResponseTextCompletionDetails = parse_json(parse_json(ResponseBody)['choices'][0])['text']\r\n| extend RequestChatPrompt = parse_json(parse_json(RequestBody)['messages'][0])['content']\r\n| extend ResponseChatCompletion = parse_json(parse_json(ResponseBody)['choices'][0]['message'])['content']\r\n| extend completiontokens = parse_json(parse_json(BackendResponseBody)['usage'])['completion_tokens']\r\n| extend totaltokens = parse_json(parse_json(BackendResponseBody)['usage'])['total_tokens']\r\n| extend ip = CallerIpAddress\r\n| where model !=  ''\r\n//| project TimeGenerated, CorrelationId, RequestPrompt, RequestChatPrompt, ResponseTextCompletionDetails, ResponseChatCompletion, [\"Details\"]=Pack\r\n//| project TimeGenerated, CorrelationId, RequestBody, ResponseBody, BackendRequestBody, BackendResponseBody\r\n//| project TimeGenerated, CorrelationId, IsRequestSuccess, TotalTime, CallerIpAddress, Method, RespnseCode, BackendResponseCode, RequestSize, ResponseSize",
+              "size": 1,
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Details",
+                    "formatter": 7,
+                    "formatOptions": {
+                      "linkTarget": "CellDetails",
+                      "linkLabel": "🔍 View Details",
+                      "linkIsContextBlade": true
+                    }
+                  }
+                ],
+                "sortBy": [
+                  {
+                    "itemKey": "TimeGenerated",
+                    "sortOrder": 1
+                  }
+                ]
+              },
+              "sortBy": [
+                {
+                  "itemKey": "TimeGenerated",
+                  "sortOrder": 1
+                }
+              ]
+            },
+            "name": "query - 0 - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "ApiManagementGatewayLogs\r\n| where tolower(OperationId) in ('completions_create','chatcompletions_create')\r\n| extend Pack=pack_all()\r\n| where ResponseCode  == '200'\r\n| extend modelkey = substring(parse_json(BackendResponseBody)['model'], 0, indexof(parse_json(BackendResponseBody)['model'], '-', 0, -1, 2))\r\n| extend model = tostring(parse_json(BackendResponseBody)['model'])\r\n| extend RequestTextPrompt = tostring(parse_json(RequestBody)['prompt'])\r\n| extend ResponseTextCompletion = parse_json(parse_json(ResponseBody)['choices'][0])['text']\r\n//| extend ResponseTextCompletionDetails = parse_json(parse_json(ResponseBody)['choices'][0])['text']\r\n\r\n| extend RequestChatPrompt = parse_json(parse_json(RequestBody)['messages'][1])['content']\r\n\r\n| extend ResponseChatCompletion = parse_json(parse_json(ResponseBody)['choices'][0]['message'])['content']\r\n| extend completiontokens = parse_json(parse_json(BackendResponseBody)['usage'])['completion_tokens']\r\n| extend totaltokens = parse_json(parse_json(BackendResponseBody)['usage'])['total_tokens']\r\n| extend ip = CallerIpAddress\r\n| where model !=  ''\r\n| project TimeGenerated, RequestTextPrompt, ResponseTextCompletion, RequestChatPrompt, ResponseChatCompletion, [\"Details\"]=Pack\r\n//| project TimeGenerated, CorrelationId, RequestBody, ResponseBody, BackendRequestBody, BackendResponseBody\r\n//| project TimeGenerated, CorrelationId, IsRequestSuccess, TotalTime, CallerIpAddress, Method, RespnseCode, BackendResponseCode, RequestSize, ResponseSize",
+              "size": 0,
+              "timeContextFromParameter": "TimeRange",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnayltics}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Details",
+                    "formatter": 7,
+                    "formatOptions": {
+                      "linkTarget": "CellDetails",
+                      "linkLabel": "🔍 View Details",
+                      "linkIsContextBlade": true
+                    }
+                  }
+                ],
+                "sortBy": [
+                  {
+                    "itemKey": "TimeGenerated",
+                    "sortOrder": 1
+                  }
+                ]
+              },
+              "sortBy": [
+                {
+                  "itemKey": "TimeGenerated",
+                  "sortOrder": 1
+                }
+              ]
+            },
+            "name": "query - 0"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "APIM"
+      },
+      "name": "group - 4"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "AOIA Services",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Resources\r\n| where type =~ 'Microsoft.CognitiveServices/accounts'\r\n| where kind == 'OpenAI'\r\n| extend Pack=pack_all()\r\n| extend EndpointURL = properties.endpoint\r\n| project id, kind, location, resourceGroup, sku, EndpointURL, [\"Details\"]=Pack",
+              "size": 0,
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{Subscription}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Details",
+                    "formatter": 7,
+                    "formatOptions": {
+                      "linkTarget": "CellDetails",
+                      "linkLabel": "🔍 View Details",
+                      "linkIsContextBlade": true
+                    }
+                  }
+                ]
+              }
+            },
+            "name": "query - 0"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "AOAIservices"
+      },
+      "name": "group - AOAIservices"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "AOAI Metrics",
+        "items": [
+          {
+            "type": 10,
+            "content": {
+              "chartId": "workbook338becf9-efb4-4622-8f17-7572a092d774",
+              "version": "MetricsItem/2.0",
+              "size": 4,
+              "chartType": 0,
+              "resourceType": "microsoft.cognitiveservices/accounts",
+              "metricScope": 0,
+              "resourceIds": [
+                ""
+              ],
+              "timeContextFromParameter": "TimeRange",
+              "timeContext": {
+                "durationMs": 0
+              },
+              "metrics": [
+                {
+                  "namespace": "microsoft.cognitiveservices/accounts",
+                  "metric": "microsoft.cognitiveservices/accounts-Usage-GeneratedTokens",
+                  "aggregation": 1
+                },
+                {
+                  "namespace": "microsoft.cognitiveservices/accounts",
+                  "metric": "microsoft.cognitiveservices/accounts-Usage-ProcessedPromptTokens",
+                  "aggregation": 1
+                },
+                {
+                  "namespace": "microsoft.cognitiveservices/accounts",
+                  "metric": "microsoft.cognitiveservices/accounts-Usage-TokenTransaction",
+                  "aggregation": 1
+                }
+              ],
+              "title": "Token Metrics",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Subscription",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "Name",
+                    "formatter": 13,
+                    "formatOptions": {
+                      "linkTarget": "Resource",
+                      "showIcon": true
+                    }
+                  },
+                  {
+                    "columnMatch": "Metric",
+                    "formatter": 1,
+                    "formatOptions": {
+                      "customColumnWidthSetting": "30ch"
+                    }
+                  },
+                  {
+                    "columnMatch": "Aggregation",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "Segment Field",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "Value",
+                    "formatter": 1
+                  },
+                  {
+                    "columnMatch": "Timeline",
+                    "formatter": 9
+                  },
+                  {
+                    "columnMatch": ".*\\/Generated Completion Tokens$",
+                    "formatter": 21,
+                    "formatOptions": {
+                      "min": 0,
+                      "palette": "blue",
+                      "customColumnWidthSetting": "200ch"
+                    }
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-Usage-GeneratedTokens",
+                    "formatter": 1,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": null
+                    }
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-Usage-TokenTransaction",
+                    "formatter": 1,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": null
+                    }
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-Usage-ProcessedPromptTokens",
+                    "formatter": 1,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": null
+                    }
+                  },
+                  {
+                    "columnMatch": ".*\\/Processed Prompt Tokens$",
+                    "formatter": 1
+                  }
+                ],
+                "rowLimit": 10000,
+                "labelSettings": [
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-Usage-GeneratedTokens",
+                    "label": "Generated Completion Tokens (Sum)"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-Usage-GeneratedTokens Timeline",
+                    "label": "Generated Completion Tokens Timeline"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-Usage-ProcessedPromptTokens",
+                    "label": "Processed Prompt Tokens (Sum)"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-Usage-ProcessedPromptTokens Timeline",
+                    "label": "Processed Prompt Tokens Timeline"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-Usage-TokenTransaction",
+                    "label": "Processed Inference Tokens (Average)"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-Usage-TokenTransaction Timeline",
+                    "label": "Processed Inference Tokens Timeline"
+                  }
+                ]
+              },
+              "sortBy": []
+            },
+            "name": "metric - 0"
+          },
+          {
+            "type": 10,
+            "content": {
+              "chartId": "workbook338becf9-efb4-4622-8f17-7572a092d774",
+              "version": "MetricsItem/2.0",
+              "size": 4,
+              "chartType": 0,
+              "resourceType": "microsoft.cognitiveservices/accounts",
+              "metricScope": 0,
+              "resourceIds": [
+                ""
+              ],
+              "timeContextFromParameter": "TimeRange",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "metrics": [
+                {
+                  "namespace": "microsoft.cognitiveservices/accounts",
+                  "metric": "microsoft.cognitiveservices/accounts-HTTP Requests-BlockedCalls",
+                  "aggregation": 1
+                },
+                {
+                  "namespace": "microsoft.cognitiveservices/accounts",
+                  "metric": "microsoft.cognitiveservices/accounts-HTTP Requests-ClientErrors",
+                  "aggregation": 1
+                },
+                {
+                  "namespace": "microsoft.cognitiveservices/accounts",
+                  "metric": "microsoft.cognitiveservices/accounts-HTTP Requests-DataIn",
+                  "aggregation": 3
+                },
+                {
+                  "namespace": "microsoft.cognitiveservices/accounts",
+                  "metric": "microsoft.cognitiveservices/accounts-HTTP Requests-DataOut",
+                  "aggregation": 3
+                },
+                {
+                  "namespace": "microsoft.cognitiveservices/accounts",
+                  "metric": "microsoft.cognitiveservices/accounts-HTTP Requests-Latency",
+                  "aggregation": 3
+                },
+                {
+                  "namespace": "microsoft.cognitiveservices/accounts",
+                  "metric": "microsoft.cognitiveservices/accounts-HTTP Requests-Ratelimit",
+                  "aggregation": 3
+                },
+                {
+                  "namespace": "microsoft.cognitiveservices/accounts",
+                  "metric": "microsoft.cognitiveservices/accounts-HTTP Requests-ServerErrors",
+                  "aggregation": 1
+                },
+                {
+                  "namespace": "microsoft.cognitiveservices/accounts",
+                  "metric": "microsoft.cognitiveservices/accounts-HTTP Requests-SuccessfulCalls",
+                  "aggregation": 1
+                },
+                {
+                  "namespace": "microsoft.cognitiveservices/accounts",
+                  "metric": "microsoft.cognitiveservices/accounts-HTTP Requests-TotalCalls",
+                  "aggregation": 1
+                },
+                {
+                  "namespace": "microsoft.cognitiveservices/accounts",
+                  "metric": "microsoft.cognitiveservices/accounts-HTTP Requests-TotalErrors",
+                  "aggregation": 1
+                }
+              ],
+              "title": "HTTP Metrics",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "Subscription",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "Name",
+                    "formatter": 13,
+                    "formatOptions": {
+                      "linkTarget": "Resource",
+                      "showIcon": true
+                    }
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-BlockedCalls",
+                    "formatter": 1,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": null
+                    }
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-BlockedCalls Timeline",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-ClientErrors",
+                    "formatter": 1,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": null
+                    }
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-ClientErrors Timeline",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-DataIn",
+                    "formatter": 1,
+                    "numberFormat": {
+                      "unit": 2,
+                      "options": null
+                    }
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-DataIn Timeline",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-DataOut",
+                    "formatter": 1,
+                    "numberFormat": {
+                      "unit": 2,
+                      "options": null
+                    }
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-DataOut Timeline",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-Latency",
+                    "formatter": 1,
+                    "numberFormat": {
+                      "unit": 23,
+                      "options": null
+                    }
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-Latency Timeline",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-Ratelimit",
+                    "formatter": 1,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": null
+                    }
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-Ratelimit Timeline",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-ServerErrors",
+                    "formatter": 1,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": null
+                    }
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-ServerErrors Timeline",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-SuccessfulCalls",
+                    "formatter": 1,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": null
+                    }
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-SuccessfulCalls Timeline",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-TotalCalls",
+                    "formatter": 1,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": null
+                    }
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-TotalCalls Timeline",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-TotalErrors",
+                    "formatter": 1,
+                    "numberFormat": {
+                      "unit": 0,
+                      "options": null
+                    }
+                  },
+                  {
+                    "columnMatch": "microsoft.cognitiveservices/accounts-HTTP Requests-TotalErrors Timeline",
+                    "formatter": 5
+                  }
+                ],
+                "rowLimit": 10000,
+                "labelSettings": [
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-BlockedCalls",
+                    "label": "Blocked Calls (Count)"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-BlockedCalls Timeline",
+                    "label": "Blocked Calls Timeline"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-ClientErrors",
+                    "label": "Client Errors (Count)"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-ClientErrors Timeline",
+                    "label": "Client Errors Timeline"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-DataIn",
+                    "label": "Data In (Average)"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-DataIn Timeline",
+                    "label": "Data In Timeline"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-DataOut",
+                    "label": "Data Out (Average)"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-DataOut Timeline",
+                    "label": "Data Out Timeline"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-Latency",
+                    "label": "Latency (Average)"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-Latency Timeline",
+                    "label": "Latency Timeline"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-Ratelimit",
+                    "label": "Ratelimit (Average)"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-Ratelimit Timeline",
+                    "label": "Ratelimit Timeline"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-ServerErrors",
+                    "label": "Server Errors (Sum)"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-ServerErrors Timeline",
+                    "label": "Server Errors Timeline"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-SuccessfulCalls",
+                    "label": "Successful Calls (Sum)"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-SuccessfulCalls Timeline",
+                    "label": "Successful Calls Timeline"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-TotalCalls",
+                    "label": "Total Calls (Sum)"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-TotalCalls Timeline",
+                    "label": "Total Calls Timeline"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-TotalErrors",
+                    "label": "Total Errors (Sum)"
+                  },
+                  {
+                    "columnId": "microsoft.cognitiveservices/accounts-HTTP Requests-TotalErrors Timeline",
+                    "label": "Total Errors Timeline"
+                  }
+                ]
+              },
+              "sortBy": []
+            },
+            "name": "metric - 0 - Copy"
+          },
+          {
+            "type": 10,
+            "content": {
+              "chartId": "workbook338becf9-efb4-4622-8f17-7572a092d774",
+              "version": "MetricsItem/2.0",
+              "size": 0,
+              "chartType": 2,
+              "resourceType": "microsoft.cognitiveservices/accounts",
+              "metricScope": 0,
+              "resourceIds": [
+                ""
+              ],
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "metrics": [
+                {
+                  "namespace": "microsoft.cognitiveservices/accounts",
+                  "metric": "microsoft.cognitiveservices/accounts-Usage-GeneratedTokens",
+                  "aggregation": 1,
+                  "splitBy": "FeatureName"
+                }
+              ],
+              "title": "Generated Completion Tokens",
+              "gridSettings": {
+                "rowLimit": 10000
+              }
+            },
+            "name": "metric - 0 - Copy"
+          },
+          {
+            "type": 10,
+            "content": {
+              "chartId": "",
+              "version": "MetricsItem/2.0",
+              "size": 0,
+              "chartType": 2,
+              "resourceType": "microsoft.cognitiveservices/accounts",
+              "metricScope": 0,
+              "resourceIds": [
+                "
+              ],
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "metrics": [
+                {
+                  "namespace": "microsoft.cognitiveservices/accounts",
+                  "metric": "microsoft.cognitiveservices/accounts-Usage-ProcessedPromptTokens",
+                  "aggregation": 7,
+                  "splitBy": "FeatureName",
+                  "columnName": "Processed Prompt Tokens"
+                }
+              ],
+              "title": "Generated Completion Tokens",
+              "gridSettings": {
+                "rowLimit": 10000
+              }
+            },
+            "name": "metric - 0 - Copy"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "AOAIMetrics"
+      },
+      "name": "group - AOAIMetrics"
+    }
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
