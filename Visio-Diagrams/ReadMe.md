@@ -1,9 +1,9 @@
 # Portfolio of Visio Diagrams for Customer Projects and Other Projects Over the Years 
 
-## Azure OpenAI Designs - 2023
-![Atlassian-Confluence-ChatGPT](https://github.com/bsonnek/Public/assets/10324197/bc28b4d9-d791-4550-9829-b2958e47da44)
+## Azure GenAI Infrastructure - 2025
 
-![Azure-OpenAI-Implementation](https://github.com/bsonnek/Public/assets/10324197/c10a3558-0e21-4317-92c3-36ff068fed4b)
+![Azure Generative AI Infrastructure](https://github.com/user-attachments/assets/f492fecc-c841-4cb2-b9d8-f2f73f9ec372)
+
 
 
 ## Planning and Design for a Customer's New Manufacturing and Office Building - 2020
